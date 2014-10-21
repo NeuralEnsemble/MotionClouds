@@ -628,10 +628,15 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True,
     if notebook:
         in_show_video(name)
 
-def in_show_video(name, loop=True):
+def in_show_video(name, loop=True, autoplay=True):
     import os
     from IPython.core.display import display, Image, HTML
     from base64 import b64encode
+
+    opts = ''
+    if loop: opts += 'loop="loop" '
+    if autoplay: opts += 'autoplay="autoplay" '
+
     try: #if MAYAVI[:2]=='Ok':
         with open(os.path.join(figpath, name + ext), "r") as image_file:
             im1 = 'data:image/png;base64,' + b64encode(image_file.read())
@@ -649,15 +654,10 @@ def in_show_video(name, loop=True):
         <td><center><img src="%s" width=100%%/></td>
         </tr>
         </table></center>"""%(im1, im3, vext, im2)
-        t=HTML(s)
-        print name
-        display(t)
+        display(HTML(s))
     except: #else:
         video = open(os.path.join(figpath, name + vext), "rb").read()
         video_encoded = b64encode(video)
-        if vext=='.webm':
-            video_tag = '<video controls  autoplay="autoplay" loop="loop" width=50% src="data:video/webm;base64,{0}">'.format(video_encoded)
-        else:
-            video_tag = '<video controls  autoplay="autoplay" loop="loop" width=50% src="data:video/x-m4v;base64,{0}">'.format(video_encoded)
+        video_tag = '<video controls ' + opts + ' src="data:video/{0};base64,{1}">'.format(vext, video_encoded)
         display(HTML(data=video_tag))
 
