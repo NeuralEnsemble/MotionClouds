@@ -8,6 +8,8 @@
 git
 # a pop-up window should appear which recommends to install the command-line tools.
 
+xcode-select --install
+
 # 2. install HomeBrew
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
 # to reinstall, do:
