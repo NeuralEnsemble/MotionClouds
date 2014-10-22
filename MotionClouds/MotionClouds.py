@@ -443,7 +443,7 @@ def anim_save(z, filename, display=True, flip=False, vext=vext,
 #         options = ' -y -f image2pipe -c:v png -i - -c:v libx264 -preset ultrafast -qp 0 -movflags +faststart -pix_fmt yuv420p '
 #         options += ' -g ' + str(fps) + '  -r ' + str(fps) + ' '
 #         cmd = 'cat '  + tmpdir + '/*.png  | ffmpeg '  + options + filename + vext + verb_
-        options = ' -f mp4 -pix_fmt yuv420p -c:v libx264  -g ' + str(fps) + '  -r ' + str(fps) + ' '
+        options = ' -f mp4 -pix_fmt yuv420p -c:v libx264  -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%03d.png ' + options + filename + vext + verb_
         os.system(cmd)
         # 3) clean up
@@ -453,7 +453,7 @@ def anim_save(z, filename, display=True, flip=False, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-        options = ' -f webm  -pix_fmt yuv420p -vcodec libvpx -qmax 12 -g ' + str(fps) + '  -r ' + str(fps) + ' '
+        options = ' -f webm  -pix_fmt yuv420p -vcodec libvpx -qmax 12 -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%03d.png ' + options + filename + vext + verb_
         os.system(cmd)
         # 3) clean up
@@ -463,7 +463,7 @@ def anim_save(z, filename, display=True, flip=False, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-        options = ' -y -f image2pipe -c:v png -i - -c:v libx264 -preset ultrafast -qp 0 -movflags +faststart -pix_fmt yuv420p  -g ' + str(fps) + '  -r ' + str(fps) + ' '
+        options = ' -y -f image2pipe -c:v png -i - -c:v libx264 -preset ultrafast -qp 0 -movflags +faststart -pix_fmt yuv420p  -g ' + str(fps) + '  -r ' + str(fps) + + ' -y '
         cmd = 'cat '  + tmpdir + '/*.png  | ffmpeg '  + options + filename + vext + verb_
         os.system(cmd)
         # 3) clean up
@@ -644,20 +644,21 @@ def in_show_video(name, loop=True, autoplay=True):
             im2 = 'data:image/png;base64,' + b64encode(image_file.read())
         with open(os.path.join(figpath, name + vext), "r") as video_file:
             im3 = 'data:video/webm;base64,' + b64encode(video_file.read())
+
         s = """
         <center><table border=none width=100%% height=100%%>
         <tr>
         <td width=33%%><center><img src="%s" width=100%%/></td>
-        <td rowspan=2  colspan=2><center><video src="%s" autoplay="autoplay" loop="loop" type="video/%s" width=100%%/></td>
+        <td rowspan=2  colspan=2><center><video src="%s"  %s  type="video/%s" width=100%%/></td>
         </tr>
         <tr>
         <td><center><img src="%s" width=100%%/></td>
         </tr>
-        </table></center>"""%(im1, im3, vext, im2)
+        </table></center>"""%(im1, im3, opts, vext, im2)
         display(HTML(s))
     except: #else:
         video = open(os.path.join(figpath, name + vext), "rb").read()
         video_encoded = b64encode(video)
-        video_tag = '<video controls ' + opts + ' src="data:video/{0};base64,{1}">'.format(vext, video_encoded)
+        video_tag = '<video controls {0} src="data:video/{1};base64,{2}">'.format(opts, vext, video_encoded)
         display(HTML(data=video_tag))
 
