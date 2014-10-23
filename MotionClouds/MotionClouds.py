@@ -558,7 +558,7 @@ def play(z, T=5.):
         fig.redraw()
     glumpy.show()
 
-def rectif(z, contrast=.9, method='Michelson', verbose=False):
+def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
     """
     Transforms an image (can be 1,2 or 3D) with normal histogram into
     a 0.5 centered image of determined contrast
@@ -567,7 +567,7 @@ def rectif(z, contrast=.9, method='Michelson', verbose=False):
     """
     # Phase randomization takes any image and turns it into Gaussian-distributed noise of the same power (or, equivalently, variance).
     # See: Peter J. Bex J. Opt. Soc. Am. A/Vol. 19, No. 6/June 2002 Spatial frequency, phase, and the contrast of natural images
-
+    z = z_in.copy()
     # Final rectification
     if verbose:
         print('Before Rectification of the frames')
