@@ -205,7 +205,7 @@ shape
 ########################## Display Tools #######################################
 vext = '.webm'
 ext = '.png'
-T_movie = 8. # this value defines the duration of a temporal period
+T_movie = 8. # this value defines the duration in seconds of a temporal period
 
 # display parameters
 try:
@@ -249,7 +249,7 @@ def get_size(mat):
 
 #NOTE: Python uses the first dimension (rows) as vertical axis and this is the Y in the spatiotemporal domain. Be careful with the convention of X and Y.
 
-def visualize(z, azimuth=290., elevation=45.,
+def visualize(z_in, azimuth=290., elevation=45.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
     colorbar=False, f_N=2., f_tN=2., figsize=figsize):
@@ -262,7 +262,7 @@ def visualize(z, azimuth=290., elevation=45.,
 
     """
     import_mayavi()
-
+    z = z_in.copy()
     N_X, N_Y, N_frame = z.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
 
@@ -319,7 +319,7 @@ def visualize(z, azimuth=290., elevation=45.,
 
     mlab.close(all=True)
 
-def cube(im, azimuth=-45., elevation=130., roll=-180., name=None,
+def cube(im_in, azimuth=-45., elevation=130., roll=-180., name=None,
          ext=ext, do_axis=True, show_label=True, colormap='gray',
          vmin=0., vmax=1., figsize=figsize):
 
@@ -328,6 +328,7 @@ def cube(im, azimuth=-45., elevation=130., roll=-180., name=None,
 
     """
     import_mayavi()
+    im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
@@ -588,7 +589,7 @@ def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
 
 def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
-                    theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
+                    theta=theta, B_theta=B_theta, alpha=alpha, vext=vext, recompute=False,
                     seed=None, impulse=False, do_amp=False, verbose=False):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
@@ -603,24 +604,28 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
     else:
         figures(z=None, name=name, vext=vext, do_figs=do_figs, do_movie=do_movie,
-                    seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
+                    seed=seed, impulse=impulse, recompute=recompute, verbose=verbose, do_amp=do_amp)
 
-def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True,
+def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
 
     if (MAYAVI == 'Import') and do_figs: import_mayavi()
 
-    if (MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name, vext=ext):
-        visualize(z, name=os.path.join(figpath, name))           # Visualize the Fourier Spectrum
+    if (MAYAVI[:2]=='Ok') and do_figs:
+        if recompute or check_if_anim_exist(name, vext=ext):
+            visualize(z, name=os.path.join(figpath, name))           # Visualize the Fourier Spectrum
 
-    if (do_movie and check_if_anim_exist(name, vext=vext)) or ((MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name + '_cube', vext=ext)):
-        movie = rectif(random_cloud(z, seed=seed, impulse=impulse, do_amp=do_amp), verbose=verbose)
+    if do_movie or ((MAYAVI[:2]=='Ok') and do_figs):
+            #if recompute:# or not(check_if_anim_exist(name, vext=vext) or check_if_anim_exist(name + '_cube', vext=ext)):
+            movie = rectif(random_cloud(z, seed=seed, impulse=impulse, do_amp=do_amp), verbose=verbose)
 
-    if (MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name + '_cube', vext=ext):
-        cube(movie, name=os.path.join(figpath, name + '_cube'))   # Visualize the Stimulus cube
+    if (MAYAVI[:2]=='Ok') and do_figs:
+        if recompute or check_if_anim_exist(name + '_cube', vext=ext):
+            cube(movie, name=os.path.join(figpath, name + '_cube'))   # Visualize the Stimulus cube
 
-    if (do_movie) and check_if_anim_exist(name, vext=vext):
-        anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
+    if (do_movie):
+        if recompute or check_if_anim_exist(name, vext=vext):
+            anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
 
     if notebook:
         in_show_video(name)
