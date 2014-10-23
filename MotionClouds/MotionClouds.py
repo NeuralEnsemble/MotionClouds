@@ -633,7 +633,7 @@ def in_show_video(name, loop=True, autoplay=True):
     from IPython.core.display import display, Image, HTML
     from base64 import b64encode
 
-    opts = ''
+    opts = ' '
     if loop: opts += 'loop="loop" '
     if autoplay: opts += 'autoplay="autoplay" '
 
@@ -654,11 +654,11 @@ def in_show_video(name, loop=True, autoplay=True):
         <tr>
         <td><center><img src="%s" width=100%%/></td>
         </tr>
-        </table></center>"""%(im1, im3, opts, vext, im2)
+        </table></center>"""%(im1, im3, opts, vext[1:], im2)
         display(HTML(s))
     except: #else:
         video = open(os.path.join(figpath, name + vext), "rb").read()
         video_encoded = b64encode(video)
-        video_tag = '<video controls {0} src="data:video/{1};base64,{2}">'.format(opts, vext, video_encoded)
+        video_tag = '<video controls {0} src="data:video/{1};base64,{2}">'.format(opts, vext[1:], video_encoded)
         display(HTML(data=video_tag))
 
