@@ -581,9 +581,6 @@ def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
         z = (.5* z/np.std(z[:])  * contrast + .5)
 
     if verbose:
-        import pylab
-        pylab.hist(z.ravel())
-
         print('After Rectification of the frames')
         print('Mean=', np.mean(z[:]), ', std=', np.std(z[:]), ', Min=', np.min(z[:]), ', Max=', np.max(z[:]))
         print('percentage pixels clipped=', np.sum(np.abs(z[:])>1.)*100/z.size)
@@ -611,15 +608,15 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
 
-    import_mayavi()
+    if (MAYAVI == 'Import') and do_figs: import_mayavi()
 
-    if ((MAYAVI == 'Import') or MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name, vext=ext):
+    if (MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name, vext=ext):
         visualize(z, name=os.path.join(figpath, name))           # Visualize the Fourier Spectrum
 
-    if (do_movie and check_if_anim_exist(name, vext=vext)) or (((MAYAVI == 'Import') or MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name + '_cube', vext=ext)):
+    if (do_movie and check_if_anim_exist(name, vext=vext)) or ((MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name + '_cube', vext=ext)):
         movie = rectif(random_cloud(z, seed=seed, impulse=impulse, do_amp=do_amp), verbose=verbose)
 
-    if (((MAYAVI == 'Import') or MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name + '_cube', vext=ext)):
+    if (MAYAVI[:2]=='Ok') and do_figs and check_if_anim_exist(name + '_cube', vext=ext):
         cube(movie, name=os.path.join(figpath, name + '_cube'))   # Visualize the Stimulus cube
 
     if (do_movie) and check_if_anim_exist(name, vext=vext):
