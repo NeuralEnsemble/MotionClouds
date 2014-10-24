@@ -62,7 +62,7 @@ loggabor = True
 
 notebook = False
 figpath = 'results/'
-if not(os.path.isdir(figpath)):os.mkdir(figpath)
+if not(os.path.isdir(figpath)): os.mkdir(figpath)
 recompute = False
 
 def get_grids(N_X, N_Y, N_frame):
@@ -631,7 +631,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
     if notebook:
         in_show_video(name)
 
-def in_show_video(name, loop=True, autoplay=True):
+def in_show_video(name, loop=True, autoplay=True, controls=True):
     import os
     from IPython.core.display import display, Image, HTML
     from base64 import b64encode
@@ -639,6 +639,7 @@ def in_show_video(name, loop=True, autoplay=True):
     opts = ' '
     if loop: opts += 'loop="loop" '
     if autoplay: opts += 'autoplay="autoplay" '
+    if controls: opts += 'controls '
 
     try: #if MAYAVI[:2]=='Ok':
         with open(os.path.join(figpath, name + ext), "r") as image_file:
@@ -662,6 +663,6 @@ def in_show_video(name, loop=True, autoplay=True):
     except: #else:
         video = open(os.path.join(figpath, name + vext), "rb").read()
         video_encoded = b64encode(video)
-        video_tag = '<video controls {0} src="data:video/{1};base64,{2}">'.format(opts, vext[1:], video_encoded)
+        video_tag = '<video {0} src="data:video/{1};base64,{2}">'.format(opts, vext[1:], video_encoded)
         display(HTML(data=video_tag))
 
