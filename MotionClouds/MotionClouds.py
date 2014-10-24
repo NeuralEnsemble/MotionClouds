@@ -186,7 +186,8 @@ shape
     (N_X, N_Y, N_frame) = envelope.shape
     amps = 1.
     if impulse:
-        phase = 0.
+        fx, fy, ft = get_grids(N_X, N_Y, N_frame)
+        phase = -2*np.pi*(N_X/2*fx + N_Y/2*fy + N_frame/2*ft)
     else:
         np.random.seed(seed=seed)
         phase = 2 * np.pi * np.random.rand(N_X, N_Y, N_frame)
