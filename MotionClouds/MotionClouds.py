@@ -183,6 +183,8 @@ def random_cloud(envelope, seed=None, impulse=False, do_amp=False, threshold=1.e
 shape
 
     """
+    from numpy import *
+
     (N_X, N_Y, N_frame) = envelope.shape
     amps = 1.
     if impulse:
@@ -383,7 +385,7 @@ def check_if_anim_exist(filename, vext=vext):
     """
     return not(os.path.isfile(os.path.join(figpath, filename + vext)))
 
-SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat', '.mkv']
+SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat']#, '.mkv']
 def anim_save(z, filename, display=True, flip=False, vext=vext,
               centered=False, T_movie=T_movie, verbose=True):
     """
@@ -597,15 +599,15 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
     movies.
     The figures names are automatically generated.
     """
-    if check_if_anim_exist(name, vext=vext):
-        z = envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
-                    B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
-                    theta=theta, B_theta=B_theta, alpha=alpha)
-        figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie,
+#    if check_if_anim_exist(name, vext=vext):
+    z = envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
+                B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
+                theta=theta, B_theta=B_theta, alpha=alpha)
+    figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie,
                     seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
-    else:
-        figures(z=None, name=name, vext=vext, do_figs=do_figs, do_movie=do_movie,
-                    seed=seed, impulse=impulse, recompute=recompute, verbose=verbose, do_amp=do_amp)
+ #   else:
+ #       figures(z=None, name=name, vext=vext, do_figs=do_figs, do_movie=do_movie,
+#                    seed=seed, impulse=impulse, recompute=recompute, verbose=verbose, do_amp=do_amp)
 
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
