@@ -663,6 +663,6 @@ def in_show_video(name, loop=True, autoplay=True, controls=True):
     except: #else:
         video = open(os.path.join(figpath, name + vext), "rb").read()
         video_encoded = b64encode(video)
-        video_tag = '<video {0} src="data:video/{1};base64,{2}">'.format(opts, vext[1:], video_encoded)
-        display(HTML(data=video_tag))
+        s = '<center><table border=none width=100%% height=100%%> <tr> <td width=100%%><center><video {0} src="data:video/{1};base64,{2}" width=100%%\></td></tr></table></center>'.format(opts, vext[1:], video_encoded)
+        display(HTML(s))
 
