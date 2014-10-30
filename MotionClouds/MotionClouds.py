@@ -409,7 +409,7 @@ def anim_save(z, filename, display=True, flip=False, vext=vext,
         for frame in range(N_frame):
             if PROGRESS: pbar.update()
             fname = os.path.join(tmpdir, 'frame%03d.png' % frame)
-            image = np.rot90(z[:, :, frame])
+            image = z[:, :, frame]
             if flip: image = np.flipud(image)
             toimage(image, high=255, low=0, cmin=0., cmax=1., pal=None,
                     mode=None, channel_axis=None).save(fname)
