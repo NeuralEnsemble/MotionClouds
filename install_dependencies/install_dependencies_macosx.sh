@@ -47,13 +47,13 @@ brew tap Homebrew/python
 brew install gcc
 brew install fftw
 brew install libtool
+brew install numpy #--with-openblas
+brew test numpy
+brew install scipy
 brew install pillow
 pip install -U pandas
 pip install -U nose
 pip install -U ipython
-brew install numpy #--with-openblas
-brew test numpy
-brew install scipy
 
 # pylab
 brew install matplotlib --with-tex
