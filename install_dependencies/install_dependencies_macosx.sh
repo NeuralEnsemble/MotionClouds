@@ -8,7 +8,8 @@
 git
 # a pop-up window should appear which recommends to install the command-line tools.
 
-xcode-select --install
+# on MacOsX Yosemite, the following also works:
+# xcode-select --install
 
 # 2. install HomeBrew
 ruby -e "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)"
@@ -19,8 +20,8 @@ echo "export PYTHONPATH=/usr/local/lib/python2.7/site-packages:/usr/local/opt/vt
 echo "export QT_API=pyqt" >> ~/.bash_profile
 source ~/.bash_profile
 # Make sure we’re using the latest Homebrew
+brew install git
 brew update
-
 # Upgrade any already-installed formulae
 brew upgrade
 
