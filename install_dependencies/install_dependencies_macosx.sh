@@ -63,11 +63,11 @@ brew install cmake
 brew install qt
 brew install pyqt
 
-brew tap iMichka/homebrew-MacVTKITKPythonBottles
-brew install iMichka/MacVTKITKPythonBottles/imichka-vtk --with-qt --with-matplotlib --with-python
+#brew tap iMichka/homebrew-MacVTKITKPythonBottles
+#brew install iMichka/MacVTKITKPythonBottles/imichka-vtk --with-qt --with-matplotlib --with-python
 
-# brew install vtk5 --with-qt
-# ln -s /usr/local/opt/vtk5/lib/python2.7/site-packages/vtk/ /usr/local/lib/python2.7/site-packages/vtk # there is a bug in the onstallation of vtk such that it can not be imported
+brew install vtk5 --with-qt
+#ln -s /usr/local/opt/vtk5/lib/python2.7/site-packages/vtk/ /usr/local/lib/python2.7/site-packages/vtk # there is a bug in the onstallation of vtk such that it can not be imported
 #brew install vtk --python
 pip install -U git+https://github.com/enthought/traitsgui
 pip install -U git+https://github.com/enthought/traitsbackendqt
