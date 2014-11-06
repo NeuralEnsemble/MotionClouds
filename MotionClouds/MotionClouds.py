@@ -183,7 +183,6 @@ def random_cloud(envelope, seed=None, impulse=False, do_amp=False, threshold=1.e
 shape
 
     """
-    from numpy import *
 
     (N_X, N_Y, N_frame) = envelope.shape
     amps = 1.
