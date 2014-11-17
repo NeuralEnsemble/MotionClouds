@@ -22,6 +22,7 @@ color = mc.envelope_color(fx, fy, ft)
 env = color *(mc.envelope_gabor(fx, fy, ft, V_X=1.) + mc.envelope_gabor(fx, fy, ft, V_X=-1.))
 z = 2*mc.rectif(mc.random_cloud(env), contrast=.5) -1.
 
+from pyglet.gl import gl_info
 from psychopy import visual, core, event, logging
 logging.console.setLevel(logging.DEBUG)
 
