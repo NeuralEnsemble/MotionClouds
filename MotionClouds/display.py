@@ -4,7 +4,7 @@
 
 import os
 import numpy as np
-from globalMC import *
+from param import *
 from MotionClouds import *
 
 try:
