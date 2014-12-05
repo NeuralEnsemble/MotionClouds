@@ -5,4 +5,4 @@ __version__ = 'WMC'
 #__all__ = ["MotionClouds"]
 from MotionClouds import *
 from display import *
-from globalMC import *
+from param import *
