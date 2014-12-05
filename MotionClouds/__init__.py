@@ -4,4 +4,5 @@ __author__ = "Laurent Perrinet INT - CNRS"
 __version__ = 'WMC'
 #__all__ = ["MotionClouds"]
 from MotionClouds import *
+from display import *
 from globalMC import *
