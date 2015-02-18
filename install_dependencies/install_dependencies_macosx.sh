@@ -88,14 +88,14 @@ brew install pyqt
 #brew install iMichka/MacVTKITKPythonBottles/imichka-vtk --with-qt --with-matplotlib --with-python
 
 brew install vtk5 --with-qt
-#ln -s /usr/local/opt/vtk5/lib/python2.7/site-packages/vtk/ /usr/local/lib/python2.7/site-packages/vtk # there is a bug in the onstallation of vtk such that it can not be imported
+ln -s /usr/local/opt/vtk5/lib/python2.7/site-packages/vtk /usr/local/lib/python2.7/site-packages/ # there is a bug in the installation of vtk such that it can not be imported
 #brew install vtk --python
 pip install -U git+https://github.com/enthought/traitsgui
 pip install -U git+https://github.com/enthought/traitsbackendqt
 pip install -U configobj
 pip install -U envisage
-# pip install "Mayavi[app]"
-pip install -U git+https://github.com/enthought/mayavi
+pip install "Mayavi[app]"
+# pip install -U git+https://github.com/enthought/mayavi
 
 # HDF export
 brew install hdf5
@@ -104,7 +104,7 @@ pip install -U numexpr
 pip install -U tables
 
 # brew uninstall wxpython
-# pip install -U psychopy
+pip install -U psychopy
 
 pip install -U psutil
 pip install -U pyprind
