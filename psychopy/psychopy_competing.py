@@ -6,7 +6,7 @@ Using psychopy to perform an experiment on competing clouds
 (c) Laurent Perrinet - INT/CNRS
 
  See http://invibe.net/LaurentPerrinet/SciBlog/2012-12-12 for a small tutorial
- 
+
 """
 # width and height of your screen
 w, h = 1920, 1200
@@ -25,7 +25,6 @@ import MotionClouds as mc
 import time
 experiment = 'competing_v2_'
 print('launching experiment')
-from psychopy import visual, core, event, logging, gui, misc
 logging.console.setLevel(logging.DEBUG)
 
 #if no file use some defaults
@@ -44,7 +43,7 @@ try:
 except:
     print('Could not load gui... running with defaut parameters')
     print(info)
-    
+
 info['timeStr'] = time.strftime("%b_%d_%H%M", time.localtime())
 fileName = 'data/' + experiment + info['observer'] + '_' + info['timeStr'] + '.pickle'
 #save to a file for future use (ie storing as defaults)
@@ -65,18 +64,18 @@ down = 2*mc.rectif(mc.random_cloud(color * mc.envelope_gabor(fx, fy, ft, V_X=-.5
 print('go!      ')
 win = visual.Window([info['screen_width'], info['screen_height']], fullscr=True)
 
-stim = visual.GratingStim(win, 
+stim = visual.GratingStim(win,
         size=(info['screen_height'], info['screen_height']), units='pix',
         interpolate=True,
         mask = 'gauss',
         autoLog=False)#this stim changes too much for autologging to be useful
 
-wait_for_response = visual.TextStim(win, 
+wait_for_response = visual.TextStim(win,
                         text = u"?", units='norm', height=0.15, color='DarkSlateBlue',
-                        pos=[0., -0.], alignHoriz='center', alignVert='center' ) 
-wait_for_next = visual.TextStim(win, 
+                        pos=[0., -0.], alignHoriz='center', alignVert='center' )
+wait_for_next = visual.TextStim(win,
                         text = u"+", units='norm', height=0.15, color='BlanchedAlmond',
-                        pos=[0., -0.], alignHoriz='center', alignVert='center' ) 
+                        pos=[0., -0.], alignHoriz='center', alignVert='center' )
 
 def getResponse():
     event.clearEvents()#clear the event buffer to start with
