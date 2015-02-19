@@ -1,16 +1,12 @@
+# TODO: use a parameter file
 import numpy as np
 
-DEBUG = False
-if DEBUG:
-    size = 5
-    size_T = 5
-    figsize = (400, 400)  # faster
-else:
-    size = 7
-    size_T = 7
-    figsize = (600, 600) # nice size, but requires more memory
+PROGRESS = False
 
-# TODO: use a parameter file
+size = 7
+size_T = 7
+figsize = (600, 600) # nice size, but requires more memory
+
 N_X = 2**size
 N_Y = N_X
 N_frame = 2**size_T

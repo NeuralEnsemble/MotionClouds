@@ -81,9 +81,11 @@ def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
 
 def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggabor):
     """
-    Radial frequency envelope:
+    Returns the radial frequency envelope:
+
     selects a sphere around a preferred frequency with a shell width B_sf.
     Run 'test_radial.py' to see the explore the effect of sf_0 and B_sf
+
     """
     if sf_0 == 0.: return 1.
     if loggabor:
@@ -96,15 +98,15 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
 
 def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     """
-     Speed envelope:
-     selects the plane corresponding to the speed (V_X, V_Y) with some thickness B_V
+    Returns the speed envelope:
+    selects the plane corresponding to the speed (V_X, V_Y) with some thickness B_V
 
-     (V_X, V_Y) = (0,1) is downward and  (V_X, V_Y) = (1, 0) is rightward in the movie.
-     A speed of V_X=1 corresponds to an average displacement of 1/N_X per frame.
-     To achieve one spatial period in one temporal period, you should scale by
-     V_scale = N_X/float(N_frame)
-     If N_X=N_Y=N_frame and V=1, then it is one spatial period in one temporal
-     period. it can be seen in the MC cube. Define ft_0 = N_X/N_frame
+    * (V_X, V_Y) = (0,1) is downward and  (V_X, V_Y) = (1, 0) is rightward in the movie.
+    * A speed of V_X=1 corresponds to an average displacement of 1/N_X per frame.
+    To achieve one spatial period in one temporal period, you should scale by
+    V_scale = N_X/float(N_frame)
+    If N_X=N_Y=N_frame and V=1, then it is one spatial period in one temporal
+    period. It can be seen along the diagonal in the fx-ft face of the MC cube.
 
     Run 'test_speed.py' to explore the speed parameters
 
@@ -114,7 +116,7 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
 
 def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     """
-    Orientation envelope:
+    Returns the orientation envelope:
     selects one central orientation theta, B_theta the spread
     We use a von-Mises distribution on the orientation.
 
@@ -131,11 +133,12 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                     theta=theta, B_theta=B_theta, alpha=alpha):
     """
-    Returns the Motion Cloud kernel
+    Returns the Motion Cloud kernel, that is the product of:
+        * a speed envelope
+        * an orientation envelope
+        * an orientation envelope
 
     """
-    # TODO : issue a warning if more than 10% of the energy of the envelope falls off the Fourier cube
-    # TODO : use a disk mask to ensure all orientations are evely chosen
     envelope = envelope_color(fx, fy, ft, alpha=alpha)
     envelope *= envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta)
     envelope *= envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor)
@@ -144,14 +147,19 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
 
 def random_cloud(envelope, seed=None, impulse=False, do_amp=False, threshold=1.e-3):
     """
-    Returns a Motion Cloud movie as a 3D matrix.
-    It first creates a random phase spectrum and then it computes the inverse FFT to obtain
-    the spatiotemporal stimulus.
+    Returns a Motion Cloud movie as a 3D matrix from a given envelope.
 
-    - use a specific seed to specify the RNG's seed,
-    - test the impulse response of the kernel by setting impulse to True
-    - test the effect of randomizing amplitudes too by setting do_amp to True
+    It first creates a random phase spectrum, multiplies with the envelope and
+    then it computes the inverse FFT to obtain the spatiotemporal stimulus.
+
+    Options are:
+     * use a specific seed to specify the RNG's seed,
+     * test the impulse response of the kernel by setting impulse to True
+     * test the effect of randomizing amplitudes too by setting do_amp to True
 shape
+
+    # TODO : issue a warning if more than 10% of the energy of the envelope falls off the Fourier cube
+    # TODO : use a safety sphere to ensure all orientations are evenly chosen
 
     """
 
@@ -174,13 +182,4 @@ shape
     Fz[0, 0, 0] = 0.
     z = np.fft.ifftn((Fz)).real
     return z
-
-def get_size(mat):
-    """
-    Get stimulus dimensions
-
-    """
-    return [np.size(mat, axis=k) for k in range(np.ndim(mat))]
-
-#NOTE: Python uses the first dimension (rows) as vertical axis and this is the Y in the spatiotemporal domain. Be careful with the convention of X and Y.
 

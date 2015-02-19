@@ -4,50 +4,23 @@
 
 import os
 import numpy as np
-from param import *
-from MotionClouds import *
+from .param import *
+from .MotionClouds import *
 
-try:
-    import pyprind as progressbar
-    PROGRESS = True
-except:
-    PROGRESS = False
-
-#def import_mayavi() //old
-#	from mayavi import mlab
-#	from enthought.mayavi import mlab
-
-#def import_mayavi()
-#	import mlab
-
-#def anim_save(z, filename, display=True, vext=vext,
-#              centered=False, T_movie=T_movie, verbose=True):
-#	import tempfile
-#	from scipy.misc.pilutil import toimage
-#	if vext = '.zip'
-#		import zipfile
-#	if vext = '.mat'
-#		form scipy.io import savemat
-#	if vext = '.h5'
-#		from tables import openFile, Float32Atom
-
-#def play(z, T=5.):
-#	import glumpy
-#	def on_key_press(symbol, modifiers):
-#		import sys
-
-#def in_show_video(name, loop=True, autoplay=True, controls=True):
-#	from IPython.core.display import display, Image, HTML
-#	from base64 import b64encode
-
+import pyprind as progressbar
 
 if not(os.path.isdir(figpath)): os.mkdir(figpath)
-recompute = False
 
 os.environ['ETS_TOOLKIT'] = 'qt4' # Works in Mac
 # os.environ['ETS_TOOLKIT'] = 'wx' # Works in Debian
 
 def import_mayavi():
+    """
+    Mayavi is difficult to compile on some architectures (think Win / Mac Os), so we
+    allowed the possibility of an ``ImportError`` or even to avoid importing it
+    at all by setting the ``MAAYAVI`` string to ``Avoid``.
+
+    """
     global MAYAVI, mlab
     if (MAYAVI == 'Import'):
         try:
@@ -67,15 +40,18 @@ def import_mayavi():
         pass # no need to import that again
     else:
         print('We have chosen not to import Mayavi')
-# Trick from http://github.enthought.com/mayavi/mayavi/tips.html : to use offscreen rendering, try xvfb :1 -screen 0 1280x1024x24 in one terminal, export DISPLAY=:1 before you run your script
+# Trick from http://github.enthought.com/mayavi/mayavi/tips.html :
+# to use offscreen rendering, try ``xvfb :1 -screen 0 1280x1024x2`` in one terminal,
+# then ``export DISPLAY=:1`` before you run your script
 
 def visualize(z_in, azimuth=290., elevation=45.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
     colorbar=False, f_N=2., f_tN=2., figsize=figsize):
+    """
 
-    """ Visualize the  Fourier spectrum by showing 3D contour plots at different thresholds
-    
+    Visualization of the Fourier spectrum by showing 3D contour plots at different thresholds
+
     parameters
     ----------
     z : envelope of the cloud
@@ -144,7 +120,8 @@ def cube(im_in, azimuth=-45., elevation=130., roll=-180., name=None,
          vmin=0., vmax=1., figsize=figsize):
 
     """
-    Visualize the stimulus as a cube
+
+    Visualization of the stimulus as a cube
 
     """
     import_mayavi()
@@ -159,7 +136,7 @@ def cube(im_in, azimuth=-45., elevation=130., roll=-180., name=None,
 
     mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=0,
                                      colormap=colormap, vmin=vmin, vmax=vmax)
-    mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=N_frame, 
+    mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=N_frame,
                                      colormap=colormap, vmin=vmin, vmax=vmax)
     mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=0,
                                      colormap=colormap, vmin=vmin, vmax=vmax)
@@ -334,7 +311,7 @@ def play(z, T=5.):
     """
     T: duration in second of a period
 
-    TODO: currently failing on MacOsX - use pyglet?
+    TODO: currently failing on MacOsX - use numpyGL?
 
     """
     global t, t0, frames
@@ -382,9 +359,11 @@ def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
     a 0.5 centered image of determined contrast
     method is either 'Michelson' or 'Energy'
 
+    Phase randomization takes any image and turns it into Gaussian-distributed
+    noise of the same power (or, equivalently, variance).
+    # See: Peter J. Bex J. Opt. Soc. Am. A/Vol. 19, No. 6/June 2002 Spatial
+    frequency, phase, and the contrast of natural images
     """
-    # Phase randomization takes any image and turns it into Gaussian-distributed noise of the same power (or, equivalently, variance).
-    # See: Peter J. Bex J. Opt. Soc. Am. A/Vol. 19, No. 6/June 2002 Spatial frequency, phase, and the contrast of natural images
     z = z_in.copy()
     # Final rectification
     if verbose:
@@ -410,21 +389,26 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     seed=None, impulse=False, do_amp=False, verbose=False):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
-    movies.
+    movies directly from the parameters.
+
     The figures names are automatically generated.
+
     """
-#    if check_if_anim_exist(name, vext=vext):
     z = envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)
     figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie,
                     seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
- #   else:
- #       figures(z=None, name=name, vext=vext, do_figs=do_figs, do_movie=do_movie,
-#                    seed=seed, impulse=impulse, recompute=recompute, verbose=verbose, do_amp=do_amp)
 
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
+    """
+    Given an envelope, generates the figures corresponding to the Fourier spectra
+    and the stimulus cubes and movies.
+
+    The figures names are automatically generated.
+
+    """
 
     if (MAYAVI == 'Import') and do_figs: import_mayavi()
 
@@ -444,41 +428,78 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
         if recompute or check_if_anim_exist(name, vext=vext):
             anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
 
-    if notebook:
-        in_show_video(name)
+def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
+    """
 
-def in_show_video(name, loop=True, autoplay=True, controls=True):
+    Columns represent isometric projections of a cube. The left column displays
+    iso-surfaces of the spectral envelope by displaying enclosing volumes at 5
+    different energy values with respect to the peak amplitude of the Fourier spectrum.
+    The middle column shows an isometric view of the faces of the movie cube.
+    The first frame of the movie lies on the x-y plane, the x-t plane lies on the
+    top face and motion direction is seen as diagonal lines on this face (vertical
+    motion is similarly see in the y-t face). The third column displays the actual
+    movie as an animation.
+
+    Given a name, displays the figures corresponding to the Fourier spectra, the
+    stimulus cubes and movies within the notebook.
+
+    """
     import os
     from IPython.core.display import display, Image, HTML
     from base64 import b64encode
 
     opts = ' '
-    if loop: opts += 'loop="loop" '
-    if autoplay: opts += 'autoplay="autoplay" '
+    if loop: opts += 'loop="1" '
+    if autoplay: opts += 'autoplay="1" '
     if controls: opts += 'controls '
+    if embed:
+        try:
+            with open(os.path.join(figpath, name + ext), "r") as image_file:
+                im1 = 'data:image/png;base64,' + b64encode(image_file.read())
+            with open(os.path.join(figpath, name + '_cube' + ext), "r") as image_file:
+                im2 = 'data:image/png;base64,' + b64encode(image_file.read())
+            with open(os.path.join(figpath, name + vext), "r") as video_file:
+                im3 = 'data:video/webm;base64,' + b64encode(video_file.read())
 
-    try: #if MAYAVI[:2]=='Ok':
-        with open(os.path.join(figpath, name + ext), "r") as image_file:
-            im1 = 'data:image/png;base64,' + b64encode(image_file.read())
-        with open(os.path.join(figpath, name + '_cube' + ext), "r") as image_file:
-            im2 = 'data:image/png;base64,' + b64encode(image_file.read())
-        with open(os.path.join(figpath, name + vext), "r") as video_file:
-            im3 = 'data:video/webm;base64,' + b64encode(video_file.read())
-
-        s = """
-        <center><table border=none width=100%% height=100%%>
-        <tr>
-        <td width=33%%><center><img src="%s" width=100%%/></td>
-        <td rowspan=2  colspan=2><center><video src="%s"  %s  type="video/%s" width=100%%/></td>
-        </tr>
-        <tr>
-        <td><center><img src="%s" width=100%%/></td>
-        </tr>
-        </table></center>"""%(im1, im3, opts, vext[1:], im2)
-        display(HTML(s))
-    except: #else:
-        video = open(os.path.join(figpath, name + vext), "rb").read()
-        video_encoded = b64encode(video)
-        s = '<center><table border=none width=100%% height=100%%> <tr> <td width=100%%><center><video {0} src="data:video/{1};base64,{2}" width=100%%\></td></tr></table></center>'.format(opts, vext[1:], video_encoded)
-        display(HTML(s))
-
+            s = """
+            <center><table border=none width=100%% height=100%%>
+            <tr>
+            <td width=33%%><center><img src="%s" width=100%%/></td>
+            <td rowspan=2  colspan=2><center><video src="%s"  %s  type="video/%s" width=100%%/></td>
+            </tr>
+            <tr>
+            <td><center><img src="%s" width=100%%/></td>
+            </tr>
+            </table></center>"""%(im1, im3, opts, vext[1:], im2)
+            display(HTML(s))
+        except:
+            video = open(os.path.join(figpath, name + vext), "rb").read()
+            video_encoded = b64encode(video)
+            s = """
+            <center><table border=none width=100%% height=100%%>
+            <tr> <td width=100%%><center><video {0} src="data:video/{1};base64,{2}" width=100%%\>
+            </td></tr></table></center>'.format(opts, vext[1:], video_encoded)
+            """
+            display(HTML(s))
+    else:
+        if os.path.isfile(os.path.join(figpath, name + ext)) and os.path.isfile(os.path.join(figpath, name + '_cube' + ext)):
+            s = """
+            <center><table border=none width=100%% height=100%%>
+            <tr>
+            <td width=33%%><center><img src="%s" width=100%%/></td>
+            <td rowspan=2  colspan=2><center><video src="%s"  %s  type="video/%s" width=100%%/></td>
+            </tr>
+            <tr>
+            <td><center><img src="%s" width=100%%/></td>
+            </tr>
+            </table></center>"""%(os.path.join(figpath, name + ext),
+                                  os.path.join(figpath, name + vext),
+                                  opts, vext[1:],
+                                  os.path.join(figpath, name + '_cube' + ext))
+            display(HTML(s))
+        else:
+            s = """
+            <center><table border=none width=100%% height=100%%>
+            <tr> <td width=100%%><center><video {0} src="{2}" type="video/{1}"  width=100%%\>
+            </td></tr></table></center>""".format(opts, vext[1:], os.path.join(figpath, name + vext))
+            display(HTML(s))
