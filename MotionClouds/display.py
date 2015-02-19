@@ -478,8 +478,7 @@ def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
             s = """
             <center><table border=none width=100%% height=100%%>
             <tr> <td width=100%%><center><video {0} src="data:video/{1};base64,{2}" width=100%%\>
-            </td></tr></table></center>'.format(opts, vext[1:], video_encoded)
-            """
+            </td></tr></table></center>""".format(opts, vext[1:], video_encoded)
             display(HTML(s))
     else:
         if os.path.isfile(os.path.join(figpath, name + ext)) and os.path.isfile(os.path.join(figpath, name + '_cube' + ext)):
