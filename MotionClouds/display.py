@@ -11,9 +11,6 @@ import pyprind as progressbar
 
 if not(os.path.isdir(figpath)): os.mkdir(figpath)
 
-os.environ['ETS_TOOLKIT'] = 'qt4' # Works in Mac
-# os.environ['ETS_TOOLKIT'] = 'wx' # Works in Debian
-
 def import_mayavi():
     """
     Mayavi is difficult to compile on some architectures (think Win / Mac Os), so we
@@ -36,6 +33,9 @@ def import_mayavi():
             except:
                print('Could not import Mayavi')
                MAYAVI = 'Could not import Mayavi'
+        if 'Imported' in MAYAVI:
+            os.environ['ETS_TOOLKIT'] = 'qt4' # Works in Mac
+#             os.environ['ETS_TOOLKIT'] = 'wx' # Works in Debian
     elif (MAYAVI == 'Could not import Mayavi') or (MAYAVI == 'Ok : New and shiny') or (MAYAVI == 'Ok but old'):
         pass # no need to import that again
     else:
@@ -189,9 +189,12 @@ def anim_save(z, filename, display=True, vext=vext,
     """
     import tempfile
     from scipy.misc.pilutil import toimage
-    fps = int(z.shape[-1] / T_movie)
-    def make_frames(z):
+    if z.ndim == 4: # colored movie
+        N_X, N_Y, three, N_frame = z.shape
+    else: # grayscale
         N_X, N_Y, N_frame = z.shape
+    fps = int(N_frame / T_movie)
+    def make_frames(z):
         files = []
         tmpdir = tempfile.mkdtemp()
 
@@ -201,7 +204,7 @@ def anim_save(z, filename, display=True, vext=vext,
         for frame in range(N_frame):
             if PROGRESS: pbar.update()
             fname = os.path.join(tmpdir, 'frame%03d.png' % frame)
-            image = np.rot90(z[:, :, frame])
+            image = np.rot90(z[..., frame])
             toimage(image, high=255, low=0, cmin=0., cmax=1., pal=None,
                     mode=None, channel_axis=None).save(fname)
             files.append(fname)
