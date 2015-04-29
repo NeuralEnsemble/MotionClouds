@@ -347,7 +347,7 @@ def play(z, T=5.):
         frames = frames + 1
         if t-t0 > 5.0:
             fps = float(frames)/(t-t0)
-            print 'FPS: %.2f (%d frames in %.2f seconds)' % (fps, frames, t-t0)
+            print('FPS: %.2f (%d frames in %.2f seconds)' % (fps, frames, t-t0))
             frames, t0 = 0, t
          # computing the frame more closely to the actual time
         Z[...] = z[:, :, np.int(np.mod(t, T)/T * N_frame)].T.astype(np.float32)
@@ -458,11 +458,11 @@ def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
     if embed:
         try:
             with open(os.path.join(figpath, name + ext), "r") as image_file:
-                im1 = 'data:image/png;base64,' + b64encode(image_file.read())
+                im1 = 'data:image/png;base64,' + b64encode(image_file.read()).decode("utf-8")
             with open(os.path.join(figpath, name + '_cube' + ext), "r") as image_file:
-                im2 = 'data:image/png;base64,' + b64encode(image_file.read())
+                im2 = 'data:image/png;base64,' + b64encode(image_file.read()).decode("utf-8")
             with open(os.path.join(figpath, name + vext), "r") as video_file:
-                im3 = 'data:video/webm;base64,' + b64encode(video_file.read())
+                im3 = 'data:video/webm;base64,' + b64encode(video_file.read()).decode("utf-8")
 
             s = """
             <center><table border=none width=100%% height=100%%>
@@ -477,7 +477,7 @@ def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
             display(HTML(s))
         except:
             video = open(os.path.join(figpath, name + vext), "rb").read()
-            video_encoded = b64encode(video)
+            video_encoded = b64encode(video).decode("utf-8")
             s = """
             <center><table border=none width=100%% height=100%%>
             <tr> <td width=100%%><center><video {0} src="data:video/{1};base64,{2}" width=100%%\>

@@ -34,7 +34,7 @@ fps        -- frame per seconds
 
 import os
 import numpy as np
-from param import *
+from .param import *
 
 def get_grids(N_X, N_Y, N_frame):
     """

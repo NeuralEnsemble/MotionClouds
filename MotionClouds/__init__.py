@@ -3,6 +3,6 @@
 __author__ = "Laurent Perrinet INT - CNRS"
 __version__ = 'WMC'
 #__all__ = ["MotionClouds"]
+from .param import *
 from .MotionClouds import *
 from .display import *
-from .param import *
