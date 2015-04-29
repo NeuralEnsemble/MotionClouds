@@ -15,16 +15,19 @@ sudo aptitude upgrade
 
 # 2) minimal install with visualization and generation of documentation
 
-# sudo aptitude install python-pip python-numpy python-scipy mayavi2 python-matplotlib ffmpeg
+# sudo aptitude install python-pip python-numpy python-scipy python-matplotlib ffmpeg
 # sudo aptitude install texlive-latex-recommended  latexmk latexdiff
 
 # 3) full install with python editor and libraries for various export types
 
-sudo aptitude install python-pip python-numpy mayavi2 python-matplotlib spyder python-tables imagemagick texlive-latex-recommended latexmk latexdiff zip ipython psychopy
+sudo aptitude install python-pip python-numpy python-matplotlib spyder python-tables imagemagick texlive-latex-recommended latexmk latexdiff zip ipython psychopy
 # http://askubuntu.com/questions/432542/is-ffmpeg-missing-from-the-official-repositories-in-14-04
 sudo add-apt-repository ppa:mc3man/trusty-media
 sudo apt-get update
 sudo aptitude install ffmpeg
 
 pip install --user pyprind
+# vispy
+pîp install --user pyglet
+pip install --user git+https://github.com/vispy/vispy
 

@@ -36,15 +36,14 @@ def import_mayavi():
         if 'Imported' in MAYAVI:
             os.environ['ETS_TOOLKIT'] = 'qt4' # Works in Mac
 #             os.environ['ETS_TOOLKIT'] = 'wx' # Works in Debian
+        return True
     elif (MAYAVI == 'Could not import Mayavi') or (MAYAVI == 'Ok : New and shiny') or (MAYAVI == 'Ok but old'):
-        pass # no need to import that again
+        return False # no need to import that again
     else:
-        print('We have chosen not to import Mayavi')
-# Trick from http://github.enthought.com/mayavi/mayavi/tips.html :
-# to use offscreen rendering, try ``xvfb :1 -screen 0 1280x1024x2`` in one terminal,
-# then ``export DISPLAY=:1`` before you run your script
+        MAYAVI = 'We have chosen not to import Mayavi'
+        return False # no need to import that again
 
-def visualize(z_in, azimuth=290., elevation=45.,
+def visualize(z_in, azimuth=30., elevation=30.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
     colorbar=False, f_N=2., f_tN=2., figsize=figsize):
@@ -57,119 +56,237 @@ def visualize(z_in, azimuth=290., elevation=45.,
     z : envelope of the cloud
 
     """
-    import_mayavi()
     z = z_in.copy()
     N_X, N_Y, N_frame = z.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
 
-    mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0, 0, 0), size=figsize)
-    mlab.clf()
-
     # Normalize the amplitude.
     z /= z.max()
-    # Create scalar field
-    src = mlab.pipeline.scalar_field(fx, fy, ft, z)
-    if draw_projections:
-        src_x = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.sum(z, axis=0), (N_X, 1, 1)))
-        src_y = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=1), (N_X, 1, N_frame)), (1, N_Y, 1)))
-        src_z = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=2), (N_X, N_Y, 1)), (1, 1, N_frame)))
+    if import_mayavi():
 
-        # Create projections
-        border = 0.47
-        scpx = mlab.pipeline.scalar_cut_plane(src_x, plane_orientation='x_axes', view_controls=False)
-        scpx.implicit_plane.plane.origin = [-border, 1/N_Y, 1/N_frame]
-        scpx.enable_contours = True
-        scpy = mlab.pipeline.scalar_cut_plane(src_y, plane_orientation='y_axes', view_controls=False)
-        scpy.implicit_plane.plane.origin = [1/N_X, border, 1/N_frame]
-        scpy.enable_contours = True
-        scpz = mlab.pipeline.scalar_cut_plane(src_z, plane_orientation='z_axes', view_controls=False)
-        scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
-        scpz.enable_contours = True
+        mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0, 0, 0), size=figsize)
+        mlab.clf()
 
-    # Generate iso-surfaces at different energy levels
-    for threshold, opacity in zip(thresholds, opacities):
-        mlab.pipeline.iso_surface(src, contours=[z.max()-threshold*z.ptp(), ], opacity=opacity)
-        mlab.outline(extent=[-1./2, 1./2, -1./2, 1./2, -1./2, 1./2],)
+        # Create scalar field
+        src = mlab.pipeline.scalar_field(fx, fy, ft, z)
+        if draw_projections:
+            src_x = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.sum(z, axis=0), (N_X, 1, 1)))
+            src_y = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=1), (N_X, 1, N_frame)), (1, N_Y, 1)))
+            src_z = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=2), (N_X, N_Y, 1)), (1, 1, N_frame)))
 
-    # Draw a sphere at the origin
-    x = np.array([0])
-    y = np.array([0])
-    z = np.array([0])
-    s = 0.01
-    mlab.points3d(x, y, z, extent=[-s, s, -s, s, -s, s], scale_factor=0.15)
+            # Create projections
+            border = 0.47
+            scpx = mlab.pipeline.scalar_cut_plane(src_x, plane_orientation='x_axes', view_controls=False)
+            scpx.implicit_plane.plane.origin = [-border, 1/N_Y, 1/N_frame]
+            scpx.enable_contours = True
+            scpy = mlab.pipeline.scalar_cut_plane(src_y, plane_orientation='y_axes', view_controls=False)
+            scpy.implicit_plane.plane.origin = [1/N_X, border, 1/N_frame]
+            scpy.enable_contours = True
+            scpz = mlab.pipeline.scalar_cut_plane(src_z, plane_orientation='z_axes', view_controls=False)
+            scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
+            scpz.enable_contours = True
 
-    if colorbar: mlab.colorbar(title='density', orientation='horizontal')
-    if do_axis:
-        ax = mlab.axes(xlabel='fx', ylabel='fy', zlabel='ft',)
-        ax.axes.set(font_factor=2.)
+        # Generate iso-surfaces at different energy levels
+        for threshold, opacity in zip(thresholds, opacities):
+            mlab.pipeline.iso_surface(src, contours=[z.max()-threshold*z.ptp(), ], opacity=opacity)
+            mlab.outline(extent=[-1./2, 1./2, -1./2, 1./2, -1./2, 1./2],)
 
-    try:
-        mlab.view(azimuth=azimuth, elevation=elevation, distance='auto', focalpoint='auto')
-    except:
-        print(" You should upgrade your mayavi version")
+        # Draw a sphere at the origin
+        x = np.array([0])
+        y = np.array([0])
+        z = np.array([0])
+        s = 0.01
+        mlab.points3d(x, y, z, extent=[-s, s, -s, s, -s, s], scale_factor=0.15)
 
-    if not(name is None):
-        mlab.savefig(name + ext, magnification='auto', size=figsize)
+        if colorbar: mlab.colorbar(title='density', orientation='horizontal')
+        if do_axis:
+            ax = mlab.axes(xlabel='fx', ylabel='fy', zlabel='ft',)
+            ax.axes.set(font_factor=2.)
+
+        try:
+            mlab.view(azimuth=azimuth, elevation=elevation, distance='auto', focalpoint='auto')
+        except:
+            print(" You should upgrade your mayavi version")
+
+        if not(name is None):
+            mlab.savefig(name + ext, magnification='auto', size=figsize)
+        else:
+            mlab.show(stop=True)
+
+        mlab.close(all=True)
     else:
-       mlab.show(stop=True)
+        from vispy import app, scene
+        app.use_app('pyglet')
+        from vispy.util.transforms import perspective, translate, rotate
+        from vispy.color import Color
+        import colorsys
+        canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
+        view = canvas.central_widget.add_view()
 
-    mlab.close(all=True)
+        frame = scene.visuals.Cube(size=(N_Y/2, N_X/2, N_frame/2), color=None,
+                                        edge_color=(0., 0., 0., 1.),
+                                        parent=view.scene)
 
-def cube(im_in, azimuth=-45., elevation=130., roll=-180., name=None,
-         ext=ext, do_axis=True, show_label=True, colormap='gray',
-         vmin=0., vmax=1., figsize=figsize):
+        vol_data = np.rollaxis(np.rollaxis(z, 1), 2)
+        volume = scene.visuals.Volume(vol_data, parent=frame)
+        center = scene.transforms.STTransform(translate=( -N_X/2, -N_Y/2, -N_frame/2))
+        volume.transform = center
+        volume.cmap = 'blues'
+
+#         if draw_projections:
+#             src_x = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.sum(z, axis=0), (N_X, 1, 1)))
+#             src_y = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=1), (N_X, 1, N_frame)), (1, N_Y, 1)))
+#             src_z = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=2), (N_X, N_Y, 1)), (1, 1, N_frame)))
+#
+#             # Create projections
+#             border = 0.47
+#             scpx = mlab.pipeline.scalar_cut_plane(src_x, plane_orientation='x_axes', view_controls=False)
+#             scpx.implicit_plane.plane.origin = [-border, 1/N_Y, 1/N_frame]
+#             scpx.enable_contours = True
+#             scpy = mlab.pipeline.scalar_cut_plane(src_y, plane_orientation='y_axes', view_controls=False)
+#             scpy.implicit_plane.plane.origin = [1/N_X, border, 1/N_frame]
+#             scpy.enable_contours = True
+#             scpz = mlab.pipeline.scalar_cut_plane(src_z, plane_orientation='z_axes', view_controls=False)
+#             scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
+#             scpz.enable_contours = True
+
+        # Generate iso-surfaces at different energy levels
+        for threshold, opacity in zip(thresholds, opacities):
+            surface = scene.visuals.Isosurface(vol_data, level=threshold,
+                                        color=Color(np.array(colorsys.hsv_to_rgb(.1+threshold/1.5, 1., 1.)), alpha=opacity),
+                                        shading='smooth', parent=frame)
+            surface.transform = center
+
+        # Draw a sphere at the origin
+        axis = scene.visuals.XYZAxis(parent=view.scene)
+        if do_axis:
+            t = {}
+            for text in ['f_x', 'f_y', 'f_t']:
+                t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
+                t[text].font_size = 8
+            t['f_x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
+            t['f_y'].pos = canvas.size[0] - canvas.size[0] // 4, canvas.size[1] - canvas.size[1] // 8
+            t['f_t'].pos = canvas.size[0] // 6, canvas.size[1] // 2
+
+        cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth)
+        cam.fov = 45
+        cam.scale_factor = N_X * 2.
+        cam.set_range((-N_X/2, N_X/2), (-N_Y/2, N_Y/2), (-N_frame/2, N_frame/2))
+        view.camera = cam
+
+        if not(name is None):
+            im = canvas.render(size=figsize)
+            import vispy.io as io
+            io.write_png(name + ext, im)
+        else:
+            return im
+
+def cube(im_in, azimuth=30., elevation=45., name=None,
+         ext=ext, do_axis=True, show_label=True,
+         colormap='gray', roll=-180., vmin=0., vmax=1., # spcific to mayavi
+         figsize=figsize):
 
     """
 
     Visualization of the stimulus as a cube
 
     """
-    import_mayavi()
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
+    if import_mayavi():
+        mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0, 0, 0), size=figsize)
+        mlab.clf()
+        src = mlab.pipeline.scalar_field(fx*2., fy*2., ft*2., im)
 
-    mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0, 0, 0), size=figsize)
-    mlab.clf()
-    src = mlab.pipeline.scalar_field(fx*2., fy*2., ft*2., im)
+        mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=0,
+                                        colormap=colormap, vmin=vmin, vmax=vmax)
+        mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=N_frame,
+                                        colormap=colormap, vmin=vmin, vmax=vmax)
+        mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=0,
+                                        colormap=colormap, vmin=vmin, vmax=vmax)
+        mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=N_X,
+                                        colormap=colormap, vmin=vmin, vmax=vmax)
+        mlab.pipeline.image_plane_widget(src, plane_orientation='y_axes', slice_index=0,
+                                        colormap=colormap, vmin=vmin, vmax=vmax)
+        mlab.pipeline.image_plane_widget(src, plane_orientation='y_axes', slice_index=N_Y,
+                                        colormap=colormap, vmin=vmin, vmax=vmax)
 
-    mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=0,
-                                     colormap=colormap, vmin=vmin, vmax=vmax)
-    mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=N_frame,
-                                     colormap=colormap, vmin=vmin, vmax=vmax)
-    mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=0,
-                                     colormap=colormap, vmin=vmin, vmax=vmax)
-    mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=N_X,
-                                     colormap=colormap, vmin=vmin, vmax=vmax)
-    mlab.pipeline.image_plane_widget(src, plane_orientation='y_axes', slice_index=0,
-                                     colormap=colormap, vmin=vmin, vmax=vmax)
-    mlab.pipeline.image_plane_widget(src, plane_orientation='y_axes', slice_index=N_Y,
-                                     colormap=colormap, vmin=vmin, vmax=vmax)
+        if do_axis:
+            ax = mlab.axes(xlabel='x', ylabel='y', zlabel='t',
+                        ranges=[0., N_X, 0., N_Y, 0., N_frame],
+                        x_axis_visibility=False, y_axis_visibility=False,
+                        z_axis_visibility=False)
+            ax.axes.set(font_factor=2.)
 
-    if do_axis:
-        ax = mlab.axes(xlabel='x', ylabel='y', zlabel='t',
-                       ranges=[0., N_X, 0., N_Y, 0., N_frame],
-                       x_axis_visibility=False, y_axis_visibility=False,
-                       z_axis_visibility=False)
-        ax.axes.set(font_factor=2.)
-
-        if not(show_label): ax.axes.set(label_format='')
+            if not(show_label): ax.axes.set(label_format='')
 
 
-    try:
-        mlab.view(azimuth=azimuth, elevation=elevation, distance='auto', focalpoint='auto')
-        mlab.roll(roll=roll)
-    except:
-        print(" You should upgrade your mayavi version")
+        try:
+            mlab.view(azimuth=azimuth, elevation=elevation, distance='auto', focalpoint='auto')
+            mlab.roll(roll=roll)
+        except:
+            print(" You should upgrade your mayavi version")
 
-    if not(name is None):
-        mlab.savefig(name + ext, magnification='auto', size=figsize)
+        if not(name is None):
+            mlab.savefig(name + ext, magnification='auto', size=figsize)
+        else:
+            mlab.show(stop=True)
+
+        mlab.close(all=True)
     else:
-        mlab.show(stop=True)
+        import numpy as np
+        from vispy import app, scene
+        app.use_app('pyglet')
+        from vispy.util.transforms import perspective, translate, rotate
 
-    mlab.close(all=True)
+        canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
+        view = canvas.central_widget.add_view()
 
+        frame = scene.visuals.Cube(size = (N_X/2, N_frame/2, N_Y/2),
+                                        edge_color='k',
+                                        parent=view.scene)
+
+        opts = {'parent':frame, 'cmap':'grays', 'clim':(0., 1.)}
+        image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
+        tr_xy = scene.transforms.AffineTransform()
+        tr_xy.rotate(90, (1, 0, 0))
+        tr_xy.translate((-N_X/2, -N_frame/2, -N_Y/2))
+        image_xy.transform = tr_xy
+
+        image_xt = scene.visuals.Image(np.fliplr(im[:, -1, :]), **opts)
+        tr_xt = scene.transforms.AffineTransform()
+        tr_xt.rotate(90, (0, 0, 1))
+        tr_xt.translate((N_X/2, -N_frame/2, N_Y/2))
+        image_xt.transform = tr_xt
+
+        image_yt = scene.visuals.Image(np.rot90(im[-1, :, :], 1), **opts)
+        tr_yt = scene.transforms.AffineTransform()
+        tr_yt.rotate(90, (0, 1, 0))
+        tr_yt.translate((+N_X/2, -N_frame/2, N_Y/2))
+        image_yt.transform = tr_yt
+
+        if do_axis:
+            t = {}
+            for text in ['x', 'y', 't']:
+                t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
+                t[text].font_size = 8
+            t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
+            t['t'].pos = canvas.size[0] - canvas.size[0] // 3.5, canvas.size[1] - canvas.size[1] // 6
+            t['y'].pos = canvas.size[0] - canvas.size[0] // 6, canvas.size[1] // 2
+
+        cam = scene.TurntableCamera(elevation=35, azimuth=30)
+        cam.fov = 45
+        cam.scale_factor = N_X * 2.
+        cam.set_range((-N_X/2, N_X/2), (-N_Y/2, N_Y/2), (-N_frame/2, N_frame/2))
+        view.camera = cam
+        if not(name is None):
+            im = canvas.render(size=figsize)
+            import vispy.io as io
+            io.write_png(name + ext, im)
+        else:
+            return im
 def check_if_anim_exist(filename, vext=vext):
     """
     Check if the movie already exists
@@ -403,7 +520,7 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
     figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie,
                     seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
 
-def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
+def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
@@ -413,21 +530,20 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     """
 
-    if (MAYAVI == 'Import') and do_figs: import_mayavi()
 
-    if (MAYAVI[:2]=='Ok') and do_figs:
+    if do_figs:
         if recompute or check_if_anim_exist(name, vext=ext):
             visualize(z, name=os.path.join(figpath, name))           # Visualize the Fourier Spectrum
 
-    if do_movie or ((MAYAVI[:2]=='Ok') and do_figs):
+    if do_movie or do_figs:
             #if recompute:# or not(check_if_anim_exist(name, vext=vext) or check_if_anim_exist(name + '_cube', vext=ext)):
             movie = rectif(random_cloud(z, seed=seed, impulse=impulse, do_amp=do_amp), verbose=verbose)
 
-    if (MAYAVI[:2]=='Ok') and do_figs:
+    if do_figs:
         if recompute or check_if_anim_exist(name + '_cube', vext=ext):
             cube(movie, name=os.path.join(figpath, name + '_cube'))   # Visualize the Stimulus cube
 
-    if (do_movie):
+    if do_movie:
         if recompute or check_if_anim_exist(name, vext=vext):
             anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
 
@@ -456,52 +572,52 @@ def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
     if autoplay: opts += 'autoplay="1" '
     if controls: opts += 'controls '
     if embed:
-        try:
-            with open(os.path.join(figpath, name + ext), "r") as image_file:
-                im1 = 'data:image/png;base64,' + b64encode(image_file.read()).decode("utf-8")
-            with open(os.path.join(figpath, name + '_cube' + ext), "r") as image_file:
-                im2 = 'data:image/png;base64,' + b64encode(image_file.read()).decode("utf-8")
-            with open(os.path.join(figpath, name + vext), "r") as video_file:
-                im3 = 'data:video/webm;base64,' + b64encode(video_file.read()).decode("utf-8")
+        if True:#  #nosmartindenti#  #nosmartindenttry:
+            with open(os.path.join(figpath, name + ext), "rb") as image_file:
+                im1 = b64encode(image_file.read()).decode("utf-8")
+            with open(os.path.join(figpath, name + '_cube' + ext), "rb") as image_file:
+                im2 = b64encode(image_file.read()).decode("utf-8")
+            with open(os.path.join(figpath, name + vext), "rb") as video_file:
+                im3 = b64encode(video_file.read()).decode("utf-8")
 
             s = """
-            <center><table border=none width=100%% height=100%%>
+            <center><table border=none width=100% height=100%>
             <tr>
-            <td width=33%%><center><img src="%s" width=100%%/></td>
-            <td rowspan=2  colspan=2><center><video src="%s"  %s  type="video/%s" width=100%%/></td>
+            <td width=33%%><center><img src="data:image/png;base64,{0}" width=100%/></td>
+            <td rowspan=2  colspan=2><center><video src="data:video/webm;base64,{1}"  {2}  type="video/{3}" width=100%/></td>
             </tr>
             <tr>
-            <td><center><img src="%s" width=100%%/></td>
+            <td><center><img src="data:image/png;base64,{4}" width=100%/></td>
             </tr>
-            </table></center>"""%(im1, im3, opts, vext[1:], im2)
+            </table></center>""".format(im1, im3, opts, vext[1:], im2)
             display(HTML(s))
-        except:
+    elif 0:#  #nosmartindentexcept:
             video = open(os.path.join(figpath, name + vext), "rb").read()
             video_encoded = b64encode(video).decode("utf-8")
             s = """
-            <center><table border=none width=100%% height=100%%>
-            <tr> <td width=100%%><center><video {0} src="data:video/{1};base64,{2}" width=100%%\>
+            <center><table border=none width=100% height=100%>
+            <tr> <td width=100%><center><video {0} src="data:video/{1};base64,{2}" width=100%\>
             </td></tr></table></center>""".format(opts, vext[1:], video_encoded)
             display(HTML(s))
     else:
         if os.path.isfile(os.path.join(figpath, name + ext)) and os.path.isfile(os.path.join(figpath, name + '_cube' + ext)):
             s = """
-            <center><table border=none width=100%% height=100%%>
+            <center><table border=none width=100% height=100%>
             <tr>
-            <td width=33%%><center><img src="%s" width=100%%/></td>
-            <td rowspan=2  colspan=2><center><video src="%s"  %s  type="video/%s" width=100%%/></td>
+            <td width=33%%><center><img src="{0}" width=100%/></td>
+            <td rowspan=2  colspan=2><center><video src="{1}"  {2}  type="video/{3}" width=100%/></td>
             </tr>
             <tr>
-            <td><center><img src="%s" width=100%%/></td>
+            <td><center><img src="{4}" width=100%/></td>
             </tr>
-            </table></center>"""%(os.path.join(figpath, name + ext),
+            </table></center>""".format(os.path.join(figpath, name + ext),
                                   os.path.join(figpath, name + vext),
                                   opts, vext[1:],
                                   os.path.join(figpath, name + '_cube' + ext))
             display(HTML(s))
         else:
             s = """
-            <center><table border=none width=100%% height=100%%>
-            <tr> <td width=100%%><center><video {0} src="{2}" type="video/{1}"  width=100%%\>
+            <center><table border=none width=100% height=100%>
+            <tr> <td width=100%><center><video {0} src="{2}" type="video/{1}"  width=100%\>
             </td></tr></table></center>""".format(opts, vext[1:], os.path.join(figpath, name + vext))
             display(HTML(s))
