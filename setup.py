@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding: utf8 -*-
 
-# from distutils.core import setup
-from setuptools import setup
+from setuptools import setup, find_packages
 
 NAME = "MotionClouds"
 version = "0.2"
@@ -10,8 +9,8 @@ version = "0.2"
 setup(
     name = NAME,
     version = version,
-    packages = [NAME],
-    package_dir = {NAME: NAME},
+    packages=find_packages('src', exclude='docs'),
+    package_dir = {'': 'src'},
     author = "Laurent Perrinet INT - CNRS",
     author_email = "Laurent.Perrinet@univ-amu.fr",
     description = "Model-based stimulus synthesis of natural-like random textures for the study of motion perception.",
@@ -26,5 +25,9 @@ setup(
                    'Operating System :: POSIX',
                    'Topic :: Scientific/Engineering',
                    'Topic :: Utilities',
+                   'Programming Language :: Python :: 2',
+                   'Programming Language :: Python :: 2.7',
+                   'Programming Language :: Python :: 3',
+                   'Programming Language :: Python :: 3.4',
                   ],
      )

@@ -10,8 +10,8 @@ import MotionClouds as mc
 import numpy as np
 
 name = 'smooth'
-play = False
 play = True
+play = False
 
 #initialize
 fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, mc.N_frame)
@@ -23,7 +23,7 @@ seed = 123456
 B_sf_ = [0.025, 0.05, 0.1, 0.2, 0.4, 0.2, 0.1, 0.05]
 im = np.empty(shape=(mc.N_X, mc.N_Y, 0))
 name_ = mc.figpath + name + '-B_sf'
-if mc.anim_exist(name_) or play:
+if mc.check_if_anim_exist(name_) or play:
     for i_sf, B_sf in enumerate(B_sf_):
         im_new = mc.random_cloud(color * mc.envelope_gabor(fx, fy, ft, B_sf=B_sf), seed=seed)
         im = np.concatenate((im, im_new), axis=-1)
@@ -33,7 +33,7 @@ if mc.anim_exist(name_) or play:
     # mplayer figures/smooth-B_sf.mpg -fs -loop 0
 
 name_ += '_smooth'
-if mc.anim_exist(name_):
+if mc.check_if_anim_exist(name_):
     smooth = (ft - ft.min())/(ft.max() - ft.min()) # smoothly progress from 0. to 1.
     N = len(B_sf_)
     im =  np.empty(shape=(mc.N_X, mc.N_Y, 0))

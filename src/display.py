@@ -1,15 +1,15 @@
+#/usr/bin/env python
+# -*- coding: utf-8 -*-
+from __future__ import division, print_function, absolute_import
+__author__ = "Laurent Perrinet INT - CNRS"
 ########################## Display Tools #######################################
 # /usr/bin/env python
 # -*- coding: utf8 -*-
 
 import os
 import numpy as np
-from .param import *
-from .MotionClouds import *
 
 import pyprind as progressbar
-
-if not(os.path.isdir(figpath)): os.mkdir(figpath)
 
 def import_mayavi():
     """
@@ -44,7 +44,8 @@ def import_mayavi():
         return False # no need to import that again
 
 def visualize(z_in, azimuth=30., elevation=30.,
-    thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
+#     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
+    thresholds=[0.94, .89, .75], opacities=[.9, .8, .7],
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
     colorbar=False, f_N=2., f_tN=2., figsize=figsize):
     """
@@ -56,6 +57,7 @@ def visualize(z_in, azimuth=30., elevation=30.,
     z : envelope of the cloud
 
     """
+    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     z = z_in.copy()
     N_X, N_Y, N_frame = z.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
@@ -117,7 +119,7 @@ def visualize(z_in, azimuth=30., elevation=30.,
     else:
         from vispy import app, scene
         app.use_app('pyglet')
-        from vispy.util.transforms import perspective, translate, rotate
+        #from vispy.util.transforms import perspective, translate, rotate
         from vispy.color import Color
         import colorsys
         canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
@@ -150,15 +152,19 @@ def visualize(z_in, azimuth=30., elevation=30.,
 #             scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
 #             scpz.enable_contours = True
 
-        # Generate iso-surfaces at different energy levels
-        for threshold, opacity in zip(thresholds, opacities):
-            surface = scene.visuals.Isosurface(vol_data, level=threshold,
-                                        color=Color(np.array(colorsys.hsv_to_rgb(.1+threshold/1.5, 1., 1.)), alpha=opacity),
-                                        shading='smooth', parent=frame)
-            surface.transform = center
-
+#         # Generate iso-surfaces at different energy levels
+#         for threshold, opacity in zip(thresholds, opacities):
+# #             alpha = opacity
+#             alpha = threshold**2
+#             surface = scene.visuals.Isosurface(vol_data, level=threshold,
+#                                         color=Color(np.array(colorsys.hsv_to_rgb(.1+threshold/1.5, 1., 1.)), alpha=alpha),
+# #                                         shading='smooth',
+#                                         parent=frame)
+#             surface.transform = center
+#
         # Draw a sphere at the origin
         axis = scene.visuals.XYZAxis(parent=view.scene)
+
         if do_axis:
             t = {}
             for text in ['f_x', 'f_y', 'f_t']:
@@ -168,7 +174,7 @@ def visualize(z_in, azimuth=30., elevation=30.,
             t['f_y'].pos = canvas.size[0] - canvas.size[0] // 4, canvas.size[1] - canvas.size[1] // 8
             t['f_t'].pos = canvas.size[0] // 6, canvas.size[1] // 2
 
-        cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth)
+        cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth, up='z')
         cam.fov = 45
         cam.scale_factor = N_X * 2.
         cam.set_range((-N_X/2, N_X/2), (-N_Y/2, N_Y/2), (-N_frame/2, N_frame/2))
@@ -176,9 +182,11 @@ def visualize(z_in, azimuth=30., elevation=30.,
 
         if not(name is None):
             im = canvas.render(size=figsize)
+            app.quit()
             import vispy.io as io
             io.write_png(name + ext, im)
         else:
+            app.quit()
             return im
 
 def cube(im_in, azimuth=30., elevation=45., name=None,
@@ -191,6 +199,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     Visualization of the stimulus as a cube
 
     """
+    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
@@ -283,9 +292,11 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
         view.camera = cam
         if not(name is None):
             im = canvas.render(size=figsize)
+            app.quit()
             import vispy.io as io
             io.write_png(name + ext, im)
         else:
+            app.quit()
             return im
 def check_if_anim_exist(filename, vext=vext):
     """
@@ -547,7 +558,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True,
         if recompute or check_if_anim_exist(name, vext=vext):
             anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
 
-def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
+def in_show_video(name, loop=True, autoplay=True, controls=True, embed=False):
     """
 
     Columns represent isometric projections of a cube. The left column displays
@@ -572,7 +583,7 @@ def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
     if autoplay: opts += 'autoplay="1" '
     if controls: opts += 'controls '
     if embed:
-        if True:#  #nosmartindenti#  #nosmartindenttry:
+        try:
             with open(os.path.join(figpath, name + ext), "rb") as image_file:
                 im1 = b64encode(image_file.read()).decode("utf-8")
             with open(os.path.join(figpath, name + '_cube' + ext), "rb") as image_file:
@@ -591,7 +602,7 @@ def in_show_video(name, loop=True, autoplay=True, controls=True, embed=True):
             </tr>
             </table></center>""".format(im1, im3, opts, vext[1:], im2)
             display(HTML(s))
-    elif 0:#  #nosmartindentexcept:
+        except:
             video = open(os.path.join(figpath, name + vext), "rb").read()
             video_encoded = b64encode(video).decode("utf-8")
             s = """
