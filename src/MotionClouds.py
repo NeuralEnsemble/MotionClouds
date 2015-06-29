@@ -56,7 +56,7 @@ V_X = 1.
 V_Y = 0.
 B_V = .5
 theta = 0.
-B_theta = np.pi/32.
+B_theta = np.pi/16.
 loggabor = True
 
 recompute = False
@@ -122,8 +122,8 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
     Run 'test_radial.py' to see the explore the effect of sf_0 and B_sf
 
     """
-    if sf_0 == 0.: return 1.
-    if loggabor:
+    if sf_0 == 0. or B_sf==np.inf: return 1.
+    elif loggabor:
         # see http://en.wikipedia.org/wiki/Log-normal_distribution
         fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
         env = 1./fr*np.exp(-.5*(np.log(fr/sf_0)**2)/(np.log((sf_0+B_sf)/sf_0)**2))
