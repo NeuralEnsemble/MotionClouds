@@ -94,8 +94,38 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0):
         R2[N_X//2 , N_Y//2 , :] = np.inf
     else:
         R2 = fx**2 + fy**2 + (ft/ft_0)**2 # cf . Paul Schrater 00
-        R2[N_X//2 , N_Y//2 , N_frame//2 ] = np.inf
+        R2[N_X//2 , N_Y//2 , N_frame//2] = np.inf
     return np.sqrt(R2)
+
+def retina(fx, fy, ft, df=.07, sigma=.5):
+    """
+    A parametric description of the envelope of retinal processsing.
+    See http://blog.invibe.net/posts/2015-05-21-a-simple-pre-processing-filter-for-image-processing.html
+    for more information.
+
+    In digital images, some of the energy in Fourier space is concentrated outside the 
+    disk corresponding to the Nyquist frequency. Let's design a filter with:
+
+        - a sharp cut-off for radial frequencies higher than the Nyquist frequency,
+        - times a smooth but sharp transition (implemented with a decaying exponential),
+        - times a high-pass filter designed by one minus a gaussian blur.
+
+    This filter is rotation invariant.
+
+    Note that this filter is defined by two parameters:
+        - one for scaling the smoothness of the transition in the high-frequency range,
+        - one for the characteristic length of the high-pass filter.
+
+    The first is defined relative to the Nyquist frequency (in absolute values) while the second 
+    is relative to the size of the image in pixels and is given in number of pixels.
+    """
+    N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+    # removing high frequencies in the corners
+    fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
+    env = (1-np.exp((fr-.5)/(.5*df)))*(fr<.5)
+    # removing low frequencies
+    env *= 1-np.exp(-.5*(fr**2)/((sigma/N_X)**2))
+    return env
 
 def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     """
@@ -146,7 +176,11 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     Run 'test_speed.py' to explore the speed parameters
 
     """
-    env = np.exp(-.5*((ft+fx*V_X+fy*V_Y))**2/(B_V*frequency_radius(fx, fy, ft, ft_0=ft_0))**2)
+    if B_V==0:
+        env = np.zeros_like(fx)
+        env[:, :, N_frame//2] = 1
+    else:
+        env = np.exp(-.5*((ft+fx*V_X+fy*V_Y))**2/(B_V*frequency_radius(fx, fy, ft, ft_0=ft_0))**2)
     return env
 
 def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
@@ -178,6 +212,7 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
     envelope *= envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta)
     envelope *= envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor)
     envelope *= envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V)
+    envelope *= retina(fx, fy, ft)
     return envelope
 
 def random_cloud(envelope, seed=None, impulse=False, do_amp=False, threshold=1.e-3):
@@ -219,12 +254,6 @@ shape
     return z
 
 ########################## Display Tools #######################################
-# /usr/bin/env python
-# -*- coding: utf8 -*-
-
-import os
-import numpy as np
-
 import pyprind as progressbar
 
 def import_mayavi():
@@ -718,7 +747,7 @@ def play(z, T=5.):
 
 def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
     """
-    Transforms an image (can be 1,2 or 3D) with normal histogram into
+    Transforms an image (can be 1, 2 or 3D) with normal histogram into
     a 0.5 centered image of determined contrast
     method is either 'Michelson' or 'Energy'
 
