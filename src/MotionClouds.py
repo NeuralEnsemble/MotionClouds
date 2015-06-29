@@ -177,8 +177,9 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
 
     """
     if B_V==0:
+        N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
         env = np.zeros_like(fx)
-        env[:, :, N_frame//2] = 1
+        env[:, :, N_frame//2] = 1.
     else:
         env = np.exp(-.5*((ft+fx*V_X+fy*V_Y))**2/(B_V*frequency_radius(fx, fy, ft, ft_0=ft_0))**2)
     return env
@@ -191,12 +192,16 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
 
     Run 'test_orientation.py' to see the effect of changing theta and B_theta.
     """
-    if not(B_theta is np.inf):
+    if B_theta is np.inf:
+        envelope_dir = 1.
+    elif theta==0 and B_theta==0:
+        N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+        envelope_dir = np.zeros_like(fx)
+        envelope_dir[:, N_Y//2, :] = 1.
+    else: # for large bandwidth, returns a strictly flat envelope
         angle = np.arctan2(fy, fx)
         envelope_dir = np.exp(np.cos(2*(angle-theta))/B_theta)
-        return envelope_dir
-    else: # for large bandwidth, returns a strictly flat envelope
-        return 1.
+    return envelope_dir
 
 def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
@@ -212,10 +217,10 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
     envelope *= envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta)
     envelope *= envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor)
     envelope *= envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V)
-    envelope *= retina(fx, fy, ft)
+#     envelope *= retina(fx, fy, ft)
     return envelope
 
-def random_cloud(envelope, seed=None, impulse=False, do_amp=False, threshold=1.e-3):
+def random_cloud(envelope, seed=None, impulse=False, do_amp=False):
     """
     Returns a Motion Cloud movie as a 3D matrix from a given envelope.
 
@@ -249,7 +254,7 @@ shape
 
     # centering the spectrum
     Fz = np.fft.ifftshift(Fz)
-    Fz[0, 0, 0] = 0.
+    Fz[0, 0, 0] = 0. # removing the DC component
     z = np.fft.ifftn((Fz)).real
     return z
 
