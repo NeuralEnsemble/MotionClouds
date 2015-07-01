@@ -418,10 +418,10 @@ def visualize(z_in, azimuth=30., elevation=30.,
         for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
                   [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
                   [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
-            line = scene.visuals.Line(pos=np.array([[p[0]*N_Y/2, p[1]*N_X/2, p[2]*N_frame/2], [p[3]*N_Y/2, p[4]*N_X/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
+            line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_Y/2, p[2]*N_frame/2], [p[3]*N_X/2, p[4]*N_Y/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
 
-        axisX = scene.visuals.Line(pos=np.array([[0, -N_X/2, 0], [0, N_X/2, 0]]), color='red', parent=view.scene)
-        axisY = scene.visuals.Line(pos=np.array([[-N_Y/2, 0, 0], [N_Y/2, 0, 0]]), color='green', parent=view.scene)
+        axisX = scene.visuals.Line(pos=np.array([[0, -N_Y/2, 0], [0, N_Y/2, 0]]), color='red', parent=view.scene)
+        axisY = scene.visuals.Line(pos=np.array([[-N_X/2, 0, 0], [N_X/2, 0, 0]]), color='green', parent=view.scene)
         axisZ = scene.visuals.Line(pos=np.array([[0, 0, -N_frame/2], [0, 0, N_frame/2]]), color='blue', parent=view.scene)
 
         if do_axis:
@@ -519,7 +519,9 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
         for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
                   [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
                   [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
-            line = scene.visuals.Line(pos=np.array([[p[0]*N_Y/2, p[1]*N_X/2, p[2]*N_frame/2], [p[3]*N_Y/2, p[4]*N_X/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
+#             line = scene.visuals.Line(pos=np.array([[p[0]*N_Y/2, p[1]*N_X/2, p[2]*N_frame/2], [p[3]*N_Y/2, p[4]*N_X/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
+            line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_frame/2, p[2]*N_Y/2], 
+                                                    [p[3]*N_X/2, p[4]*N_frame/2, p[5]*N_Y/2]]), color='black', parent=view.scene)
 
         opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
         image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
@@ -547,7 +549,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
                 t[text].font_size = 8
             t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
             t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
-            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 2
+            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 3
 
         cam = scene.TurntableCamera(elevation=35, azimuth=30)
         cam.fov = 45
