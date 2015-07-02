@@ -783,8 +783,8 @@ def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
     return z
 
 def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
-                    B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
-                    theta=theta, B_theta=B_theta, alpha=alpha, vext=vext, recompute=False,
+                    B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
+                    theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
                     seed=None, impulse=False, do_amp=False, verbose=False):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
@@ -796,10 +796,10 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
     z = envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)
-    figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie,
+    figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie, recompute=recompute,
                     seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
 
-def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True,
+def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
