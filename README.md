@@ -167,6 +167,13 @@ brew cleanup
 python -c 'import MotionClouds as mc; fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, mc.N_frame); z = mc.envelope_gabor(fx, fy, ft); mc.figures(z, "test")'
 
 ````
+
+* to install the latest version, use:
+````
+pip install git+https://github.com/NeuralEnsemble/MotionClouds.git
+````
+
+
 * for more documentation, visit the MotionClouds website:
 http://motionclouds.invibe.net/
 
