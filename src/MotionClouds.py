@@ -200,7 +200,7 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
         envelope_dir[:, N_Y//2, :] = 1.
     else: # for large bandwidth, returns a strictly flat envelope
         angle = np.arctan2(fy, fx)
-        envelope_dir = np.exp(np.cos(2*(angle-theta))/B_theta) # use B_theta**2 to have a bandwidth in radians?
+        envelope_dir = np.exp(np.cos(2*(angle-theta))/4/B_theta**2)
     return envelope_dir
 
 def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
