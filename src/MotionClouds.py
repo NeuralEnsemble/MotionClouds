@@ -189,8 +189,11 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
 def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     """
     Returns the orientation envelope:
-    selects one central orientation theta, B_theta the spread
-    We use a von-Mises distribution on the orientation.
+    We use a von-Mises distribution on the orientation:
+    - mean orientation is ``theta`` (in radians),
+    - ``B_theta`` is the bandwidth (in radians). It is equal to the standard deviation of the Gaussian 
+    envelope which approximate the distribution for low bandwidths. The Half-Width at Half Height is
+    given by approximately np.sqrt(2*B_theta_**2*np.log(2)).
 
     Run 'testing-grating.py' notebook to see the effect of changing theta and B_theta, see
     http://motionclouds.invibe.net/posts/testing-grating.html
