@@ -55,7 +55,6 @@ pypi_docs:
 	open https://pypi.python.org/pypi?action=pkg_edit&name=$NAME
 
 clean:
-	touch *py
-	rm -f results/* *.pyc
+	rm -fr build dist results/* *.pyc **/*.pyc ./MotionClouds.egg-info ./src/MotionClouds.egg-info
 
 
