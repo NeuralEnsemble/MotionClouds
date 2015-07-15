@@ -130,30 +130,43 @@ def retina(fx, fy, ft, df=.07, sigma=.5):
 def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     """
     Returns the color envelope.
-    Run 'test_color.py' to see the effect of alpha
+
+    In some circonstances, it is desirable to create a texture with a different "color"
+    than that of natural images (that is where the envelope is in 1/f).
+
+    Run 'test_color' notebook to see the effect of alpha
     alpha = 0 white
     alpha = 1 pink
     alpha = 2 red/brownian
     (see http://en.wikipedia.org/wiki/1/f_noise )
     """
-    N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
-    f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0)**alpha
-    if ft_0==np.inf:
-        f_radius[N_X//2 , N_Y//2 , : ] = np.inf
+    if alpha == 0.0:
+        return 1
     else:
-        f_radius[N_X//2 , N_Y//2 , N_frame//2 ] = np.inf
-    return 1. / f_radius
+        N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0)**alpha
+        if ft_0==np.inf:
+            f_radius[N_X//2 , N_Y//2 , : ] = np.inf
+        else:
+            f_radius[N_X//2 , N_Y//2 , N_frame//2 ] = np.inf
+        return 1. / f_radius
 
 def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggabor):
     """
     Returns the radial frequency envelope:
 
-    selects a sphere around a preferred frequency with a shell width B_sf.
-    Run the 'test_radial' notebook to see the explore the effect of sf_0 and B_sf, see
+    Selects a preferred spatial frequency ``sf_0`` and a bandwidth ``B_sf``.
+
+    Run the 'test_radial' notebook to see the explore the effect of ``sf_0`` and ``B_sf``, see
     http://motionclouds.invibe.net/posts/testing-radial.html
 
     """
-    if sf_0 == 0. or B_sf==np.inf: return 1.
+    if sf_0 == 0. or B_sf==np.inf:
+        if loggabor:
+            fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
+            return 1./fr
+        else:
+            return 1.
     elif loggabor:
         # see http://en.wikipedia.org/wiki/Log-normal_distribution
         fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
@@ -165,7 +178,7 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
 def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     """
     Returns the speed envelope:
-    selects the plane corresponding to the speed (V_X, V_Y) with some thickness B_V
+    selects the plane corresponding to the speed ``(V_X, V_Y)`` with some bandwidth ``B_V``.
 
     * (V_X, V_Y) = (0,1) is downward and  (V_X, V_Y) = (1, 0) is rightward in the movie.
     * A speed of V_X=1 corresponds to an average displacement of 1/N_X per frame.
