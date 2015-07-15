@@ -149,7 +149,8 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
     Returns the radial frequency envelope:
 
     selects a sphere around a preferred frequency with a shell width B_sf.
-    Run 'test_radial.py' to see the explore the effect of sf_0 and B_sf
+    Run the 'test_radial' notebook to see the explore the effect of sf_0 and B_sf, see
+    http://motionclouds.invibe.net/posts/testing-radial.html
 
     """
     if sf_0 == 0. or B_sf==np.inf: return 1.
@@ -173,7 +174,8 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     If N_X=N_Y=N_frame and V=1, then it is one spatial period in one temporal
     period. It can be seen along the diagonal in the fx-ft face of the MC cube.
 
-    Run 'test_speed.py' to explore the speed parameters
+    Run the 'test_speed' notebook to explore the speed parameters, see
+    http://motionclouds.invibe.net/posts/testing-speed.html
 
     """
     if B_V==0:
@@ -190,7 +192,9 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     selects one central orientation theta, B_theta the spread
     We use a von-Mises distribution on the orientation.
 
-    Run 'test_orientation.py' to see the effect of changing theta and B_theta.
+    Run 'testing-grating.py' notebook to see the effect of changing theta and B_theta, see
+    http://motionclouds.invibe.net/posts/testing-grating.html
+
     """
     if B_theta is np.inf:
         envelope_dir = 1.
