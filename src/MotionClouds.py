@@ -596,7 +596,7 @@ def check_if_anim_exist(filename, vext=vext):
     return not(os.path.isfile(os.path.join(figpath, filename + vext)))
 
 def anim_save(z, filename, display=True, vext=vext,
-              centered=False, T_movie=T_movie, verbose=True):
+              T_movie=T_movie, verbose=True):
     """
     Saves a numpy 3D matrix (x-y-t) to a multimedia file.
 
