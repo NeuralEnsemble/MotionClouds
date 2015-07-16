@@ -622,10 +622,11 @@ def anim_save(z, filename, display=True, vext=vext,
         print('Saving sequence ' + filename + vext)
         for frame in range(N_frame):
             if PROGRESS: pbar.update()
-            fname = os.path.join(tmpdir, 'frame%03d.png' % frame)
+            fname = 'frame%03d.png' % frame
+            full_fname = os.path.join(tmpdir, fname)
             image = np.rot90(z[..., frame])
             toimage(image, high=255, low=0, cmin=0., cmax=1., pal=None,
-                    mode=None, channel_axis=None).save(fname)
+                    mode=None, channel_axis=None).save(full_fname)
             files.append(fname)
 
         if PROGRESS: print(pbar)
@@ -636,7 +637,7 @@ def anim_save(z, filename, display=True, vext=vext,
         Remove frames from the temp folder
 
         """
-        for fname in files: os.remove(fname)
+        for fname in files: os.remove(os.path.join(tmpdir, fname))
         if not(tmpdir == None): os.rmdir(tmpdir)
 
     if verbose:
@@ -704,21 +705,21 @@ def anim_save(z, filename, display=True, vext=vext,
         do_bmp = False # I was asked at some point to generate bmp files - it is highly unlikely to happen again...
         tmpdir, files = make_frames(z)
         import zipfile
-        zf = zipfile.ZipFile(filename + vext, "w")
-        if do_bmp:
-            # convert to BMP for optical imaging
-            files_bmp = []
-            for fname in files:
-                fname_bmp = os.path.splitext(fname)[0] + '.bmp'
-                # print fname_bmp
-                os.system('convert ' + fname + ' ppm:- | convert -size 256x256+0 -colors 256 -colorspace Gray - BMP2:' + fname_bmp) # to generate 8-bit bmp (old format)
-                files_bmp.append(fname_bmp)
-                zf.write(fname_bmp)
-            remove_frames(tmpdir=None, files=files_bmp)
-        else:
-            for fname in files:
-                zf.write(fname)
-        zf.close()
+        with zipfile.ZipFile(filename + vext, "w") as zf:
+            if do_bmp:
+                # convert to BMP for optical imaging
+                files_bmp = []
+                for fname in files:
+                    fname_bmp = os.path.splitext(fname)[0] + '.bmp'
+                    # print fname_bmp
+                    os.system('convert ' + fname + ' ppm:- | convert -size 256x256+0 -colors 256 -colorspace Gray - BMP2:' + fname_bmp) # to generate 8-bit bmp (old format)
+                    files_bmp.append(fname_bmp)
+                    zf.write(fname_bmp)
+                remove_frames(tmpdir=None, files=files_bmp)
+            else:
+                for fname in files:
+                    full_fname = os.path.join(tmpdir, fname)
+                    zf.write(full_fname, arcname=fname)
         remove_frames(tmpdir, files)
 
     elif vext == '.mat':
