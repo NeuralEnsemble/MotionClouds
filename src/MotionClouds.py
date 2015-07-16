@@ -698,20 +698,24 @@ def anim_save(z, filename, display=True, vext=vext,
         toimage(np.flipud(z[:, :, 0]).T, high=255, low=0, cmin=0., cmax=1., pal=None, mode=None, channel_axis=None).save(filename + vext)
 
     elif vext == '.zip':
-        # TODO : give the possiblity to specify the format of files inside the zip
+        do_bmp = False # I was asked at some point to generate bmp files - it is highly unlikely to happen again...
         tmpdir, files = make_frames(z)
         import zipfile
         zf = zipfile.ZipFile(filename + vext, "w")
-        # convert to BMP for optical imaging
-        files_bmp = []
-        for fname in files:
-            fname_bmp = os.path.splitext(fname)[0] + '.bmp'
-            # print fname_bmp
-            os.system('convert ' + fname + ' ppm:- | convert -size 256x256+0 -colors 256 -colorspace Gray - BMP2:' + fname_bmp) # to generate 8-bit bmp (old format)
-            files_bmp.append(fname_bmp)
-            zf.write(fname_bmp)
+        if do_bmp:
+            # convert to BMP for optical imaging
+            files_bmp = []
+            for fname in files:
+                fname_bmp = os.path.splitext(fname)[0] + '.bmp'
+                # print fname_bmp
+                os.system('convert ' + fname + ' ppm:- | convert -size 256x256+0 -colors 256 -colorspace Gray - BMP2:' + fname_bmp) # to generate 8-bit bmp (old format)
+                files_bmp.append(fname_bmp)
+                zf.write(fname_bmp)
+            remove_frames(tmpdir=None, files=files_bmp)
+        else:
+            for fname in files:
+                zf.write(fname)
         zf.close()
-        remove_frames(tmpdir=None, files=files_bmp)
         remove_frames(tmpdir, files)
 
     elif vext == '.mat':
