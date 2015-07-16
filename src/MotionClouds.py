@@ -59,6 +59,9 @@ theta = 0.
 B_theta = np.pi/16.
 loggabor = True
 
+contrast = 1.
+method = 'Michelson'
+
 recompute = False
 notebook = False
 figpath = '../files/'
@@ -776,7 +779,7 @@ def play(z, T=5.):
         fig.redraw()
     glumpy.show()
 
-def rectif(z_in, contrast=.9, method='Michelson', verbose=False):
+def rectif(z_in, contrast=contrast, method=method, verbose=False):
     """
     Transforms an image (can be 1, 2 or 3D) with normal histogram into
     a 0.5 centered image of determined contrast
