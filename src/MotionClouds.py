@@ -853,7 +853,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
         if recompute or check_if_anim_exist(name, vext=vext):
             anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
 
-def in_show_video(name, loop=True, autoplay=True, controls=True, embed=False):
+def in_show_video(name, figpath=figpath, vext=vext, loop=True, autoplay=True, controls=True, embed=False):
     """
 
     Columns represent isometric projections of a cube. The left column displays
