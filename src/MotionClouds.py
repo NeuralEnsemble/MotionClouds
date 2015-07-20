@@ -50,7 +50,7 @@ N_frame = 2**size_T
 # default parameters for the "standard Motion Cloud"
 alpha = 0.0
 ft_0 = np.inf
-sf_0 = 0.15
+sf_0 = 0.125
 B_sf = 0.1
 V_X = 1.
 V_Y = 0.
