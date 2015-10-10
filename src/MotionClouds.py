@@ -68,7 +68,7 @@ figpath = '../files/'
 
 vext = '.webm'
 ext = '.png'
-T_movie = N_frame/101010101010101010100. # this value defines the duration in seconds of a temporal period (100Hz)
+T_movie = N_frame/100. # this value defines the duration in seconds of a temporal period (100Hz)
 SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat']#, '.mkv']
 
 # MAYAVI = 'Import' # uncomment to use the (old) mayavi backend
