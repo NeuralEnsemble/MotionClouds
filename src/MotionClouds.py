@@ -532,7 +532,6 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
         from vispy import app, scene
         app.use_app('pyglet')
         from vispy.util.transforms import perspective, translate, rotate
-
         canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
         view = canvas.central_widget.add_view()
 
@@ -548,19 +547,19 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
 
         opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
         image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
-        tr_xy = scene.transforms.AffineTransform()
+        tr_xy = scene.transforms.MatrixTransform()
         tr_xy.rotate(90, (1, 0, 0))
         tr_xy.translate((-N_X/2, -N_frame/2, -N_Y/2))
         image_xy.transform = tr_xy
 
         image_xt = scene.visuals.Image(np.fliplr(im[:, -1, :]), **opts)
-        tr_xt = scene.transforms.AffineTransform()
+        tr_xt = scene.transforms.MatrixTransform()
         tr_xt.rotate(90, (0, 0, 1))
         tr_xt.translate((N_X/2, -N_frame/2, N_Y/2))
         image_xt.transform = tr_xt
 
         image_yt = scene.visuals.Image(np.rot90(im[-1, :, :], 1), **opts)
-        tr_yt = scene.transforms.AffineTransform()
+        tr_yt = scene.transforms.MatrixTransform()
         tr_yt.rotate(90, (0, 1, 0))
         tr_yt.translate((+N_X/2, -N_frame/2, N_Y/2))
         image_yt.transform = tr_yt
@@ -572,7 +571,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
                 t[text].font_size = 8
             t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
             t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
-            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 3
+            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 4
 
         cam = scene.TurntableCamera(elevation=35, azimuth=30)
         cam.fov = 45
