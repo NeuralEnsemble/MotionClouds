@@ -317,8 +317,9 @@ def import_mayavi():
         return False # no need to import that again
 
 def visualize(z_in, azimuth=30., elevation=30.,
-#     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
-    thresholds=[0.94, .89, .75], opacities=[.9, .8, .7],
+    thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
+#     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
+#     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
     colorbar=False, f_N=2., f_tN=2., figsize=figsize):
     """
@@ -395,7 +396,7 @@ def visualize(z_in, azimuth=30., elevation=30.,
         #from vispy.util.transforms import perspective, translate, rotate
         from vispy.color import Color
         transparent = Color(color='black', alpha=0.)
-#         import colorsys
+        import colorsys
         canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
         view = canvas.central_widget.add_view()
 
@@ -404,10 +405,10 @@ def visualize(z_in, azimuth=30., elevation=30.,
 #                                         parent=view.scene)
 
         vol_data = np.rollaxis(np.rollaxis(z, 1), 2)
-        volume = scene.visuals.Volume(vol_data, parent=view.scene)#frame)
+#         volume = scene.visuals.Volume(vol_data, parent=view.scene)#frame)
         center = scene.transforms.STTransform(translate=( -N_X/2, -N_Y/2, -N_frame/2))
-        volume.transform = center
-        volume.cmap = 'blues'
+#         volume.transform = center
+#         volume.cmap = 'blues'
 
 #         if draw_projections:
 #             src_x = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.sum(z, axis=0), (N_X, 1, 1)))
@@ -426,16 +427,16 @@ def visualize(z_in, azimuth=30., elevation=30.,
 #             scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
 #             scpz.enable_contours = True
 
-#         # Generate iso-surfaces at different energy levels
-#         for threshold, opacity in zip(thresholds, opacities):
-# #             alpha = opacity
-#             alpha = threshold**2
-#             surface = scene.visuals.Isosurface(vol_data, level=threshold,
-#                                         color=Color(np.array(colorsys.hsv_to_rgb(.1+threshold/1.5, 1., 1.)), alpha=alpha),
-# #                                         shading='smooth',
-#                                         parent=frame)
-#             surface.transform = center
-#
+        # Generate iso-surfaces at different energy levels
+
+        surfaces = []
+        for threshold, opacity in zip(thresholds, opacities):
+            surfaces.append(scene.visuals.Isosurface(z, level=threshold, 
+                                        color=Color(np.array(colorsys.hsv_to_rgb(.25+threshold/2., 1., 1.)), alpha=opacity),
+                                        shading='smooth', parent=view.scene)
+                                                    )
+            surfaces[-1].transform = center
+
         # Draw a sphere at the origin
         axis = scene.visuals.XYZAxis(parent=view.scene)
         for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
@@ -457,7 +458,7 @@ def visualize(z_in, azimuth=30., elevation=30.,
             t['f_t'].pos = canvas.size[0] // 8, canvas.size[1] // 2
 
         cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth, up='z')
-        cam.fov = 45
+        cam.fov = 48
         cam.scale_factor = N_X * 1.8
         if do_axis: margin = 1.3
         else: margin = 1
