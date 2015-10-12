@@ -400,32 +400,33 @@ def visualize(z_in, azimuth=30., elevation=30.,
         canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
         view = canvas.central_widget.add_view()
 
-#         frame = scene.visuals.Cube(size=(N_Y/2, N_X/2, N_frame/2), color=transparent,
-#                                         edge_color=(0., 0., 0., 1.),
-#                                         parent=view.scene)
-
         vol_data = np.rollaxis(np.rollaxis(z, 1), 2)
 #         volume = scene.visuals.Volume(vol_data, parent=view.scene)#frame)
         center = scene.transforms.STTransform(translate=( -N_X/2, -N_Y/2, -N_frame/2))
 #         volume.transform = center
 #         volume.cmap = 'blues'
 
-#         if draw_projections:
-#             src_x = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.sum(z, axis=0), (N_X, 1, 1)))
-#             src_y = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=1), (N_X, 1, N_frame)), (1, N_Y, 1)))
-#             src_z = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=2), (N_X, N_Y, 1)), (1, 1, N_frame)))
-#
-#             # Create projections
-#             border = 0.47
-#             scpx = mlab.pipeline.scalar_cut_plane(src_x, plane_orientation='x_axes', view_controls=False)
-#             scpx.implicit_plane.plane.origin = [-border, 1/N_Y, 1/N_frame]
-#             scpx.enable_contours = True
-#             scpy = mlab.pipeline.scalar_cut_plane(src_y, plane_orientation='y_axes', view_controls=False)
-#             scpy.implicit_plane.plane.origin = [1/N_X, border, 1/N_frame]
-#             scpy.enable_contours = True
-#             scpz = mlab.pipeline.scalar_cut_plane(src_z, plane_orientation='z_axes', view_controls=False)
-#             scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
-#             scpz.enable_contours = True
+        if draw_projections:
+            energy_xy = np.rot90(np.sum(z, axis=2)[:, ::-1], 3)#
+            fourier_xy = scene.visuals.Image(np.rot90(1-energy_xy), parent=view.scene, cmap='grays', clim=(1.-energy_xy.max(), 1))
+            tr_xy = scene.transforms.MatrixTransform()
+            tr_xy.rotate(90, (0, 0, 1))
+            tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
+            fourier_xy.transform = tr_xy
+
+            energy_xt = np.rot90(np.sum(z, axis=1)[:, ::-1], 3)
+            fourier_xt = scene.visuals.Image(1-energy_xt, parent=view.scene, cmap='grays', clim=(1.-energy_xt.max(), 1.))
+            tr_xt = scene.transforms.MatrixTransform()
+            tr_xt.rotate(90, (1, 0, 0))
+            tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
+            fourier_xt.transform = tr_xt
+
+            energy_yt = np.sum(z, axis=0)[:, ::-1]
+            fourier_yt = scene.visuals.Image(1-energy_yt, parent=view.scene, cmap='grays', clim=(1.- energy_yt.max(), 1.))
+            tr_yt = scene.transforms.MatrixTransform()
+            tr_yt.rotate(90, (0, 1, 0))
+            tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
+            fourier_yt.transform = tr_yt
 
         # Generate iso-surfaces at different energy levels
 
