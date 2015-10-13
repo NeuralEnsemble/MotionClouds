@@ -144,7 +144,7 @@ def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     (see http://en.wikipedia.org/wiki/1/f_noise )
     """
     if alpha == 0.0:
-        return 1
+        return 1 #np.ones_like(fx)
     else:
         N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
         f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0)**alpha
@@ -316,7 +316,7 @@ def import_mayavi():
         MAYAVI = 'We have chosen not to import Mayavi'
         return False # no need to import that again
 
-def visualize(z_in, azimuth=30., elevation=30.,
+def visualize(z_in, azimuth=35., elevation=30.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
@@ -407,22 +407,26 @@ def visualize(z_in, azimuth=30., elevation=30.,
 #         volume.cmap = 'blues'
 
         if draw_projections:
-            energy_xy = np.rot90(np.sum(z, axis=2)[:, ::-1], 3)#
-            fourier_xy = scene.visuals.Image(np.rot90(1-energy_xy), parent=view.scene, cmap='grays', clim=(1.-energy_xy.max(), 1))
+            from vispy.color import Colormap
+            cm = Colormap([(1.0, 1.0, 1.0, 1.0), 'k'])
+            opts = {'parent':view.scene, 'cmap':cm, 'clim':(0., 1.)}
+
+            energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
+            fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# clim=(1.-energy_xy.max(), 1))
             tr_xy = scene.transforms.MatrixTransform()
             tr_xy.rotate(90, (0, 0, 1))
             tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
             fourier_xy.transform = tr_xy
 
-            energy_xt = np.rot90(np.sum(z, axis=1)[:, ::-1], 3)
-            fourier_xt = scene.visuals.Image(1-energy_xt, parent=view.scene, cmap='grays', clim=(1.-energy_xt.max(), 1.))
+            energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
+            fourier_xt = scene.visuals.Image(energy_xt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.-energy_xt.max(), 1.))
             tr_xt = scene.transforms.MatrixTransform()
             tr_xt.rotate(90, (1, 0, 0))
             tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
             fourier_xt.transform = tr_xt
 
-            energy_yt = np.sum(z, axis=0)[:, ::-1]
-            fourier_yt = scene.visuals.Image(1-energy_yt, parent=view.scene, cmap='grays', clim=(1.- energy_yt.max(), 1.))
+            energy_yt = np.max(z, axis=0)[:, ::-1]
+            fourier_yt = scene.visuals.Image(energy_yt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.- energy_yt.max(), 1.))
             tr_yt = scene.transforms.MatrixTransform()
             tr_yt.rotate(90, (0, 1, 0))
             tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
@@ -431,9 +435,10 @@ def visualize(z_in, azimuth=30., elevation=30.,
         # Generate iso-surfaces at different energy levels
 
         surfaces = []
-        for threshold, opacity in zip(thresholds, opacities):
+        for i_, (threshold, opacity) in enumerate(zip(thresholds, opacities)):
             surfaces.append(scene.visuals.Isosurface(z, level=threshold, 
-                                        color=Color(np.array(colorsys.hsv_to_rgb(.25+threshold/2., 1., 1.)), alpha=opacity),
+#                                         color=Color(np.array(colorsys.hsv_to_rgb(1.*i_/len(thresholds), 1., 1.)), alpha=opacity),
+                                        color=Color(np.array(colorsys.hsv_to_rgb(.66, 1., 1.)), alpha=opacity),
                                         shading='smooth', parent=view.scene)
                                                     )
             surfaces[-1].transform = center
@@ -573,7 +578,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
                 t[text].font_size = 8
             t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
             t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
-            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 4
+            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 2
 
         cam = scene.TurntableCamera(elevation=35, azimuth=30)
         cam.fov = 45
