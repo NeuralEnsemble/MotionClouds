@@ -280,8 +280,7 @@ shape
 
 ########################## Display Tools #######################################
 import pyprind as progressbar
-
-def visualize(z_in, azimuth=35., elevation=30.,
+def visualize(z_in, azimuth=25., elevation=30.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
@@ -325,28 +324,27 @@ def visualize(z_in, azimuth=35., elevation=30.,
         opts = {'parent':view.scene, 'cmap':cm, 'clim':(0., 1.)}
 
         energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
-        fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# clim=(1.-energy_xy.max(), 1))
+        fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)
         tr_xy = scene.transforms.MatrixTransform()
         tr_xy.rotate(90, (0, 0, 1))
         tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
         fourier_xy.transform = tr_xy
 
         energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
-        fourier_xt = scene.visuals.Image(energy_xt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.-energy_xt.max(), 1.))
+        fourier_xt = scene.visuals.Image(energy_xt, **opts)
         tr_xt = scene.transforms.MatrixTransform()
         tr_xt.rotate(90, (1, 0, 0))
         tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
         fourier_xt.transform = tr_xt
 
         energy_yt = np.max(z, axis=0)[:, ::-1]
-        fourier_yt = scene.visuals.Image(energy_yt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.- energy_yt.max(), 1.))
+        fourier_yt = scene.visuals.Image(energy_yt, **opts)
         tr_yt = scene.transforms.MatrixTransform()
         tr_yt.rotate(90, (0, 1, 0))
         tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
         fourier_yt.transform = tr_yt
 
     # Generate iso-surfaces at different energy levels
-
     surfaces = []
     for i_, (threshold, opacity) in enumerate(zip(thresholds, opacities)):
         surfaces.append(scene.visuals.Isosurface(z, level=threshold, 
@@ -379,7 +377,7 @@ def visualize(z_in, azimuth=35., elevation=30.,
     cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth, up='z')
     cam.fov = 48
     cam.scale_factor = N_X * 1.8
-    if do_axis: margin = 1.3
+    if do_axis: margin = 1.35
     else: margin = 1
     cam.set_range((-N_X/2*margin, N_X/2/margin), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2*margin, N_frame/2/margin))
     view.camera = cam
