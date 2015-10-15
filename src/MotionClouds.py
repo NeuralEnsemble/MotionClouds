@@ -71,9 +71,6 @@ ext = '.png'
 T_movie = N_frame/100. # this value defines the duration in seconds of a temporal period (assuming a 100Hz refresh rate)
 SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat']#, '.mkv']
 
-# MAYAVI = 'Import' # uncomment to use the (old) mayavi backend
-MAYAVI = 'Avoid' # uncomment to avoid importing mayavi
-
 def get_grids(N_X, N_Y, N_frame):
     """
         Use that function to define a reference outline for envelopes in Fourier space.
@@ -284,38 +281,6 @@ shape
 ########################## Display Tools #######################################
 import pyprind as progressbar
 
-def import_mayavi():
-    """
-    Mayavi is difficult to compile on some architectures (think Win / Mac Os), so we
-    allowed the possibility of an ``ImportError`` or even to avoid importing it
-    at all by setting the ``MAAYAVI`` string to ``Avoid``.
-
-    """
-    global MAYAVI, mlab
-    if (MAYAVI == 'Import'):
-        try:
-            from mayavi import mlab
-            MAYAVI = 'Ok : New and shiny'
-            print('Imported Mayavi')
-        except:
-            try:
-                from enthought.mayavi import mlab
-                print('Seems you have an old implementation of MayaVi, but things should work')
-                MAYAVI = 'Ok but old'
-                print('Imported Mayavi')
-            except:
-               print('Could not import Mayavi')
-               MAYAVI = 'Could not import Mayavi'
-        if 'Imported' in MAYAVI:
-            os.environ['ETS_TOOLKIT'] = 'qt4' # Works in Mac
-#             os.environ['ETS_TOOLKIT'] = 'wx' # Works in Debian
-        return True
-    elif (MAYAVI == 'Could not import Mayavi') or (MAYAVI == 'Ok : New and shiny') or (MAYAVI == 'Ok but old'):
-        return False # no need to import that again
-    else:
-        MAYAVI = 'We have chosen not to import Mayavi'
-        return False # no need to import that again
-
 def visualize(z_in, azimuth=35., elevation=30.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
@@ -338,150 +303,98 @@ def visualize(z_in, azimuth=35., elevation=30.,
 
     # Normalize the amplitude.
     z /= z.max()
-    if import_mayavi():
 
-        mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0, 0, 0), size=figsize)
-        mlab.clf()
+    from vispy import app, scene
+    app.use_app('pyglet')
+    #from vispy.util.transforms import perspective, translate, rotate
+    from vispy.color import Color
+    transparent = Color(color='black', alpha=0.)
+    import colorsys
+    canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
+    view = canvas.central_widget.add_view()
 
-        # Create scalar field
-        src = mlab.pipeline.scalar_field(fx, fy, ft, z)
-        if draw_projections:
-            src_x = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.sum(z, axis=0), (N_X, 1, 1)))
-            src_y = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=1), (N_X, 1, N_frame)), (1, N_Y, 1)))
-            src_z = mlab.pipeline.scalar_field(fx, fy, ft, np.tile(np.reshape(np.sum(z, axis=2), (N_X, N_Y, 1)), (1, 1, N_frame)))
-
-            # Create projections
-            border = 0.47
-            scpx = mlab.pipeline.scalar_cut_plane(src_x, plane_orientation='x_axes', view_controls=False)
-            scpx.implicit_plane.plane.origin = [-border, 1/N_Y, 1/N_frame]
-            scpx.enable_contours = True
-            scpy = mlab.pipeline.scalar_cut_plane(src_y, plane_orientation='y_axes', view_controls=False)
-            scpy.implicit_plane.plane.origin = [1/N_X, border, 1/N_frame]
-            scpy.enable_contours = True
-            scpz = mlab.pipeline.scalar_cut_plane(src_z, plane_orientation='z_axes', view_controls=False)
-            scpz.implicit_plane.plane.origin = [1/N_X, 1/N_Y, -border]
-            scpz.enable_contours = True
-
-        # Generate iso-surfaces at different energy levels
-        for threshold, opacity in zip(thresholds, opacities):
-            mlab.pipeline.iso_surface(src, contours=[z.max()-threshold*z.ptp(), ], opacity=opacity)
-            mlab.outline(extent=[-1./2, 1./2, -1./2, 1./2, -1./2, 1./2],)
-
-        # Draw a sphere at the origin
-        x = np.array([0])
-        y = np.array([0])
-        z = np.array([0])
-        s = 0.01
-        mlab.points3d(x, y, z, extent=[-s, s, -s, s, -s, s], scale_factor=0.15)
-
-        if colorbar: mlab.colorbar(title='density', orientation='horizontal')
-        if do_axis:
-            ax = mlab.axes(xlabel='fx', ylabel='fy', zlabel='ft',)
-            ax.axes.set(font_factor=2.)
-
-        try:
-            mlab.view(azimuth=azimuth, elevation=elevation, distance='auto', focalpoint='auto')
-        except:
-            print(" You should upgrade your mayavi version")
-
-        if not(name is None):
-            mlab.savefig(name + ext, magnification='auto', size=figsize)
-        else:
-            mlab.show(stop=True)
-
-        mlab.close(all=True)
-    else:
-        from vispy import app, scene
-        app.use_app('pyglet')
-        #from vispy.util.transforms import perspective, translate, rotate
-        from vispy.color import Color
-        transparent = Color(color='black', alpha=0.)
-        import colorsys
-        canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
-        view = canvas.central_widget.add_view()
-
-        vol_data = np.rollaxis(np.rollaxis(z, 1), 2)
+    vol_data = np.rollaxis(np.rollaxis(z, 1), 2)
 #         volume = scene.visuals.Volume(vol_data, parent=view.scene)#frame)
-        center = scene.transforms.STTransform(translate=( -N_X/2, -N_Y/2, -N_frame/2))
+    center = scene.transforms.STTransform(translate=( -N_X/2, -N_Y/2, -N_frame/2))
 #         volume.transform = center
 #         volume.cmap = 'blues'
 
-        if draw_projections:
-            from vispy.color import Colormap
-            cm = Colormap([(1.0, 1.0, 1.0, 1.0), 'k'])
-            opts = {'parent':view.scene, 'cmap':cm, 'clim':(0., 1.)}
+    if draw_projections:
+        from vispy.color import Colormap
+        cm = Colormap([(1.0, 1.0, 1.0, 1.0), 'k'])
+        opts = {'parent':view.scene, 'cmap':cm, 'clim':(0., 1.)}
 
-            energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
-            fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# clim=(1.-energy_xy.max(), 1))
-            tr_xy = scene.transforms.MatrixTransform()
-            tr_xy.rotate(90, (0, 0, 1))
-            tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
-            fourier_xy.transform = tr_xy
+        energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
+        fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# clim=(1.-energy_xy.max(), 1))
+        tr_xy = scene.transforms.MatrixTransform()
+        tr_xy.rotate(90, (0, 0, 1))
+        tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
+        fourier_xy.transform = tr_xy
 
-            energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
-            fourier_xt = scene.visuals.Image(energy_xt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.-energy_xt.max(), 1.))
-            tr_xt = scene.transforms.MatrixTransform()
-            tr_xt.rotate(90, (1, 0, 0))
-            tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
-            fourier_xt.transform = tr_xt
+        energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
+        fourier_xt = scene.visuals.Image(energy_xt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.-energy_xt.max(), 1.))
+        tr_xt = scene.transforms.MatrixTransform()
+        tr_xt.rotate(90, (1, 0, 0))
+        tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
+        fourier_xt.transform = tr_xt
 
-            energy_yt = np.max(z, axis=0)[:, ::-1]
-            fourier_yt = scene.visuals.Image(energy_yt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.- energy_yt.max(), 1.))
-            tr_yt = scene.transforms.MatrixTransform()
-            tr_yt.rotate(90, (0, 1, 0))
-            tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
-            fourier_yt.transform = tr_yt
+        energy_yt = np.max(z, axis=0)[:, ::-1]
+        fourier_yt = scene.visuals.Image(energy_yt, **opts)#, parent=view.scene, cmap='grays', clim=(0, 1))# , clim=(1.- energy_yt.max(), 1.))
+        tr_yt = scene.transforms.MatrixTransform()
+        tr_yt.rotate(90, (0, 1, 0))
+        tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
+        fourier_yt.transform = tr_yt
 
-        # Generate iso-surfaces at different energy levels
+    # Generate iso-surfaces at different energy levels
 
-        surfaces = []
-        for i_, (threshold, opacity) in enumerate(zip(thresholds, opacities)):
-            surfaces.append(scene.visuals.Isosurface(z, level=threshold, 
+    surfaces = []
+    for i_, (threshold, opacity) in enumerate(zip(thresholds, opacities)):
+        surfaces.append(scene.visuals.Isosurface(z, level=threshold, 
 #                                         color=Color(np.array(colorsys.hsv_to_rgb(1.*i_/len(thresholds), 1., 1.)), alpha=opacity),
-                                        color=Color(np.array(colorsys.hsv_to_rgb(.66, 1., 1.)), alpha=opacity),
-                                        shading='smooth', parent=view.scene)
-                                                    )
-            surfaces[-1].transform = center
+                                    color=Color(np.array(colorsys.hsv_to_rgb(.66, 1., 1.)), alpha=opacity),
+                                    shading='smooth', parent=view.scene)
+                                                )
+        surfaces[-1].transform = center
 
-        # Draw a sphere at the origin
-        axis = scene.visuals.XYZAxis(parent=view.scene)
-        for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
-                  [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
-                  [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
-            line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_Y/2, p[2]*N_frame/2], [p[3]*N_X/2, p[4]*N_Y/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
+    # Draw a sphere at the origin
+    axis = scene.visuals.XYZAxis(parent=view.scene)
+    for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
+              [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
+              [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
+        line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_Y/2, p[2]*N_frame/2], [p[3]*N_X/2, p[4]*N_Y/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
 
-        axisX = scene.visuals.Line(pos=np.array([[0, -N_Y/2, 0], [0, N_Y/2, 0]]), color='red', parent=view.scene)
-        axisY = scene.visuals.Line(pos=np.array([[-N_X/2, 0, 0], [N_X/2, 0, 0]]), color='green', parent=view.scene)
-        axisZ = scene.visuals.Line(pos=np.array([[0, 0, -N_frame/2], [0, 0, N_frame/2]]), color='blue', parent=view.scene)
+    axisX = scene.visuals.Line(pos=np.array([[0, -N_Y/2, 0], [0, N_Y/2, 0]]), color='red', parent=view.scene)
+    axisY = scene.visuals.Line(pos=np.array([[-N_X/2, 0, 0], [N_X/2, 0, 0]]), color='green', parent=view.scene)
+    axisZ = scene.visuals.Line(pos=np.array([[0, 0, -N_frame/2], [0, 0, N_frame/2]]), color='blue', parent=view.scene)
 
-        if do_axis:
-            t = {}
-            for text in ['f_x', 'f_y', 'f_t']:
-                t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
-                t[text].font_size = 8
-            t['f_x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
-            t['f_y'].pos = canvas.size[0] - canvas.size[0] // 8, canvas.size[1] - canvas.size[1] // 6
-            t['f_t'].pos = canvas.size[0] // 8, canvas.size[1] // 2
+    if do_axis:
+        t = {}
+        for text in ['f_x', 'f_y', 'f_t']:
+            t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
+            t[text].font_size = 8
+        t['f_x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
+        t['f_y'].pos = canvas.size[0] - canvas.size[0] // 8, canvas.size[1] - canvas.size[1] // 6
+        t['f_t'].pos = canvas.size[0] // 8, canvas.size[1] // 2
 
-        cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth, up='z')
-        cam.fov = 48
-        cam.scale_factor = N_X * 1.8
-        if do_axis: margin = 1.3
-        else: margin = 1
-        cam.set_range((-N_X/2*margin, N_X/2/margin), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2*margin, N_frame/2/margin))
-        view.camera = cam
+    cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth, up='z')
+    cam.fov = 48
+    cam.scale_factor = N_X * 1.8
+    if do_axis: margin = 1.3
+    else: margin = 1
+    cam.set_range((-N_X/2*margin, N_X/2/margin), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2*margin, N_frame/2/margin))
+    view.camera = cam
 
-        im = canvas.render(size=figsize)
-        app.quit()
-        if not(name is None):
-            import vispy.io as io
-            io.write_png(name + ext, im)
-        else:
-            return im
+    im = canvas.render(size=figsize)
+    app.quit()
+    if not(name is None):
+        import vispy.io as io
+        io.write_png(name + ext, im)
+    else:
+        return im
 
 def cube(im_in, azimuth=30., elevation=45., name=None,
          ext=ext, do_axis=True, show_label=True,
-         colormap='gray', roll=-180., vmin=0., vmax=1., # spcific to mayavi
+         colormap='gray', roll=-180., vmin=0., vmax=1.,
          figsize=figsize):
 
     """
@@ -494,107 +407,66 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
 
     N_X, N_Y, N_frame = im.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
-    if import_mayavi():
-        mlab.figure(1, bgcolor=(1, 1, 1), fgcolor=(0, 0, 0), size=figsize)
-        mlab.clf()
-        src = mlab.pipeline.scalar_field(fx*2., fy*2., ft*2., im)
-
-        mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=0,
-                                        colormap=colormap, vmin=vmin, vmax=vmax)
-        mlab.pipeline.image_plane_widget(src, plane_orientation='z_axes', slice_index=N_frame,
-                                        colormap=colormap, vmin=vmin, vmax=vmax)
-        mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=0,
-                                        colormap=colormap, vmin=vmin, vmax=vmax)
-        mlab.pipeline.image_plane_widget(src, plane_orientation='x_axes', slice_index=N_X,
-                                        colormap=colormap, vmin=vmin, vmax=vmax)
-        mlab.pipeline.image_plane_widget(src, plane_orientation='y_axes', slice_index=0,
-                                        colormap=colormap, vmin=vmin, vmax=vmax)
-        mlab.pipeline.image_plane_widget(src, plane_orientation='y_axes', slice_index=N_Y,
-                                        colormap=colormap, vmin=vmin, vmax=vmax)
-
-        if do_axis:
-            ax = mlab.axes(xlabel='x', ylabel='y', zlabel='t',
-                        ranges=[0., N_X, 0., N_Y, 0., N_frame],
-                        x_axis_visibility=False, y_axis_visibility=False,
-                        z_axis_visibility=False)
-            ax.axes.set(font_factor=2.)
-
-            if not(show_label): ax.axes.set(label_format='')
-
-
-        try:
-            mlab.view(azimuth=azimuth, elevation=elevation, distance='auto', focalpoint='auto')
-            mlab.roll(roll=roll)
-        except:
-            print(" You should upgrade your mayavi version")
-
-        if not(name is None):
-            mlab.savefig(name + ext, magnification='auto', size=figsize)
-        else:
-            mlab.show(stop=True)
-
-        mlab.close(all=True)
-    else:
-        import numpy as np
-        from vispy import app, scene
-        app.use_app('pyglet')
-        from vispy.util.transforms import perspective, translate, rotate
-        canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
-        view = canvas.central_widget.add_view()
+    import numpy as np
+    from vispy import app, scene
+    app.use_app('pyglet')
+    from vispy.util.transforms import perspective, translate, rotate
+    canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
+    view = canvas.central_widget.add_view()
 
 #         frame = scene.visuals.Cube(size = (N_X/2, N_frame/2, N_Y/2), color=(0., 0., 0., 0.),
 #                                         edge_color='k',
 #                                         parent=view.scene)
-        for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
-                  [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
-                  [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
+    for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
+              [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
+              [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
 #             line = scene.visuals.Line(pos=np.array([[p[0]*N_Y/2, p[1]*N_X/2, p[2]*N_frame/2], [p[3]*N_Y/2, p[4]*N_X/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
-            line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_frame/2, p[2]*N_Y/2], 
-                                                    [p[3]*N_X/2, p[4]*N_frame/2, p[5]*N_Y/2]]), color='black', parent=view.scene)
+        line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_frame/2, p[2]*N_Y/2], 
+                                                [p[3]*N_X/2, p[4]*N_frame/2, p[5]*N_Y/2]]), color='black', parent=view.scene)
 
-        opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
-        image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
-        tr_xy = scene.transforms.MatrixTransform()
-        tr_xy.rotate(90, (1, 0, 0))
-        tr_xy.translate((-N_X/2, -N_frame/2, -N_Y/2))
-        image_xy.transform = tr_xy
+    opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
+    image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
+    tr_xy = scene.transforms.MatrixTransform()
+    tr_xy.rotate(90, (1, 0, 0))
+    tr_xy.translate((-N_X/2, -N_frame/2, -N_Y/2))
+    image_xy.transform = tr_xy
 
-        image_xt = scene.visuals.Image(np.fliplr(im[:, -1, :]), **opts)
-        tr_xt = scene.transforms.MatrixTransform()
-        tr_xt.rotate(90, (0, 0, 1))
-        tr_xt.translate((N_X/2, -N_frame/2, N_Y/2))
-        image_xt.transform = tr_xt
+    image_xt = scene.visuals.Image(np.fliplr(im[:, -1, :]), **opts)
+    tr_xt = scene.transforms.MatrixTransform()
+    tr_xt.rotate(90, (0, 0, 1))
+    tr_xt.translate((N_X/2, -N_frame/2, N_Y/2))
+    image_xt.transform = tr_xt
 
-        image_yt = scene.visuals.Image(np.rot90(im[-1, :, :], 1), **opts)
-        tr_yt = scene.transforms.MatrixTransform()
-        tr_yt.rotate(90, (0, 1, 0))
-        tr_yt.translate((+N_X/2, -N_frame/2, N_Y/2))
-        image_yt.transform = tr_yt
+    image_yt = scene.visuals.Image(np.rot90(im[-1, :, :], 1), **opts)
+    tr_yt = scene.transforms.MatrixTransform()
+    tr_yt.rotate(90, (0, 1, 0))
+    tr_yt.translate((+N_X/2, -N_frame/2, N_Y/2))
+    image_yt.transform = tr_yt
 
-        if do_axis:
-            t = {}
-            for text in ['x', 'y', 't']:
-                t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
-                t[text].font_size = 8
-            t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
-            t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
-            t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 2
+    if do_axis:
+        t = {}
+        for text in ['x', 'y', 't']:
+            t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
+            t[text].font_size = 8
+        t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
+        t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
+        t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 2
 
-        cam = scene.TurntableCamera(elevation=35, azimuth=30)
-        cam.fov = 45
-        cam.scale_factor = N_X * 1.7
-        if do_axis: margin = 1.3
-        else: margin = 1
-        cam.set_range((-N_X/2, N_X/2), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2, N_frame/2))
-        view.camera = cam
-        if not(name is None):
-            im = canvas.render(size=figsize)
-            app.quit()
-            import vispy.io as io
-            io.write_png(name + ext, im)
-        else:
-            app.quit()
-            return im
+    cam = scene.TurntableCamera(elevation=35, azimuth=30)
+    cam.fov = 45
+    cam.scale_factor = N_X * 1.7
+    if do_axis: margin = 1.3
+    else: margin = 1
+    cam.set_range((-N_X/2, N_X/2), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2, N_frame/2))
+    view.camera = cam
+    if not(name is None):
+        im = canvas.render(size=figsize)
+        app.quit()
+        import vispy.io as io
+        io.write_png(name + ext, im)
+    else:
+        app.quit()
+        return im
 def check_if_anim_exist(filename, vext=vext):
     """
     Check if the movie already exists
