@@ -1,7 +1,8 @@
-#/usr/bin/env python
+#! /usr/bin/env python
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function, absolute_import
 __author__ = "Laurent Perrinet INT - CNRS"
+__licence__ = 'BSD licence'
 """
 
 Main script for generating Motion Clouds
@@ -502,9 +503,7 @@ def anim_save(z, filename, display=True, vext=vext,
             fname = 'frame%03d.png' % frame
             full_fname = os.path.join(tmpdir, fname)
             image = np.rot90(z[..., frame])
-#             toimage(image, high=255, low=0, cmin=0., cmax=1., pal=None,
-#                     mode=None, channel_axis=None).save(full_fname)
-            imageio.imwrite(full_fname, image)
+            imageio.imwrite(full_fname, (image*255).astype(np.uint8), compression=0, quantize=0)
             files.append(fname)
 
         if PROGRESS: print(pbar)
@@ -579,7 +578,7 @@ def anim_save(z, filename, display=True, vext=vext,
     elif vext == '.png':
 #         toimage(np.flipud(z[:, :, 0]).T, high=255, low=0, cmin=0., cmax=1., pal=None, mode=None, channel_axis=None).save(filename + vext)
         imageio.imwrite(full_fname, z[:, :, 0].T)
-        
+
     elif vext == '.zip':
         do_bmp = False # I was asked at some point to generate bmp files - it is highly unlikely to happen again...
         tmpdir, files = make_frames(z)
