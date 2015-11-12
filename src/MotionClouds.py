@@ -70,7 +70,7 @@ figpath = '../files/'
 vext = '.webm'
 ext = '.png'
 T_movie = N_frame/100. # this value defines the duration in seconds of a temporal period (assuming a 100Hz refresh rate)
-SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat']#, '.mkv']
+SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat', '.png']
 
 def get_grids(N_X, N_Y, N_frame):
     """
@@ -497,7 +497,7 @@ def anim_save(z, filename, display=True, vext=vext,
 
         if PROGRESS:
             pbar = progressbar.ProgPercent(N_frame, monitor=True)
-        print('Saving sequence ' + filename + vext)
+        print('Saving sequence ' + filename + ' as a ' +  vext + ' format')
         for frame in range(N_frame):
             if PROGRESS: pbar.update()
             fname = 'frame%03d.png' % frame
@@ -576,8 +576,10 @@ def anim_save(z, filename, display=True, vext=vext,
         remove_frames(tmpdir, files)
 
     elif vext == '.png':
-#         toimage(np.flipud(z[:, :, 0]).T, high=255, low=0, cmin=0., cmax=1., pal=None, mode=None, channel_axis=None).save(filename + vext)
-        imageio.imwrite(full_fname, z[:, :, 0].T)
+        tmpdir, files = make_frames(z)
+        import shutil
+        shutil.copytree(tmpdir, filename)
+        remove_frames(tmpdir, files)
 
     elif vext == '.zip':
         do_bmp = False # I was asked at some point to generate bmp files - it is highly unlikely to happen again...
@@ -716,7 +718,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
     """
 
 
-    if do_figs:
+    if do_figs and not z is None:
         if recompute or check_if_anim_exist(name, vext=ext):
             visualize(z, name=os.path.join(figpath, name))           # Visualize the Fourier Spectrum
 
