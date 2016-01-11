@@ -40,17 +40,14 @@ import numpy as np
 
 PROGRESS = False
 
+# size of the stimulus
 size = 8
 size_T = 8
-figsize = (800, 800) # nice size, but requires more memory
-
 N_X = 2**size
 N_Y = N_X
 N_frame = 2**size_T
 
 # default parameters for the "standard Motion Cloud"
-alpha = 0.0
-ft_0 = np.inf
 sf_0 = 0.125
 B_sf = 0.1
 V_X = 1.
@@ -58,6 +55,10 @@ V_Y = 0.
 B_V = .5
 theta = 0.
 B_theta = np.pi/16.
+
+# for backward compatibilty
+alpha = 0.0
+ft_0 = np.inf
 loggabor = True
 
 contrast = 1.
@@ -66,6 +67,7 @@ method = 'Michelson'
 recompute = False
 notebook = False
 figpath = '../files/'
+figsize = (800, 800) # nice size, but requires more memory
 
 vext = '.webm'
 ext = '.png'
@@ -788,23 +790,32 @@ def in_show_video(name, figpath=figpath, vext=vext, loop=True, autoplay=True, co
             display(HTML(s))
     else:
         if os.path.isfile(os.path.join(figpath, name + ext)) and os.path.isfile(os.path.join(figpath, name + '_cube' + ext)):
-            s = """
-            <center><table border=none width=100% height=100%>
-            <tr>
-            <td width=33%%><center><img src="{0}" width=100%/></td>
-            <td rowspan=2  colspan=2><center><video src="{1}"  {2}  type="video/{3}" width=100%/></td>
-            </tr>
-            <tr>
-            <td><center><img src="{4}" width=100%/></td>
-            </tr>
-            </table></center>""".format(os.path.join(figpath, name + ext),
-                                  os.path.join(figpath, name + vext),
-                                  opts, vext[1:],
-                                  os.path.join(figpath, name + '_cube' + ext))
-            display(HTML(s))
+            if os.path.isfile(os.path.join(figpath, name + vext)):
+                s = """
+                <center><table border=none width=100% height=100%>
+                <tr>
+                <td width=33%%><center><img src="{0}" width=100%/></td>
+                <td rowspan=2  colspan=2><center><video src="{1}"  {2}  type="video/{3}" width=100%/></td>
+                </tr>
+                <tr>
+                <td><center><img src="{4}" width=100%/></td>
+                </tr>
+                </table></center>""".format(os.path.join(figpath, name + ext),
+                                      os.path.join(figpath, name + vext),
+                                      opts, vext[1:],
+                                      os.path.join(figpath, name + '_cube' + ext))
+            else:
+                s = """
+                <center><table border=none width=100% height=100%>
+                <tr>
+                <td width=50%%><center><img src="{0}" width=100%/></td>
+                <td><center><img src="{1}" width=100%/></td>
+                </tr>
+                </table></center>""".format(os.path.join(figpath, name + ext),
+                                      os.path.join(figpath, name + '_cube' + ext))
         else:
             s = """
             <center><table border=none width=100% height=100%>
             <tr> <td width=100%><center><video {0} src="{2}" type="video/{1}"  width=100%\>
             </td></tr></table></center>""".format(opts, vext[1:], os.path.join(figpath, name + vext))
-            display(HTML(s))
+        display(HTML(s))
