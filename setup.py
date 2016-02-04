@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 # -*- coding: utf8 -*-
 
 from setuptools import setup, find_packages
@@ -30,6 +30,6 @@ setup(
                    'Programming Language :: Python :: 2',
                    'Programming Language :: Python :: 2.7',
                    'Programming Language :: Python :: 3',
-                   'Programming Language :: Python :: 3.4',
+                   'Programming Language :: Python :: 3.5',
                   ],
      )
