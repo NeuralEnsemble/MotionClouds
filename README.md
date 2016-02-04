@@ -9,7 +9,7 @@ In particular, these stimuli can be made closer to naturalistic textures compare
 
 * to install the package, run:
 ````
-pip install MotionClouds
+pip3 install MotionClouds
 ````
 
 * to install the dependencies on a debian-like system:
@@ -44,7 +44,7 @@ sudo aptitude install ffmpeg
 
 pip install --user pyprind
 # vispy
-pîp install --user pyglet
+pip install --user pyglet
 pip install --user git+https://github.com/vispy/vispy
 ````
 
@@ -97,16 +97,12 @@ brew update
 # Upgrade any already-installed formulae
 brew upgrade
 
-# brew uninstall python pyqt pyside vtk
-# brew uninstall wxpython
-# mv /usr/local/lib/python2.7/site-packages /usr/local/lib/python2.7/site-packages-old 
-# mv /usr/local/share/python /usr/local/share/python-old
 # install python through HomeBrew
-brew install python --framework --universal
+brew install python3 --framework --universal
 
 # bootstrap pip
-pip install --upgrade setuptools
-pip install --upgrade distribute
+pip3 install --upgrade setuptools
+pip3 install --upgrade distribute
 
 # installing xquartz
 brew tap caskroom/cask
@@ -119,48 +115,43 @@ brew tap Homebrew/python
 brew install gcc
 brew install fftw
 brew install libtool
-brew install numpy #--with-openblas
+brew install numpy --with-python3
 brew test numpy
 brew install scipy
 brew install pillow
-pip install -U pandas
-pip install -U nose
-pip install -U ipython
+pip3 install -U pandas
+pip3 install -U nose
+pip3 install -U ipython
 
 # pylab
 brew install matplotlib --with-tex
 
 # vispy
-pîp install -U pyglet
-pip install -U git+https://github.com/vispy/vispy
+pip3 install -U pyglet
+pip3 install -U git+https://github.com/vispy/vispy
 
 # HDF export
 brew install hdf5
-pip install cython==0.13 #tables doesn't build with last upgrade
-pip install -U numexpr
-pip install -U tables
+pip3 install cython==0.13 #tables doesn't build with last upgrade
+pip3 install -U numexpr
+pip3 install -U tables
 
 # brew uninstall wxpython
-pip install -U psychopy
+pip3 install -U psychopy
 
-pip install -U psutil
-pip install -U pyprind
+pip3 install -U psutil
+pip3 install -U pyprind
 
 
 # install online displaying tools
-# pip install PyOpenGL PyOpenGL_accelerate
-# pip install glumpy
-# brew install --HEAD smpeg
-# brew install pygame
-# brew install mercurial
-# pip install hg+https://pyglet.googlecode.com/hg/
-pip install -U NeuroTools
-pip install -U git+https://github.com/NeuralEnsemble/MotionClouds
+pip3 install -U NeuroTools
 
 # convert
 brew install imagemagick
 brew install x264
 brew install ffmpeg --with-libvpx
+
+pip3 install -U git+https://github.com/NeuralEnsemble/MotionClouds
 
 # Remove outdated versions from the cellar
 brew cleanup
@@ -170,7 +161,7 @@ python -c 'import MotionClouds as mc; fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, 
 
 * to install the latest version, use:
 ````
-pip install git+https://github.com/NeuralEnsemble/MotionClouds.git
+pip3 install git+https://github.com/NeuralEnsemble/MotionClouds.git
 ````
 
 
