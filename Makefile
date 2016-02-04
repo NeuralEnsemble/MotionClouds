@@ -1,21 +1,10 @@
-default: test experiments doc
-	
-report_%.pdf: report_%.py MotionParticles.py
-	    pyreport --double $< && open $@
+default: doc
 
 test:
 	python test/test_color.py
 	python test/test_grating.py
 	python test/test_radial.py
 	python test/test_speed.py
-
-experiments:
-	# experiments/experiment
-	python experiments/experiment_B_sf.py
-	# python experiments/experiment_VSDI.py
-	python experiments/experiment_competing.py
-	# python experiments/experiment_concentric.py
-	python experiments/experiment_smooth.py
 
 figures:
 	python figures/fig_artwork_eschercube.py
@@ -48,9 +37,6 @@ pypi_upload:
 
 pypi_docs:
 	rm web.zip
-	#ipython nbconvert --to html $(NAME).ipynb
-	#mv $(NAME).html index.html
-	#runipy $(NAME).ipynb  --html  index.html
 	zip web.zip index.html
 	open https://pypi.python.org/pypi?action=pkg_edit&name=$NAME
 
