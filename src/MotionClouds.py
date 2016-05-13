@@ -106,7 +106,7 @@ def retina(fx, fy, ft, df=.07, sigma=.5):
     See http://blog.invibe.net/posts/2015-05-21-a-simple-pre-processing-filter-for-image-processing.html
     for more information.
 
-    In digital images, some of the energy in Fourier space is concentrated outside the 
+    In digital images, some of the energy in Fourier space is concentrated outside the
     disk corresponding to the Nyquist frequency. Let's design a filter with:
 
         - a sharp cut-off for radial frequencies higher than the Nyquist frequency,
@@ -119,7 +119,7 @@ def retina(fx, fy, ft, df=.07, sigma=.5):
         - one for scaling the smoothness of the transition in the high-frequency range,
         - one for the characteristic length of the high-pass filter.
 
-    The first is defined relative to the Nyquist frequency (in absolute values) while the second 
+    The first is defined relative to the Nyquist frequency (in absolute values) while the second
     is relative to the size of the image in pixels and is given in number of pixels.
     """
     N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
@@ -207,7 +207,7 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     Returns the orientation envelope:
     We use a von-Mises distribution on the orientation:
     - mean orientation is ``theta`` (in radians),
-    - ``B_theta`` is the bandwidth (in radians). It is equal to the standard deviation of the Gaussian 
+    - ``B_theta`` is the bandwidth (in radians). It is equal to the standard deviation of the Gaussian
     envelope which approximate the distribution for low bandwidths. The Half-Width at Half Height is
     given by approximately np.sqrt(2*B_theta_**2*np.log(2)).
 
@@ -215,16 +215,16 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     http://motionclouds.invibe.net/posts/testing-grating.html
 
     """
-    if B_theta is np.inf:
-        envelope_dir = 1.
+    if B_theta is np.inf: # for large bandwidth, returns a strictly flat envelope
+        enveloppe_orientation = 1.
     elif theta==0 and B_theta==0:
         N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
-        envelope_dir = np.zeros_like(fx)
-        envelope_dir[:, N_Y//2, :] = 1.
-    else: # for large bandwidth, returns a strictly flat envelope
+        enveloppe_orientation = np.zeros_like(fx)
+        enveloppe_orientation[:, N_Y//2, :] = 1.
+    else: # non pathological case
         angle = np.arctan2(fy, fx)
-        envelope_dir = np.exp(np.cos(2*(angle-theta))/4/B_theta**2)
-    return envelope_dir
+        enveloppe_orientation = np.exp(np.cos(2*(angle-theta))/4/B_theta**2)
+    return enveloppe_orientation
 
 def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
@@ -287,8 +287,9 @@ def visualize(z_in, azimuth=25., elevation=30.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
+    fourier_label = {'f_x':'f_x', 'f_y':'f_y', 'f_t':'f_t'},
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
-    colorbar=False, f_N=2., f_tN=2., figsize=figsize):
+    colorbar=False, f_N=2., f_tN=2., figsize=figsize, **kwargs):
     """
 
     Visualization of the Fourier spectrum by showing 3D contour plots at different thresholds
@@ -350,7 +351,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
     # Generate iso-surfaces at different energy levels
     surfaces = []
     for i_, (threshold, opacity) in enumerate(zip(thresholds, opacities)):
-        surfaces.append(scene.visuals.Isosurface(z, level=threshold, 
+        surfaces.append(scene.visuals.Isosurface(z, level=threshold,
 #                                         color=Color(np.array(colorsys.hsv_to_rgb(1.*i_/len(thresholds), 1., 1.)), alpha=opacity),
                                     color=Color(np.array(colorsys.hsv_to_rgb(.66, 1., 1.)), alpha=opacity),
                                     shading='smooth', parent=view.scene)
@@ -359,8 +360,8 @@ def visualize(z_in, azimuth=25., elevation=30.,
 
     # Draw a sphere at the origin
     axis = scene.visuals.XYZAxis(parent=view.scene)
-    for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
-              [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
+    for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1],
+              [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1],
               [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
         line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_Y/2, p[2]*N_frame/2], [p[3]*N_X/2, p[4]*N_Y/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
 
@@ -371,7 +372,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
     if do_axis:
         t = {}
         for text in ['f_x', 'f_y', 'f_t']:
-            t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
+            t[text] = scene.visuals.Text(fourier_label[text], parent=canvas.scene, face='Helvetica', color='black')
             t[text].font_size = 8
         t['f_x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
         t['f_y'].pos = canvas.size[0] - canvas.size[0] // 8, canvas.size[1] - canvas.size[1] // 6
@@ -395,8 +396,9 @@ def visualize(z_in, azimuth=25., elevation=30.,
 
 def cube(im_in, azimuth=30., elevation=45., name=None,
          ext=ext, do_axis=True, show_label=True,
+         cube_label = {'x':'x', 'y':'y', 't':'t'},
          colormap='gray', roll=-180., vmin=0., vmax=1.,
-         figsize=figsize):
+         figsize=figsize, **kwargs):
 
     """
 
@@ -418,11 +420,11 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
 #         frame = scene.visuals.Cube(size = (N_X/2, N_frame/2, N_Y/2), color=(0., 0., 0., 0.),
 #                                         edge_color='k',
 #                                         parent=view.scene)
-    for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1], 
-              [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1], 
+    for p in ([1, 1, 1, -1, 1, 1], [1, 1, -1, -1, 1, -1], [1, -1, 1, -1, -1, 1],[1, -1, -1, -1, -1, -1],
+              [1, 1, 1, 1, -1, 1], [-1, 1, 1, -1, -1, 1], [1, 1, -1, 1, -1, -1], [-1, 1, -1, -1, -1, -1],
               [1, 1, 1, 1, 1, -1], [-1, 1, 1, -1, 1, -1], [1, -1, 1, 1, -1, -1], [-1, -1, 1, -1, -1, -1]):
 #             line = scene.visuals.Line(pos=np.array([[p[0]*N_Y/2, p[1]*N_X/2, p[2]*N_frame/2], [p[3]*N_Y/2, p[4]*N_X/2, p[5]*N_frame/2]]), color='black', parent=view.scene)
-        line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_frame/2, p[2]*N_Y/2], 
+        line = scene.visuals.Line(pos=np.array([[p[0]*N_X/2, p[1]*N_frame/2, p[2]*N_Y/2],
                                                 [p[3]*N_X/2, p[4]*N_frame/2, p[5]*N_Y/2]]), color='black', parent=view.scene)
 
     opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
@@ -447,7 +449,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     if do_axis:
         t = {}
         for text in ['x', 'y', 't']:
-            t[text] = scene.visuals.Text(text, parent=canvas.scene, color='black')
+            t[text] = scene.visuals.Text(cube_label[text], parent=canvas.scene, face='Helvetica', color='black')
             t[text].font_size = 8
         t['x'].pos = canvas.size[0] // 3, canvas.size[1] - canvas.size[1] // 8
         t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
@@ -695,7 +697,7 @@ def rectif(z_in, contrast=contrast, method=method, verbose=False):
 def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
                     theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
-                    seed=None, impulse=False, do_amp=False, verbose=False):
+                    seed=None, impulse=False, do_amp=False, verbose=False, **kwargs):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
     movies directly from the parameters.
@@ -707,10 +709,10 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)
     figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie, recompute=recompute,
-                    seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp)
+                    seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, **kwargs)
 
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
-                    seed=None, impulse=False, verbose=False, masking=False, do_amp=False):
+                    seed=None, impulse=False, verbose=False, masking=False, do_amp=False, **kwargs):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
     and the stimulus cubes and movies.
@@ -722,7 +724,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     if do_figs and not z is None:
         if recompute or check_if_anim_exist(name, vext=ext):
-            visualize(z, name=os.path.join(figpath, name))           # Visualize the Fourier Spectrum
+            visualize(z, name=os.path.join(figpath, name), **kwargs)           # Visualize the Fourier Spectrum
 
     if do_movie or do_figs:
             #if recompute:# or not(check_if_anim_exist(name, vext=vext) or check_if_anim_exist(name + '_cube', vext=ext)):
@@ -730,11 +732,11 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     if do_figs:
         if recompute or check_if_anim_exist(name + '_cube', vext=ext):
-            cube(movie, name=os.path.join(figpath, name + '_cube'))   # Visualize the Stimulus cube
+            cube(movie, name=os.path.join(figpath, name + '_cube'), **kwargs)   # Visualize the Stimulus cube
 
     if do_movie:
         if recompute or check_if_anim_exist(name, vext=vext):
-            anim_save(movie, os.path.join(figpath, name), display=False, vext=vext)
+            anim_save(movie, os.path.join(figpath, name), display=False, vext=vext, **kwargs)
 
 def in_show_video(name, figpath=figpath, vext=vext, loop=True, autoplay=True, controls=True, embed=False):
     """
