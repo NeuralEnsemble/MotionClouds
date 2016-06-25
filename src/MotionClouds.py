@@ -68,7 +68,7 @@ notebook = False
 figpath = '../files/'
 figsize = (800, 800) # nice size, but requires more memory
 
-vext = '.webm'
+vext = '.mp4'
 ext = '.png'
 T_movie = N_frame/100. # this value defines the duration in seconds of a temporal period (assuming a 100Hz refresh rate)
 SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat', '.png']
