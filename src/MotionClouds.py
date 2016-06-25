@@ -38,7 +38,6 @@ fps        -- frame per seconds
 import os
 import numpy as np
 
-PROGRESS = False
 
 # size of the stimulus
 size = 8
@@ -282,7 +281,7 @@ shape
     return z
 
 ########################## Display Tools #######################################
-import pyprind as progressbar
+
 def visualize(z_in, azimuth=25., elevation=30.,
     thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
@@ -487,6 +486,12 @@ def anim_save(z, filename, display=True, vext=vext,
     The input pixel values are supposed to lie in the [0, 1.] range.
 
     """
+    try:
+        import pyprind as progressbar
+        PROGRESS = True
+    except:
+        PROGRESS = False
+
     import tempfile
 #     from scipy.misc.pilutil import toimage
     import imageio
