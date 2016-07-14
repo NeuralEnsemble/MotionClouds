@@ -77,11 +77,17 @@ def get_grids(N_X, N_Y, N_frame):
     """
         Use that function to define a reference outline for envelopes in Fourier space.
         In general, it is more efficient to define dimensions as powers of 2.
-        output is always  of even size..
+        output is always  of even size.
+
+        A special case is when ``N_frame`` is one, in which case we generate a single frame.
 
     """
-    fx, fy, ft = np.mgrid[(-N_X//2):((N_X-1)//2 + 1), (-N_Y//2):((N_Y-1)//2 + 1), (-N_frame//2):((N_frame-1)//2 + 1)]
+    if N_frame>1:
+        fx, fy, ft = np.mgrid[(-N_X//2):((N_X-1)//2 + 1), (-N_Y//2):((N_Y-1)//2 + 1), (-N_frame//2):((N_frame-1)//2 + 1)]
+    else:
+        fx, fy, ft = np.mgrid[(-N_X//2):((N_X-1)//2 + 1), (-N_Y//2):((N_Y-1)//2 + 1), 0:1]
     fx, fy, ft = fx*1./N_X, fy*1./N_Y, ft*1./N_frame
+
     return fx, fy, ft
 
 def frequency_radius(fx, fy, ft, ft_0=ft_0):
@@ -91,6 +97,7 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0):
 
     """
     N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+
     if ft_0==np.inf:
         R2 = fx**2 + fy**2
         R2[N_X//2 , N_Y//2 , :] = np.inf
@@ -188,6 +195,10 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     V_scale = N_X/float(N_frame)
     If N_X=N_Y=N_frame and V=1, then it is one spatial period in one temporal
     period. It can be seen along the diagonal in the fx-ft face of the MC cube.
+
+    A special case is used when ``B_V=0``, where the ``fx-ft`` plane is used as
+    the speed plane: in that case it is desirable to set ``(V_X, V_Y)`` to ``(0, 0)``
+    to avoid aliasing problems.
 
     Run the 'test_speed' notebook to explore the speed parameters, see
     http://motionclouds.invibe.net/posts/testing-speed.html
