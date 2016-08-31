@@ -253,7 +253,7 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
 #     envelope *= retina(fx, fy, ft)
     return envelope
 
-def random_cloud(envelope, seed=None, impulse=False, do_amp=False):
+def random_cloud(envelope, seed=None, impulse=False, events=None, do_amp=False):
     """
     Returns a Motion Cloud movie as a 3D matrix from a given envelope.
 
@@ -276,14 +276,18 @@ shape
     if impulse:
         fx, fy, ft = get_grids(N_X, N_Y, N_frame)
         phase = -2*np.pi*(N_X/2*fx + N_Y/2*fy + N_frame/2*ft)
-    else:
+    elif events is None:
         np.random.seed(seed=seed)
         phase = 2 * np.pi * np.random.rand(N_X, N_Y, N_frame)
         if do_amp:
             # see Galerne, B., Gousseau, Y. & Morel, J.-M. Random phase textures: Theory and synthesis. IEEE Transactions in Image Processing (2010). URL http://www.biomedsearch.com/nih/Random-Phase-Textures-Theory-Synthesis/20550995.html. (basically, they conclude "Even though the two processes ADSN and RPN have different Fourier modulus distributions (see Section 4), they produce visually similar results when applied to natural images as shown by Fig. 11.")
             amps = np.random.randn(N_X, N_Y, N_frame)
+        F_events = amps * np.exp(1j * phase)
+    else:
+        F_events = np.fft.fftn( events[:, :, :] )
+        F_events = np.fft.fftshift(F_events)
 
-    Fz = amps * envelope * np.exp(1j * phase)
+    Fz = F_events * envelope
 
     # centering the spectrum
     Fz = np.fft.ifftshift(Fz)
