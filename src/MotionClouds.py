@@ -204,8 +204,10 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     http://motionclouds.invibe.net/posts/testing-speed.html
 
     """
-    if B_V==0:
-        N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+    N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+    if N_frame==1:
+        env = np.ones_like(fx)
+    elif B_V==0:
         env = np.zeros_like(fx)
         env[:, :, N_frame//2] = 1.
     else:
@@ -226,7 +228,7 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
 
     """
     if B_theta is np.inf: # for large bandwidth, returns a strictly flat envelope
-        enveloppe_orientation = 1.
+        enveloppe_orientation = np.ones_like(fx)
     elif theta==0 and B_theta==0:
         N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
         enveloppe_orientation = np.zeros_like(fx)
@@ -253,7 +255,7 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
 #     envelope *= retina(fx, fy, ft)
     return envelope
 
-def random_cloud(envelope, seed=None, impulse=False, events=None, do_amp=False):
+def random_cloud(envelope, seed=None, impulse=False, events=None, do_amp=True):
     """
     Returns a Motion Cloud movie as a 3D matrix from a given envelope.
 
@@ -273,26 +275,27 @@ shape
 
     (N_X, N_Y, N_frame) = envelope.shape
     amps = 1.
-    if impulse:
+    if impulse: # TODO: becomes obsolete with the events matrix (singleton)
         fx, fy, ft = get_grids(N_X, N_Y, N_frame)
         phase = -2*np.pi*(N_X/2*fx + N_Y/2*fy + N_frame/2*ft)
+        F_events = np.exp(1j * phase)
     elif events is None:
         np.random.seed(seed=seed)
         phase = 2 * np.pi * np.random.rand(N_X, N_Y, N_frame)
+        F_events = np.exp(1j * phase)
         if do_amp:
             # see Galerne, B., Gousseau, Y. & Morel, J.-M. Random phase textures: Theory and synthesis. IEEE Transactions in Image Processing (2010). URL http://www.biomedsearch.com/nih/Random-Phase-Textures-Theory-Synthesis/20550995.html. (basically, they conclude "Even though the two processes ADSN and RPN have different Fourier modulus distributions (see Section 4), they produce visually similar results when applied to natural images as shown by Fig. 11.")
-            amps = np.random.randn(N_X, N_Y, N_frame)
-        F_events = amps * np.exp(1j * phase)
+            F_events *= np.random.randn(N_X, N_Y, N_frame)
     else:
         F_events = np.fft.fftn( events[:, :, :] )
         F_events = np.fft.fftshift(F_events)
 
     Fz = F_events * envelope
 
-    # centering the spectrum
+    # de-centering the spectrum
     Fz = np.fft.ifftshift(Fz)
     Fz[0, 0, 0] = 0. # removing the DC component
-    z = np.fft.ifftn((Fz)).real
+    z = np.fft.ifftn(Fz).real
     return z
 
 ########################## Display Tools #######################################
