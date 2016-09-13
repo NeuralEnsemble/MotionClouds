@@ -497,18 +497,18 @@ def check_if_anim_exist(filename, vext=vext):
     return not(os.path.isfile(os.path.join(figpath, filename + vext)))
 
 def anim_save(z, filename, display=True, vext=vext,
-              T_movie=T_movie, verbose=True):
+              T_movie=T_movie, verbose=False):
     """
     Saves a numpy 3D matrix (x-y-t) to a multimedia file.
 
     The input pixel values are supposed to lie in the [0, 1.] range.
 
     """
-    try:
-        import pyprind as progressbar
-        PROGRESS = True
-    except:
-        PROGRESS = False
+    if verbose==True:
+        try:
+            import pyprind as progressbar
+        except:
+            verbose = False
 
     import tempfile
 #     from scipy.misc.pilutil import toimage
@@ -522,18 +522,18 @@ def anim_save(z, filename, display=True, vext=vext,
         files = []
         tmpdir = tempfile.mkdtemp()
 
-        if PROGRESS:
+        if verbose:
+            print('Saving sequence ' + filename + ' as a ' +  vext + ' format')
             pbar = progressbar.ProgPercent(N_frame, monitor=True)
-        print('Saving sequence ' + filename + ' as a ' +  vext + ' format')
         for frame in range(N_frame):
-            if PROGRESS: pbar.update()
-            fname = 'frame%03d.png' % frame
+            if verbose: pbar.update()
+            fname = 'frame%06d.png' % frame
             full_fname = os.path.join(tmpdir, fname)
             image = np.rot90(z[..., frame])
             imageio.imwrite(full_fname, (image*255).astype(np.uint8), compression=0, quantize=0)
             files.append(fname)
 
-        if PROGRESS: print(pbar)
+        if verbose: print(pbar)
         return tmpdir, files
 
     def remove_frames(tmpdir, files):
@@ -552,10 +552,10 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-#        cmd = 'ffmpeg -v 0 -y -sameq -loop_output 0 -r ' + str(fps) + ' -i ' + tmpdir + '/frame%03d.png  ' + filename + vext # + ' 2>/dev/null')
-        #cmd = 'ffmpeg -v 0 -y -sameq  -loop_output 0 -i ' + tmpdir + '/frame%03d.png  ' + filename + vext # + ' 2>/dev/null')
+#        cmd = 'ffmpeg -v 0 -y -sameq -loop_output 0 -r ' + str(fps) + ' -i ' + tmpdir + '/frame%06d.png  ' + filename + vext # + ' 2>/dev/null')
+        #cmd = 'ffmpeg -v 0 -y -sameq  -loop_output 0 -i ' + tmpdir + '/frame%06d.png  ' + filename + vext # + ' 2>/dev/null')
         options = ' -f image2  -r ' + str(fps) + ' -y '
-        os.system('ffmpeg -i ' + tmpdir + '/frame%03d.png ' + options + filename + vext + verb_)
+        os.system('ffmpeg -i ' + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_)
         # 3) clean up
         #remove_frames(tmpdir, files)
     if vext == '.mp4': # specially tuned for iPhone/iPod http://www.dudek.org/blog/82
@@ -566,7 +566,7 @@ def anim_save(z, filename, display=True, vext=vext,
 #         options += ' -g ' + str(fps) + '  -r ' + str(fps) + ' '
 #         cmd = 'cat '  + tmpdir + '/*.png  | ffmpeg '  + options + filename + vext + verb_
         options = ' -f mp4 -pix_fmt yuv420p -c:v libx264  -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
-        cmd = 'ffmpeg -i '  + tmpdir + '/frame%03d.png ' + options + filename + vext + verb_
+        cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
         # 3) clean up
         remove_frames(tmpdir, files)
@@ -576,7 +576,7 @@ def anim_save(z, filename, display=True, vext=vext,
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
         options = ' -f webm  -pix_fmt yuv420p -vcodec libvpx -qmax 12 -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
-        cmd = 'ffmpeg -i '  + tmpdir + '/frame%03d.png ' + options + filename + vext + verb_
+        cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
         # 3) clean up
         remove_frames(tmpdir, files)
@@ -596,7 +596,7 @@ def anim_save(z, filename, display=True, vext=vext,
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
 #        options = ' -pix_fmt rgb24 -r ' + str(fps) + ' -loop_output 0 '
-#        os.system('ffmpeg -i '  + tmpdir + '/frame%03d.png  ' + options + filename + vext + ' 2>/dev/null')
+#        os.system('ffmpeg -i '  + tmpdir + '/frame%06d.png  ' + options + filename + vext + ' 2>/dev/null')
         options = ' -set delay 8 -colorspace GRAY -colors 256 -dispose 1 -loop 0 '
         os.system('convert '  + tmpdir + '/frame*.png  ' + options + filename + vext + verb_)
         # 3) clean up
