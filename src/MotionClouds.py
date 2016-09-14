@@ -150,7 +150,7 @@ def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     (see http://en.wikipedia.org/wiki/1/f_noise )
     """
     if alpha == 0.0:
-        return 1 #np.ones_like(fx)
+        return np.ones_like(fx) #np.ones_like(fx)
     else:
         N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
         f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0)**alpha
@@ -175,7 +175,7 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
             fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
             return 1./fr
         else:
-            return 1.
+            return np.ones_like(fx)
     elif loggabor:
         # see http://en.wikipedia.org/wiki/Log-normal_distribution
         fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
