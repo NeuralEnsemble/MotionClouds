@@ -306,7 +306,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
     fourier_label = {'f_x':'f_x', 'f_y':'f_y', 'f_t':'f_t'},
     name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
-    colorbar=False, f_N=2., f_tN=2., figsize=figsize, **kwargs):
+    colorbar=False, f_N=2., f_tN=2., figsize=figsize, figpath=figpath, **kwargs):
     """
 
     Visualization of the Fourier spectrum by showing 3D contour plots at different thresholds
@@ -415,7 +415,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
          ext=ext, do_axis=True, show_label=True,
          cube_label = {'x':'x', 'y':'y', 't':'t'},
          colormap='gray', roll=-180., vmin=0., vmax=1.,
-         figsize=figsize, **kwargs):
+         figsize=figsize, figpath=figpath, **kwargs):
 
     """
 
@@ -487,7 +487,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     else:
         app.quit()
         return im
-def check_if_anim_exist(filename, vext=vext):
+def check_if_anim_exist(filename, vext=vext, figpath=figpath, **kwargs):
     """
     Check if the movie already exists
 
@@ -497,7 +497,7 @@ def check_if_anim_exist(filename, vext=vext):
     return not(os.path.isfile(os.path.join(figpath, filename + vext)))
 
 def anim_save(z, filename, display=True, vext=vext,
-              T_movie=T_movie, verbose=False):
+              T_movie=T_movie, verbose=False, **kwargs):
     """
     Saves a numpy 3D matrix (x-y-t) to a multimedia file.
 
@@ -720,7 +720,7 @@ def rectif(z_in, contrast=contrast, method=method, verbose=False):
 def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
                     theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
-                    seed=None, impulse=False, do_amp=False, verbose=False, **kwargs):
+                    seed=None, impulse=False, do_amp=False, verbose=False, figpath=figpath, **kwargs):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
     movies directly from the parameters.
@@ -735,7 +735,7 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, **kwargs)
 
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
-                    seed=None, impulse=False, verbose=False, masking=False, do_amp=False, **kwargs):
+                    seed=None, impulse=False, verbose=False, masking=False, do_amp=False, figpath=figpath, **kwargs):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
     and the stimulus cubes and movies.
@@ -761,7 +761,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
         if recompute or check_if_anim_exist(name, vext=vext):
             anim_save(movie, os.path.join(figpath, name), display=False, vext=vext, **kwargs)
 
-def in_show_video(name, figpath=figpath, vext=vext, loop=True, autoplay=True, controls=True, embed=False):
+def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embed=False, figpath=figpath, **kwargs):
     """
 
     Columns represent isometric projections of a cube. The left column displays
