@@ -4,7 +4,7 @@
 
 In particular, these stimuli can be made closer to naturalistic textures compared to usual stimuli such as gratings and random-dot kinetograms. These have controlled information content: We simplified the definition to parametrically define these "Motion Clouds" around the most prevalent feature axis (mean and bandwith): direction, scale (spatial frequency), orientation. These scripts implement a framework to generate these random texture movies. 
 
-<center><img src="http://www.motionclouds.invibe.net/files/MotionPlaid_comp1.gif" width="50%"></center>
+<center><img src="http://www.motionclouds.invibe.net/files/grating.gif" width="50%"></center>
 
 
 * to install the package, run:
