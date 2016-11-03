@@ -240,7 +240,7 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
 
 def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
-                    theta=theta, B_theta=B_theta, alpha=alpha):
+                    theta=theta, B_theta=B_theta, alpha=alpha, **kwargs):
     """
     Returns the Motion Cloud kernel, that is the product of:
         * a speed envelope
@@ -557,8 +557,9 @@ def anim_save(z, filename, display=True, vext=vext,
         options = ' -f image2  -r ' + str(fps) + ' -y '
         os.system('ffmpeg -i ' + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_)
         # 3) clean up
-        #remove_frames(tmpdir, files)
-    if vext == '.mp4': # specially tuned for iPhone/iPod http://www.dudek.org/blog/82
+        remove_frames(tmpdir, files)
+        
+    elif vext == '.mp4': # specially tuned for iPhone/iPod http://www.dudek.org/blog/82
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
@@ -571,7 +572,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 3) clean up
         remove_frames(tmpdir, files)
 
-    if vext == '.webm':
+    elif vext == '.webm':
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
@@ -581,7 +582,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 3) clean up
         remove_frames(tmpdir, files)
 
-    if vext == '.mkv': # specially tuned for iPhone/iPod http://www.dudek.org/blog/82
+    elif vext == '.mkv': # specially tuned for iPhone/iPod http://www.dudek.org/blog/82
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
@@ -591,7 +592,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 3) clean up
         remove_frames(tmpdir, files)
 
-    if vext == '.gif': # http://www.uoregon.edu/~noeckel/MakeMovie.html
+    elif vext == '.gif': # http://www.uoregon.edu/~noeckel/MakeMovie.html
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
@@ -633,6 +634,9 @@ def anim_save(z, filename, display=True, vext=vext,
         from scipy.io import savemat
         savemat(filename + vext, {'z':z})
 
+    elif vext == '.npy':
+        np.save(filename + vext, z)
+
     elif vext == '.h5':
         from tables import openFile, Float32Atom
         hf = openFile(filename + vext, 'w')
@@ -640,6 +644,9 @@ def anim_save(z, filename, display=True, vext=vext,
         o = z
         #   print o.shape
         hf.close()
+    else:
+        print(' WARNING: extension ', vext , 'not existing! ')
+
 
 def play(z, T=5.):
     """
