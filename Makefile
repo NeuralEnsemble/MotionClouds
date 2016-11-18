@@ -1,5 +1,7 @@
 default: doc
 
+VERSION=`python -c'import MotionClouds; print(MotionClouds.__version__)'`
+
 test:
 	python test/test_color.py
 	python test/test_grating.py
@@ -22,11 +24,12 @@ edit:
 	open Makefile &
 	spe &
 
-# https://docs.python.org/2/distutils/packageindex.html
+# https://docs.python.org/3/distutils/packageindex.html
+pypi_all: pypi_tags pypi_push pypi_upload
 pypi_tags:
 	git commit -am' tagging for PyPI '
 	# in case you wish to delete tags, visit http://wptheming.com/2011/04/add-remove-github-tags/
-	git tag 0.2 -m "Adds a tag so that we can put this on PyPI."
+	git tag $(VERSION) -m "Adds a tag so that we can put this on PyPI."
 	git push --tags origin master
 
 pypi_push:
@@ -42,5 +45,3 @@ pypi_docs:
 
 clean:
 	rm -fr build dist results/* *.pyc **/*.pyc ./MotionClouds.egg-info ./src/MotionClouds.egg-info
-
-

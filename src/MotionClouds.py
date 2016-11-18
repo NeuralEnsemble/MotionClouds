@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function, absolute_import
 __author__ = "Laurent Perrinet INT - CNRS"
-__licence__ = 'BSD licence'
+__version__ = '0.3'
+__licence__ = 'GPLv2'
 """
 
 Main script for generating Motion Clouds
