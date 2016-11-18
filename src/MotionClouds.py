@@ -96,15 +96,15 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0):
      'test_color.py'
 
     """
-    N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
-
+    #N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
     if ft_0==np.inf:
-        R2 = fx**2 + fy**2
-        R2[N_X//2 , N_Y//2 , :] = np.inf
+        f_radius2 = fx**2 + fy**2
+        #R2[N_X//2 , N_Y//2 , :] = np.inf
+        f_radius2[(fx*fy)==0] = np.inf
     else:
-        R2 = fx**2 + fy**2 + (ft/ft_0)**2 # cf . Paul Schrater 00
-        R2[N_X//2 , N_Y//2 , N_frame//2] = np.inf
-    return np.sqrt(R2)
+        f_radius2 = fx**2 + fy**2 + (ft/ft_0)**2 # cf . Paul Schrater 00
+        f_radius2[(fx*fy*ft)==0] = np.inf
+    return np.sqrt(f_radius2)
 
 def retina(fx, fy, ft, df=.07, sigma=.5):
     """
@@ -128,12 +128,12 @@ def retina(fx, fy, ft, df=.07, sigma=.5):
     The first is defined relative to the Nyquist frequency (in absolute values) while the second
     is relative to the size of the image in pixels and is given in number of pixels.
     """
-    N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
     # removing high frequencies in the corners
     fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
     env = (1-np.exp((fr-.5)/(.5*df)))*(fr<.5)
     # removing low frequencies
-    env *= 1-np.exp(-.5*(fr**2)/((sigma/N_X)**2))
+    # N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+    # env *= 1-np.exp(-.5*(fr**2)/((sigma/N_X)**2))
     return env
 
 def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
@@ -152,12 +152,12 @@ def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     if alpha == 0.0:
         return np.ones_like(fx) #np.ones_like(fx)
     else:
-        N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+        # N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
         f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0)**alpha
-        if ft_0==np.inf:
-            f_radius[N_X//2 , N_Y//2 , : ] = np.inf
-        else:
-            f_radius[N_X//2 , N_Y//2 , N_frame//2 ] = np.inf
+        # if ft_0==np.inf:
+        #     f_radius[N_X//2 , N_Y//2 , : ] = np.inf
+        # else:
+        #     f_radius[N_X//2 , N_Y//2 , N_frame//2 ] = np.inf
         return 1. / f_radius
 
 def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggabor):
@@ -204,12 +204,12 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     http://motionclouds.invibe.net/posts/testing-speed.html
 
     """
-    N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+    # N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
     if N_frame==1:
         env = np.ones_like(fx)
     elif B_V==0:
         env = np.zeros_like(fx)
-        env[:, :, N_frame//2] = 1.
+        env[ft==0] = 1.
     else:
         env = np.exp(-.5*((ft+fx*V_X+fy*V_Y))**2/(B_V*frequency_radius(fx, fy, ft, ft_0=ft_0))**2)
     return env
@@ -230,9 +230,9 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     if B_theta is np.inf: # for large bandwidth, returns a strictly flat envelope
         enveloppe_orientation = np.ones_like(fx)
     elif theta==0 and B_theta==0:
-        N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
+        # N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
         enveloppe_orientation = np.zeros_like(fx)
-        enveloppe_orientation[:, N_Y//2, :] = 1.
+        enveloppe_orientation[fy==0] = 1.
     else: # non pathological case
         angle = np.arctan2(fy, fx)
         enveloppe_orientation = np.exp(np.cos(2*(angle-theta))/4/B_theta**2)
@@ -558,7 +558,7 @@ def anim_save(z, filename, display=True, vext=vext,
         os.system('ffmpeg -i ' + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_)
         # 3) clean up
         remove_frames(tmpdir, files)
-        
+
     elif vext == '.mp4': # specially tuned for iPhone/iPod http://www.dudek.org/blog/82
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
