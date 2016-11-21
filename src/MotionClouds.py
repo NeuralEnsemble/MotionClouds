@@ -74,6 +74,36 @@ ext = '.png'
 T_movie = N_frame/100. # this value defines the duration in seconds of a temporal period (assuming a 100Hz refresh rate)
 SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat', '.png']
 
+def rectif(z_in, contrast=contrast, method=method, verbose=False):
+    """
+    Transforms an image (can be 1, 2 or 3D) with normal histogram into
+    a 0.5 centered image of determined contrast
+    method is either 'Michelson' or 'Energy'
+
+    Phase randomization takes any image and turns it into Gaussian-distributed
+    noise of the same power (or, equivalently, variance).
+    # See: Peter J. Bex J. Opt. Soc. Am. A/Vol. 19, No. 6/June 2002 Spatial
+    frequency, phase, and the contrast of natural images
+    """
+    z = z_in.copy()
+    # Final rectification
+    if verbose:
+        print('Before Rectification of the frames')
+        print( 'Mean=', np.mean(z[:]), ', std=', np.std(z[:]), ', Min=', np.min(z[:]), ', Max=', np.max(z[:]), ' Abs(Max)=', np.max(np.abs(z[:])))
+
+    z -= np.mean(z[:]) # this should be true *on average* in MotionClouds
+
+    if (method == 'Michelson'):
+        z = (.5* z/np.max(np.abs(z[:]))* contrast + .5)
+    else:
+        z = (.5* z/np.std(z[:])  * contrast + .5)
+
+    if verbose:
+        print('After Rectification of the frames')
+        print('Mean=', np.mean(z[:]), ', std=', np.std(z[:]), ', Min=', np.min(z[:]), ', Max=', np.max(z[:]))
+        print('percentage pixels clipped=', np.sum(np.abs(z[:])>1.)*100/z.size)
+    return z
+
 def get_grids(N_X, N_Y, N_frame):
     """
         Use that function to define a reference outline for envelopes in Fourier space.
@@ -91,7 +121,7 @@ def get_grids(N_X, N_Y, N_frame):
 
     return fx, fy, ft
 
-def frequency_radius(fx, fy, ft, ft_0=ft_0):
+def frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=False):
     """
      Returns the frequency radius. To see the effect of the scaling factor run
      'test_color.py'
@@ -100,11 +130,15 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0):
     #N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
     if ft_0==np.inf:
         f_radius2 = fx**2 + fy**2
-        #R2[N_X//2 , N_Y//2 , :] = np.inf
-        f_radius2[(fx*fy)==0] = np.inf
     else:
         f_radius2 = fx**2 + fy**2 + (ft/ft_0)**2 # cf . Paul Schrater 00
-        f_radius2[(fx*fy*ft)==0] = np.inf
+    if clean_division:
+        f_radius2[f_radius2==0] = np.inf
+        # if ft_0==np.inf:
+        #     f_radius2[(fx*fy)==0] = np.inf
+        # else:
+        #     f_radius2[(fx*fy*ft)==0] = np.inf
+
     return np.sqrt(f_radius2)
 
 def retina(fx, fy, ft, df=.07, sigma=.5):
@@ -153,12 +187,7 @@ def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     if alpha == 0.0:
         return np.ones_like(fx) #np.ones_like(fx)
     else:
-        # N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
-        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0)**alpha
-        # if ft_0==np.inf:
-        #     f_radius[N_X//2 , N_Y//2 , : ] = np.inf
-        # else:
-        #     f_radius[N_X//2 , N_Y//2 , N_frame//2 ] = np.inf
+        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)**alpha
         return 1. / f_radius
 
 def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggabor):
@@ -173,14 +202,14 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
     """
     if sf_0 == 0. or B_sf==np.inf:
         if loggabor:
-            fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
-            return 1./fr
+            f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)
+            return 1./f_radius
         else:
             return np.ones_like(fx)
     elif loggabor:
         # see http://en.wikipedia.org/wiki/Log-normal_distribution
-        fr = frequency_radius(fx, fy, ft, ft_0=ft_0)
-        env = 1./fr*np.exp(-.5*(np.log(fr/sf_0)**2)/(np.log((sf_0+B_sf)/sf_0)**2))
+        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)
+        env = 1./f_radius*np.exp(-.5*(np.log(f_radius/sf_0)**2)/(np.log((sf_0+B_sf)/sf_0)**2))
         return env
     else:
         return np.exp(-.5*(frequency_radius(fx, fy, ft, ft_0=ft_0) - sf_0)**2/B_sf**2)
@@ -212,7 +241,8 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
         env = np.zeros_like(fx)
         env[ft==0] = 1.
     else:
-        env = np.exp(-.5*((ft+fx*V_X+fy*V_Y))**2/(B_V*frequency_radius(fx, fy, ft, ft_0=ft_0))**2)
+        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)
+        env = np.exp(-.5*((ft+fx*V_X+fy*V_Y))**2/(B_V*f_radius)**2)
     return env
 
 def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
@@ -488,6 +518,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     else:
         app.quit()
         return im
+
 def check_if_anim_exist(filename, vext=vext, figpath=figpath, **kwargs):
     """
     Check if the movie already exists
@@ -553,8 +584,6 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-#        cmd = 'ffmpeg -v 0 -y -sameq -loop_output 0 -r ' + str(fps) + ' -i ' + tmpdir + '/frame%06d.png  ' + filename + vext # + ' 2>/dev/null')
-        #cmd = 'ffmpeg -v 0 -y -sameq  -loop_output 0 -i ' + tmpdir + '/frame%06d.png  ' + filename + vext # + ' 2>/dev/null')
         options = ' -f image2  -r ' + str(fps) + ' -y '
         os.system('ffmpeg -i ' + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_)
         # 3) clean up
@@ -564,9 +593,6 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-#         options = ' -y -f image2pipe -c:v png -i - -c:v libx264 -preset ultrafast -qp 0 -movflags +faststart -pix_fmt yuv420p '
-#         options += ' -g ' + str(fps) + '  -r ' + str(fps) + ' '
-#         cmd = 'cat '  + tmpdir + '/*.png  | ffmpeg '  + options + filename + vext + verb_
         options = ' -f mp4 -pix_fmt yuv420p -c:v libx264  -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
@@ -597,8 +623,6 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-#        options = ' -pix_fmt rgb24 -r ' + str(fps) + ' -loop_output 0 '
-#        os.system('ffmpeg -i '  + tmpdir + '/frame%06d.png  ' + options + filename + vext + ' 2>/dev/null')
         options = ' -set delay 8 -colorspace GRAY -colors 256 -dispose 1 -loop 0 '
         os.system('convert '  + tmpdir + '/frame*.png  ' + options + filename + vext + verb_)
         # 3) clean up
@@ -620,8 +644,8 @@ def anim_save(z, filename, display=True, vext=vext,
                 files_bmp = []
                 for fname in files:
                     fname_bmp = os.path.splitext(fname)[0] + '.bmp'
-                    # print fname_bmp
-                    os.system('convert ' + fname + ' ppm:- | convert -size 256x256+0 -colors 256 -colorspace Gray - BMP2:' + fname_bmp) # to generate 8-bit bmp (old format)
+                    # generates 8-bit bmp (old format)
+                    os.system('convert ' + fname + ' ppm:- | convert -size 256x256+0 -colors 256 -colorspace Gray - BMP2:' + fname_bmp)
                     files_bmp.append(fname_bmp)
                     zf.write(fname_bmp)
                 remove_frames(tmpdir=None, files=files_bmp)
@@ -643,7 +667,6 @@ def anim_save(z, filename, display=True, vext=vext,
         hf = openFile(filename + vext, 'w')
         o = hf.createCArray(hf.root, 'stimulus', Float32Atom(), z.shape)
         o = z
-        #   print o.shape
         hf.close()
     else:
         print(' WARNING: extension ', vext , 'not existing! ')
@@ -694,36 +717,6 @@ def play(z, T=5.):
         image.update()
         fig.redraw()
     glumpy.show()
-
-def rectif(z_in, contrast=contrast, method=method, verbose=False):
-    """
-    Transforms an image (can be 1, 2 or 3D) with normal histogram into
-    a 0.5 centered image of determined contrast
-    method is either 'Michelson' or 'Energy'
-
-    Phase randomization takes any image and turns it into Gaussian-distributed
-    noise of the same power (or, equivalently, variance).
-    # See: Peter J. Bex J. Opt. Soc. Am. A/Vol. 19, No. 6/June 2002 Spatial
-    frequency, phase, and the contrast of natural images
-    """
-    z = z_in.copy()
-    # Final rectification
-    if verbose:
-        print('Before Rectification of the frames')
-        print( 'Mean=', np.mean(z[:]), ', std=', np.std(z[:]), ', Min=', np.min(z[:]), ', Max=', np.max(z[:]), ' Abs(Max)=', np.max(np.abs(z[:])))
-
-    z -= np.mean(z[:]) # this should be true *on average* in MotionClouds
-
-    if (method == 'Michelson'):
-        z = (.5* z/np.max(np.abs(z[:]))* contrast + .5)
-    else:
-        z = (.5* z/np.std(z[:])  * contrast + .5)
-
-    if verbose:
-        print('After Rectification of the frames')
-        print('Mean=', np.mean(z[:]), ', std=', np.std(z[:]), ', Min=', np.min(z[:]), ', Max=', np.max(z[:]))
-        print('percentage pixels clipped=', np.sum(np.abs(z[:])>1.)*100/z.size)
-    return z
 
 def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
