@@ -127,17 +127,13 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=False):
      'test_color.py'
 
     """
-    #N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
     if ft_0==np.inf:
         f_radius2 = fx**2 + fy**2
     else:
         f_radius2 = fx**2 + fy**2 + (ft/ft_0)**2 # cf . Paul Schrater 00
+
     if clean_division:
-        f_radius2[f_radius2==0] = np.inf
-        # if ft_0==np.inf:
-        #     f_radius2[(fx*fy)==0] = np.inf
-        # else:
-        #     f_radius2[(fx*fy*ft)==0] = np.inf
+        f_radius2[f_radius2==0.] = np.inf
 
     return np.sqrt(f_radius2)
 
