@@ -663,11 +663,10 @@ def anim_save(z, filename, display=True, vext=vext,
         np.save(filename + vext, z)
 
     elif vext == '.h5':
-        from tables import openFile, Float32Atom
-        hf = openFile(filename + vext, 'w')
-        o = hf.createCArray(hf.root, 'stimulus', Float32Atom(), z.shape)
-        o = z
-        hf.close()
+        from tables import open_file, Float32Atom
+        with open_file(filename + vext, 'w') as hf:
+            o = hf.create_carray(hf.root, 'stimulus', Float32Atom(), z.shape)
+            o = z
     else:
         print(' WARNING: extension ', vext , 'not existing! ')
 
