@@ -183,8 +183,8 @@ def envelope_color(fx, fy, ft, alpha=alpha, ft_0=ft_0):
     if alpha == 0.0:
         return np.ones_like(fx) #np.ones_like(fx)
     else:
-        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)**alpha
-        return 1. / f_radius
+        f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)
+        return f_radius**(-alpha)
 
 def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggabor):
     """
@@ -198,8 +198,7 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
     """
     if sf_0 == 0. or B_sf==np.inf:
         if loggabor:
-            f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)
-            return 1./f_radius
+            return envelope_color(fx, fy, ft, alpha=1., ft_0=ft_0)
         else:
             return np.ones_like(fx)
     elif loggabor:
