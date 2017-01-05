@@ -2,7 +2,6 @@
 # -*- coding: utf-8 -*-
 from __future__ import division, print_function, absolute_import
 __author__ = "Laurent Perrinet INT - CNRS"
-__version__ = '0.3'
 __licence__ = 'GPLv2'
 """
 
@@ -838,4 +837,6 @@ def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embe
             <center><table border=none width=100% height=100%>
             <tr> <td width=100%><center><video {0} src="{2}" type="video/{1}"  width=100%\>
             </td></tr></table></center>""".format(opts, vext[1:], os.path.join(figpath, name + vext))
-        display(HTML(s))
+        html = HTML(s)
+        html.reload()
+        display(html)

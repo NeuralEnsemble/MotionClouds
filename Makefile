@@ -1,6 +1,6 @@
 default: doc
 
-VERSION=`python -c'import MotionClouds; print(MotionClouds.__version__)'`
+VERSION=`python3 -c'import MotionClouds; print(MotionClouds.__version__)'`
 
 test:
 	python test/test_color.py
@@ -44,4 +44,4 @@ pypi_docs:
 	open https://pypi.python.org/pypi?action=pkg_edit&name=$NAME
 
 clean:
-	rm -fr build dist results/* *.pyc **/*.pyc ./MotionClouds.egg-info ./src/MotionClouds.egg-info
+	rm -fr build dist results/* *.pyc **/*.pyc ./MotionClouds.egg-info ./MotionClouds/MotionClouds.egg-info

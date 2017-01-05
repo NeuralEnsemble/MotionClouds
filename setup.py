@@ -4,13 +4,13 @@ from setuptools import setup, find_packages
 
 NAME = "MotionClouds"
 import MotionClouds
-version = MotionClouds.__version__
+VERSION = MotionClouds.__version__
 
 setup(
     name = NAME,
-    version = version,
-    packages = find_packages('src', exclude='docs'),
-    package_dir = {'': 'src'},
+    version = VERSION,
+    packages = find_packages('MotionClouds', exclude='docs'),
+    package_dir = {'': 'MotionClouds'},
     py_modules = ['MotionClouds'],
     install_requires=['numpy'],
     extras_require={
@@ -26,7 +26,7 @@ setup(
     license = "GPLv2",
     keywords = ('computational neuroscience', 'simulation', 'analysis', 'visualization', 'parameters'),
     url = 'https://github.com/NeuralEnsemble/' + NAME, # use the URL to the github repo
-    download_url = 'https://github.com/NeuralEnsemble/' + NAME + '/tarball/' + version,
+    download_url = 'https://github.com/NeuralEnsemble/' + NAME + '/tarball/' + VERSION,
     classifiers = ['Development Status :: 3 - Alpha',
                    'Environment :: Console',
                    'License :: OSI Approved :: GNU General Public License (GPL)',
