@@ -228,8 +228,7 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     http://motionclouds.invibe.net/posts/testing-speed.html
 
     """
-    # N_X, N_Y, N_frame = fx.shape[0], fy.shape[1], ft.shape[2]
-    if N_frame==1:
+    if ft.shape[2]==1:
         env = np.ones_like(fx)
     elif B_V==0:
         env = np.zeros_like(fx)
