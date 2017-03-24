@@ -370,21 +370,21 @@ def visualize(z_in, azimuth=25., elevation=30.,
 
         energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
         fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)
-        tr_xy = scene.transforms.MatrixTransform()
+        tr_xy = scene.transforms.AffineTransform()
         tr_xy.rotate(90, (0, 0, 1))
         tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
         fourier_xy.transform = tr_xy
 
         energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
         fourier_xt = scene.visuals.Image(energy_xt, **opts)
-        tr_xt = scene.transforms.MatrixTransform()
+        tr_xt = scene.transforms.AffineTransform()
         tr_xt.rotate(90, (1, 0, 0))
         tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
         fourier_xt.transform = tr_xt
 
         energy_yt = np.max(z, axis=0)[:, ::-1]
         fourier_yt = scene.visuals.Image(energy_yt, **opts)
-        tr_yt = scene.transforms.MatrixTransform()
+        tr_yt = scene.transforms.AffineTransform()
         tr_yt.rotate(90, (0, 1, 0))
         tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
         fourier_yt.transform = tr_yt
@@ -470,19 +470,19 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
 
     opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
     image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
-    tr_xy = scene.transforms.MatrixTransform()
+    tr_xy = scene.transforms.AffineTransform()
     tr_xy.rotate(90, (1, 0, 0))
     tr_xy.translate((-N_X/2, -N_frame/2, -N_Y/2))
     image_xy.transform = tr_xy
 
     image_xt = scene.visuals.Image(np.fliplr(im[:, -1, :]), **opts)
-    tr_xt = scene.transforms.MatrixTransform()
+    tr_xt = scene.transforms.AffineTransform()
     tr_xt.rotate(90, (0, 0, 1))
     tr_xt.translate((N_X/2, -N_frame/2, N_Y/2))
     image_xt.transform = tr_xt
 
     image_yt = scene.visuals.Image(np.rot90(im[-1, :, :], 1), **opts)
-    tr_yt = scene.transforms.MatrixTransform()
+    tr_yt = scene.transforms.AffineTransform()
     tr_yt.rotate(90, (0, 1, 0))
     tr_yt.translate((+N_X/2, -N_frame/2, N_Y/2))
     image_yt.transform = tr_yt
@@ -713,7 +713,7 @@ def play(z, T=5.):
 def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
                     theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
-                    seed=None, impulse=False, do_amp=False, verbose=False, figpath=figpath, **kwargs):
+                    seed=None, impulse=False, do_amp=False, verbose=False, figpath=figpath, return_envelope = False, **kwargs):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
     movies directly from the parameters.
@@ -725,7 +725,9 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)
     figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie, recompute=recompute,
-                    seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, **kwargs)
+                    seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, figpath=figpath, **kwargs)
+    if return_envelope:
+        return z
 
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
                     seed=None, impulse=False, verbose=False, masking=False, do_amp=False, figpath=figpath, **kwargs):
