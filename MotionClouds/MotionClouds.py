@@ -349,6 +349,11 @@ def visualize(z_in, azimuth=25., elevation=30.,
     z /= z.max()
 
     from vispy import app, scene
+    try:
+        AffineTransform = scene.transforms.AffineTransform
+    except:
+        AffineTransform = scene.transforms.MatrixTransform
+
     app.use_app('pyglet')
     #from vispy.util.transforms import perspective, translate, rotate
     from vispy.color import Color
@@ -370,21 +375,21 @@ def visualize(z_in, azimuth=25., elevation=30.,
 
         energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
         fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)
-        tr_xy = scene.transforms.AffineTransform()
+        tr_xy = AffineTransform()
         tr_xy.rotate(90, (0, 0, 1))
         tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
         fourier_xy.transform = tr_xy
 
         energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
         fourier_xt = scene.visuals.Image(energy_xt, **opts)
-        tr_xt = scene.transforms.AffineTransform()
+        tr_xt = AffineTransform()
         tr_xt.rotate(90, (1, 0, 0))
         tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
         fourier_xt.transform = tr_xt
 
         energy_yt = np.max(z, axis=0)[:, ::-1]
         fourier_yt = scene.visuals.Image(energy_yt, **opts)
-        tr_yt = scene.transforms.AffineTransform()
+        tr_yt = AffineTransform()
         tr_yt.rotate(90, (0, 1, 0))
         tr_yt.translate((-N_X/2, -N_Y/2, N_frame/2))
         fourier_yt.transform = tr_yt
@@ -453,6 +458,11 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
     import numpy as np
     from vispy import app, scene
+    try:
+        AffineTransform = scene.transforms.AffineTransform
+    except:
+        AffineTransform = scene.transforms.MatrixTransform
+    
     app.use_app('pyglet')
     from vispy.util.transforms import perspective, translate, rotate
     canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
@@ -470,19 +480,19 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
 
     opts = {'parent':view.scene, 'cmap':'grays', 'clim':(0., 1.)}
     image_xy = scene.visuals.Image(np.rot90(im[:, :, 0], 3), **opts)
-    tr_xy = scene.transforms.AffineTransform()
+    tr_xy = AffineTransform()
     tr_xy.rotate(90, (1, 0, 0))
     tr_xy.translate((-N_X/2, -N_frame/2, -N_Y/2))
     image_xy.transform = tr_xy
 
     image_xt = scene.visuals.Image(np.fliplr(im[:, -1, :]), **opts)
-    tr_xt = scene.transforms.AffineTransform()
+    tr_xt = AffineTransform()
     tr_xt.rotate(90, (0, 0, 1))
     tr_xt.translate((N_X/2, -N_frame/2, N_Y/2))
     image_xt.transform = tr_xt
 
     image_yt = scene.visuals.Image(np.rot90(im[-1, :, :], 1), **opts)
-    tr_yt = scene.transforms.AffineTransform()
+    tr_yt = AffineTransform()
     tr_yt.rotate(90, (0, 1, 0))
     tr_yt.translate((+N_X/2, -N_frame/2, N_Y/2))
     image_yt.transform = tr_yt
