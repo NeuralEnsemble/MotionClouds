@@ -2,10 +2,9 @@
 
 **MotionClouds** are random dynamic stimuli optimized to study motion perception.
 
-In particular, these stimuli can be made closer to naturalistic textures compared to usual stimuli such as gratings and random-dot kinetograms. These have controlled information content: We simplified the definition to parametrically define these "Motion Clouds" around the most prevalent feature axis (mean and bandwith): direction, scale (spatial frequency), orientation. These scripts implement a framework to generate these random texture movies. 
+In particular, these stimuli can be made closer to naturalistic textures compared to usual stimuli such as gratings and random-dot kinetograms. These have controlled information content: We simplified the definition to parametrically define these "Motion Clouds" around the most prevalent feature axis (mean and bandwith): direction, scale (spatial frequency), orientation. These scripts implement a framework to generate these random texture movies.
 
-<center><img src="http://www.motionclouds.invibe.net/files/grating.gif" width="50%"></center>
-
+![A vanilla Motion Cloud](http://www.motionclouds.invibe.net/files/grating.gif)
 
 * to install the package, run:
 ````
@@ -137,7 +136,7 @@ pip3 install -U numexpr
 pip3 install -U tables
 
 # brew uninstall wxpython
-pip3 install -U psychopy
+# pip3 install -U psychopy # psychopy does not yet support python 3
 
 pip3 install -U psutil
 pip3 install -U pyprind
