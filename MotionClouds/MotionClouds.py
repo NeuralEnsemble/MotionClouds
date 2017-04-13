@@ -373,21 +373,21 @@ def visualize(z_in, azimuth=25., elevation=30.,
         cm = Colormap([(1.0, 1.0, 1.0, 1.0), 'k'])
         opts = {'parent':view.scene, 'cmap':cm, 'clim':(0., 1.)}
 
-        energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)
+        energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)[:, ::-1]
         fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)
         tr_xy = AffineTransform()
         tr_xy.rotate(90, (0, 0, 1))
         tr_xy.translate((N_X/2, -N_Y/2, -N_frame/2))
         fourier_xy.transform = tr_xy
 
-        energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)
+        energy_xt = np.rot90(np.max(z, axis=1)[:, ::-1], 3)[::-1, ::-1]
         fourier_xt = scene.visuals.Image(energy_xt, **opts)
         tr_xt = AffineTransform()
         tr_xt.rotate(90, (1, 0, 0))
         tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
         fourier_xt.transform = tr_xt
 
-        energy_yt = np.max(z, axis=0)[:, ::-1]
+        energy_yt = np.max(z, axis=0)#[:, ::-1]
         fourier_yt = scene.visuals.Image(energy_yt, **opts)
         tr_yt = AffineTransform()
         tr_yt.rotate(90, (0, 1, 0))
@@ -462,7 +462,7 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
         AffineTransform = scene.transforms.AffineTransform
     except:
         AffineTransform = scene.transforms.MatrixTransform
-    
+
     app.use_app('pyglet')
     from vispy.util.transforms import perspective, translate, rotate
     canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
@@ -809,7 +809,7 @@ def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embe
             <td><center><img src="data:image/png;base64,{4}" width=100%/></td>
             </tr>
             </table></center>""".format(im1, im3, opts, vext[1:], im2)
-            display(HTML(s))
+            # display(HTML(s))
         except:
             video = open(os.path.join(figpath, name + vext), "rb").read()
             video_encoded = b64encode(video).decode("utf-8")
@@ -817,7 +817,7 @@ def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embe
             <center><table border=none width=100% height=100%>
             <tr> <td width=100%><center><video {0} src="data:video/{1};base64,{2}" width=100%\>
             </td></tr></table></center>""".format(opts, vext[1:], video_encoded)
-            display(HTML(s))
+            # display(HTML(s))
     else:
         if os.path.isfile(os.path.join(figpath, name + ext)) and os.path.isfile(os.path.join(figpath, name + '_cube' + ext)):
             if os.path.isfile(os.path.join(figpath, name + vext)):
@@ -848,6 +848,6 @@ def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embe
             <center><table border=none width=100% height=100%>
             <tr> <td width=100%><center><video {0} src="{2}" type="video/{1}"  width=100%\>
             </td></tr></table></center>""".format(opts, vext[1:], os.path.join(figpath, name + vext))
-        html = HTML(s)
-        html.reload()
-        display(html)
+    html = HTML(s)
+    html.reload()
+    display(html)
