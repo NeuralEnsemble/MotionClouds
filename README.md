@@ -41,7 +41,7 @@ pip3 install --user  -U pyglet
 pip3 install --user git+https://github.com/vispy/vispy
 ```
 
-* to install the dependencies on a MacOsX system:
+* to install the dependencies on a MacOs system:
 ```bash
 #!/bin/bash
 
