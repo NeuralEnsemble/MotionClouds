@@ -35,9 +35,9 @@ sudo aptitude upgrade
 # 3) full install with python editor and libraries for various export types
 
 sudo aptitude install python3-pip python3-numpy python3-matplotlib spyder python3-tables imagemagick texlive-latex-recommended latexmk latexdiff zip ipython3 psychopy
-sudo aptitude install ffmpeg python-pyglet
 
 # vispy
+pip3 install --user  -U pyglet
 pip3 install --user git+https://github.com/vispy/vispy
 ```
 
