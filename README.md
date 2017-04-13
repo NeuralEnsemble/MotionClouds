@@ -139,24 +139,22 @@ brew install imagemagick
 brew install x264
 brew install ffmpeg --with-libvpx
 
-pip3 install -U git+https://github.com/NeuralEnsemble/MotionClouds
-
 # Remove outdated versions from the cellar
 brew cleanup
-python -c 'import MotionClouds as mc; fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, mc.N_frame); z = mc.envelope_gabor(fx, fy, ft); mc.figures(z, "test")'
-
 ````
 
-* to install the latest version, use:
+* finally, install the latest version:
 ````
 pip3 install git+https://github.com/NeuralEnsemble/MotionClouds.git
 ````
 
+* test your installation using for instance:
+````
+python3 -c 'import MotionClouds as mc; fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, mc.N_frame); z = mc.envelope_gabor(fx, fy, ft); mc.figures(z, "test")'
+````
 
 * for more documentation, visit the MotionClouds website:
 http://motionclouds.invibe.net/
-
-
 
 
 The description of this method was published in:
