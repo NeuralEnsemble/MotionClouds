@@ -340,7 +340,6 @@ def visualize(z_in, azimuth=25., elevation=30.,
     z : envelope of the cloud
 
     """
-    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     z = z_in.copy()
     N_X, N_Y, N_frame = z.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
@@ -451,7 +450,6 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     Visualization of the stimulus as a cube
 
     """
-    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
@@ -748,7 +746,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
     The figures names are automatically generated.
 
     """
-
+    if not(os.path.isdir(figpath)): os.mkdir(figpath)
 
     if do_figs and not z is None:
         if recompute or check_if_anim_exist(name, vext=ext):
