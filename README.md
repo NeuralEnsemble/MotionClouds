@@ -22,7 +22,6 @@ sudo aptitude upgrade
 
 # A script for the impatient:
 # uncomment to fit your installation preference
-# others should read the README.txt doc.
 
 # 1) minimal install
 
@@ -115,7 +114,7 @@ pip3 install -U git+https://github.com/vispy/vispy
 
 # HDF export
 brew install hdf5
-pip3 install cython==0.13 #tables doesn't build with last upgrade
+pip3 install cython
 pip3 install -U numexpr
 pip3 install -U tables
 
@@ -134,11 +133,11 @@ brew install ffmpeg --with-libvpx
 
 # Remove outdated versions from the cellar
 brew cleanup
-````
+```
 
 * finally, install the latest version:
 ```bash
-pip3 install git+https://github.com/NeuralEnsemble/MotionClouds.git
+pip3 install --user git+https://github.com/NeuralEnsemble/MotionClouds.git
 ```
 
 * test your installation using for instance:
