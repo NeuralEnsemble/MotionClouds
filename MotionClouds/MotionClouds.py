@@ -203,7 +203,7 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
     elif loggabor:
         # see http://en.wikipedia.org/wiki/Log-normal_distribution
         f_radius = frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=True)
-        env = 1./f_radius*np.exp(-.5*(np.log(f_radius/sf_0)**2)/(np.log((sf_0+B_sf)/sf_0)**2))
+        env = 1./f_radius*np.exp(-.5*(np.log(f_radius/sf_0)**2)/((np.log((sf_0+B_sf)/sf_0))**2))
         return env
     else:
         return np.exp(-.5*(frequency_radius(fx, fy, ft, ft_0=ft_0) - sf_0)**2/B_sf**2)
