@@ -340,7 +340,6 @@ def visualize(z_in, azimuth=25., elevation=30.,
     z : envelope of the cloud
 
     """
-    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     z = z_in.copy()
     N_X, N_Y, N_frame = z.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
@@ -444,15 +443,13 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
          ext=ext, do_axis=True, show_label=True,
          cube_label = {'x':'x', 'y':'y', 't':'t'},
          colormap='gray', roll=-180., vmin=0., vmax=1.,
-         figsize=figsize, figpath=figpath, **kwargs):
+         figsize=figsize, **kwargs):
 
     """
 
     Visualization of the stimulus as a cube
 
     """
-    if not(os.path.isdir(figpath)): os.mkdir(figpath)
-
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
