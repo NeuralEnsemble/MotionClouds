@@ -1,5 +1,10 @@
 # MotionClouds
 
+
+[![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/NeuralEnsemble/MotionClouds/master)
+[![PyPI version](https://badge.fury.io/py/MotionClouds.svg)](https://badge.fury.io/py/MotionClouds)
+[![Research software impact](http://depsy.org/api/package/pypi/MotionClouds/badge.svg)](http://depsy.org/package/python/MotionClouds)
+
 **MotionClouds** are random dynamic stimuli optimized to study motion perception.
 
 In particular, these stimuli can be made closer to naturalistic textures compared to usual stimuli such as gratings and random-dot kinetograms. These have controlled information content: We simplified the definition to parametrically define these "Motion Clouds" around the most prevalent feature axis (mean and bandwith): direction, scale (spatial frequency), orientation. These scripts implement a framework to generate these random texture movies.
