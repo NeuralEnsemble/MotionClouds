@@ -340,6 +340,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
     z : envelope of the cloud
 
     """
+    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     z = z_in.copy()
     N_X, N_Y, N_frame = z.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
@@ -431,13 +432,13 @@ def visualize(z_in, azimuth=25., elevation=30.,
     cam.set_range((-N_X/2*margin, N_X/2/margin), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2*margin, N_frame/2/margin))
     view.camera = cam
 
-    im = canvas.render(size=figsize)
+    render_im = canvas.render(size=figsize)
     app.quit()
     if not(name is None):
         import vispy.io as io
-        io.write_png(name + ext, im)
+        io.write_png(name + ext, render_im)
     else:
-        return im
+        return render_im
 
 def cube(im_in, azimuth=30., elevation=45., name=None,
          ext=ext, do_axis=True, show_label=True,
@@ -450,6 +451,8 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     Visualization of the stimulus as a cube
 
     """
+    if not(os.path.isdir(figpath)): os.mkdir(figpath)
+
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
@@ -718,7 +721,7 @@ def play(z, T=5.):
         fig.redraw()
     glumpy.show()
 
-def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
+def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
                     theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
                     seed=None, impulse=False, do_amp=False, verbose=False, figpath=figpath, return_envelope = False, **kwargs):
@@ -729,6 +732,7 @@ def figures_MC(fx, fy, ft, name, V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
     The figures names are automatically generated.
 
     """
+    if not(os.path.isdir(figpath)): os.mkdir(figpath)
     z = envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)

@@ -1,0 +1,7 @@
+numpy
+scipy
+NeuroTools
+matplotlib
+IPython
+watermark
+version_information
