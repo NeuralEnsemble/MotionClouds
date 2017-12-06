@@ -7,3 +7,4 @@ watermark
 version_information
 vispy
 pyglet
+imageio
