@@ -4,7 +4,7 @@ from setuptools import setup, find_packages
 
 NAME = "MotionClouds"
 import MotionClouds
-VERSION = MotionClouds.__version__
+VERSION = MotionClouds.__version__ # << to change in __init__.py
 
 setup(
     name = NAME,
