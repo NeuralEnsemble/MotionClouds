@@ -36,7 +36,8 @@ pypi_push:
 	python3 setup.py register
 
 pypi_upload:
-	python3 setup.py sdist upload
+	python3 setup.py sdist #upload
+	twine upload dist/*
 
 pypi_docs:
 	rm web.zip
