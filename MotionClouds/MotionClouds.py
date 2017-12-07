@@ -751,7 +751,10 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     if do_figs and not z is None:
         if recompute or check_if_anim_exist(name, vext=ext):
-            visualize(z, name=os.path.join(figpath, name), **kwargs)           # Visualize the Fourier Spectrum
+            try
+                visualize(z, name=os.path.join(figpath, name), **kwargs)           # Visualize the Fourier Spectrum
+            except Exception as e:
+                print('Failed to generate the visualisation:', e)
 
     if do_movie or do_figs:
             #if recompute:# or not(check_if_anim_exist(name, vext=vext) or check_if_anim_exist(name + '_cube', vext=ext)):
@@ -759,11 +762,16 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     if do_figs:
         if recompute or check_if_anim_exist(name + '_cube', vext=ext):
-            cube(movie, name=os.path.join(figpath, name + '_cube'), **kwargs)   # Visualize the Stimulus cube
-
+            try:
+                cube(movie, name=os.path.join(figpath, name + '_cube'), **kwargs)   # Visualize the Stimulus cube
+            except Exception as e:
+                print('Failed to generate the cube:', e)
     if do_movie:
         if recompute or check_if_anim_exist(name, vext=vext):
-            anim_save(movie, os.path.join(figpath, name), display=False, vext=vext, **kwargs)
+            try
+                anim_save(movie, os.path.join(figpath, name), display=False, vext=vext, **kwargs)
+            except Exception as e:
+                print('Failed to generate the movie:', e)
 
 def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embed=False, figpath=figpath, **kwargs):
     """
