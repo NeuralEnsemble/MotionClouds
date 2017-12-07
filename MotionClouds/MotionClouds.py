@@ -751,7 +751,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     if do_figs and not z is None:
         if recompute or check_if_anim_exist(name, vext=ext):
-            try
+            try:
                 visualize(z, name=os.path.join(figpath, name), **kwargs)           # Visualize the Fourier Spectrum
             except Exception as e:
                 print('Failed to generate the visualisation:', e)
@@ -768,7 +768,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
                 print('Failed to generate the cube:', e)
     if do_movie:
         if recompute or check_if_anim_exist(name, vext=vext):
-            try
+            try:
                 anim_save(movie, os.path.join(figpath, name), display=False, vext=vext, **kwargs)
             except Exception as e:
                 print('Failed to generate the movie:', e)
