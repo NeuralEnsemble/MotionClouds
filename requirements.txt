@@ -8,3 +8,4 @@ version_information
 vispy
 pyglet
 imageio
+pyopengl

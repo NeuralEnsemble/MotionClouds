@@ -347,13 +347,13 @@ def visualize(z_in, azimuth=25., elevation=30.,
     # Normalize the amplitude.
     z /= z.max()
 
-    from vispy import app, scene
+    from vispy import app, scene, use
     try:
         AffineTransform = scene.transforms.AffineTransform
     except:
         AffineTransform = scene.transforms.MatrixTransform
 
-    app.use_app('pyglet')
+    use(app='pyglet', gl='pyopengl2')
     #from vispy.util.transforms import perspective, translate, rotate
     from vispy.color import Color
     transparent = Color(color='black', alpha=0.)
@@ -455,13 +455,13 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
     N_X, N_Y, N_frame = im.shape
     fx, fy, ft = get_grids(N_X, N_Y, N_frame)
     import numpy as np
-    from vispy import app, scene
+    from vispy import app, scene, use
     try:
         AffineTransform = scene.transforms.AffineTransform
     except:
         AffineTransform = scene.transforms.MatrixTransform
 
-    app.use_app('pyglet')
+    use(app='pyglet', gl='pyopengl2')
     from vispy.util.transforms import perspective, translate, rotate
     canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
     view = canvas.central_widget.add_view()
