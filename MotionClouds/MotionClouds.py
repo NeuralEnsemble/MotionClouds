@@ -739,7 +739,7 @@ def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=T
         return z
 
 def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
-                    seed=None, impulse=False, verbose=False, masking=False, do_amp=False, figpath=figpath, **kwargs):
+                    seed=None, impulse=False, events=None, verbose=False, masking=False, do_amp=False, figpath=figpath, **kwargs):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
     and the stimulus cubes and movies.
@@ -758,7 +758,7 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
 
     if do_movie or do_figs:
             #if recompute:# or not(check_if_anim_exist(name, vext=vext) or check_if_anim_exist(name + '_cube', vext=ext)):
-            movie = rectif(random_cloud(z, seed=seed, impulse=impulse, do_amp=do_amp), verbose=verbose)
+            movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
 
     if do_figs:
         if recompute or check_if_anim_exist(name + '_cube', vext=ext):
