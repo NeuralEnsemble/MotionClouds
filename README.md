@@ -4,6 +4,7 @@
 [![Binder](https://mybinder.org/badge.svg)](https://mybinder.org/v2/gh/NeuralEnsemble/MotionClouds/master)
 [![PyPI version](https://badge.fury.io/py/MotionClouds.svg)](https://badge.fury.io/py/MotionClouds)
 [![Research software impact](http://depsy.org/api/package/pypi/MotionClouds/badge.svg)](http://depsy.org/package/python/MotionClouds)
+[![DOI](https://zenodo.org/badge/25257908.svg)](https://zenodo.org/badge/latestdoi/25257908)
 
 **MotionClouds** are random dynamic stimuli optimized to study motion perception.
 
