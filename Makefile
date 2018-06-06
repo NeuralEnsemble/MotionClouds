@@ -1,22 +1,23 @@
 default: doc
 
 VERSION=`python3 -c'import MotionClouds; print(MotionClouds.__version__)'`
+PYTHON = python3
 
 test:
-	python3 test/test_color.py
-	python3 test/test_grating.py
-	python3 test/test_radial.py
-	python3 test/test_speed.py
+	$(PYTHON)  test/test_color.py
+	$(PYTHON)  test/test_grating.py
+	$(PYTHON) test/test_radial.py
+	$(PYTHON) test/test_speed.py
 
 figures:
-	python3 figures/fig_artwork_eschercube.py
-	python3 figures/fig_contrast.py
-	python3 figures/fig_wave.py
+	$(PYTHON) figures/fig_artwork_eschercube.py
+	$(PYTHON) figures/fig_contrast.py
+	$(PYTHON) figures/fig_wave.py
 
 wiki:
-	python3 wiki/fig_ApertureProblem.py
-	python3 wiki/fig_MotionPlaid.py
-	python3 wiki/fig_orientation.py
+	$(PYTHON) wiki/fig_ApertureProblem.py
+	$(PYTHON) wiki/fig_MotionPlaid.py
+	$(PYTHON) wiki/fig_orientation.py
 
 doc:
 	@(cd doc && $(MAKE))
@@ -33,7 +34,7 @@ pypi_tags:
 	git push --tags origin master
 
 pypi_upload:
-	python3 setup.py sdist #upload
+	$(PYTHON) setup.py sdist #upload
 	twine upload dist/*
 
 pypi_docs:
