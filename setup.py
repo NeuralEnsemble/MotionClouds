@@ -1,5 +1,3 @@
-#!/usr/bin/env python3
-# -*- coding: utf8 -*-
 from setuptools import setup, find_packages
 
 NAME = "MotionClouds"
@@ -27,7 +25,7 @@ setup(
     keywords = ('computational neuroscience', 'simulation', 'analysis', 'visualization', 'parameters'),
     url = 'https://github.com/NeuralEnsemble/' + NAME, # use the URL to the github repo
     download_url = 'https://github.com/NeuralEnsemble/' + NAME + '/tarball/' + VERSION,
-    classifiers = ['Development Status :: 3 - Alpha',
+    classifiers = ['Development Status :: 5 - Stable',
                    'Environment :: Console',
                    'License :: OSI Approved :: GNU General Public License (GPL)',
                    'Operating System :: POSIX',
@@ -35,8 +33,6 @@ setup(
                    'Topic :: Scientific/Engineering :: Visualization',
                    'Topic :: Scientific/Engineering',
                    'Topic :: Utilities',
-                   'Programming Language :: Python :: 2',
-                   'Programming Language :: Python :: 2.7',
                    'Programming Language :: Python :: 3',
                    'Programming Language :: Python :: 3.5',
                   ],
