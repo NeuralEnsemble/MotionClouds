@@ -1,5 +1,4 @@
 __author__ = "Laurent Perrinet INT - CNRS"
-__version__ = '20180606'
 __licence__ = 'GPLv2'
 """
 
@@ -297,7 +296,7 @@ shape
 
     (N_X, N_Y, N_frame) = envelope.shape
     amps = 1.
-    if impulse: # TODO: becomes obsolete with the events matrix (singleton)
+    if impulse:
         fx, fy, ft = get_grids(N_X, N_Y, N_frame)
         phase = -2*np.pi*(N_X/2*fx + N_Y/2*fy + N_frame/2*ft)
         F_events = np.exp(1j * phase)
@@ -535,11 +534,6 @@ def anim_save(z, filename, display=True, vext=vext,
     The input pixel values are supposed to lie in the [0, 1.] range.
 
     """
-    if verbose==True:
-        try:
-            import pyprind as progressbar
-        except:
-            verbose = False
 
     import tempfile
 #     from scipy.misc.pilutil import toimage
@@ -555,17 +549,18 @@ def anim_save(z, filename, display=True, vext=vext,
 
         if verbose:
             print('Saving sequence ' + filename + ' as a ' +  vext + ' format')
-            pbar = progressbar.ProgPercent(N_frame, monitor=True)
         for frame in range(N_frame):
-            if verbose: pbar.update()
             fname = 'frame%06d.png' % frame
             full_fname = os.path.join(tmpdir, fname)
             image = np.rot90(z[..., frame])
             imageio.imsave(full_fname, (image*255).astype(np.uint8), compression=0, quantize=256)
             files.append(fname)
-
-        if verbose: print(pbar)
         return tmpdir, files
+
+    def test_ffmpeg():
+        ret = os.system('ffmpeg -version')
+        if not ret==0:
+            raise Exception('Do you have ffmpeg installed in your PATH?')
 
     def remove_frames(tmpdir, files):
         """
@@ -583,6 +578,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
+        test_ffmpeg()
         options = ' -f image2  -r ' + str(fps) + ' -y '
         os.system('ffmpeg -i ' + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_)
         # 3) clean up
@@ -592,6 +588,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
+        test_ffmpeg()
         options = ' -f mp4 -pix_fmt yuv420p -c:v libx264  -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
@@ -602,6 +599,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
+        test_ffmpeg()
         options = ' -f webm  -pix_fmt yuv420p -vcodec libvpx -qmax 12 -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
@@ -612,6 +610,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
+        test_ffmpeg()
         options = ' -y -f image2pipe -c:v png -i - -c:v libx264 -preset ultrafast -qp 0 -movflags +faststart -pix_fmt yuv420p  -g ' + str(fps) + '  -r ' + str(fps) + + ' -y '
         cmd = 'cat '  + tmpdir + '/*.png  | ffmpeg '  + options + filename + vext + verb_
         os.system(cmd)
@@ -622,6 +621,9 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
+        ret = os.system('convert -version')
+        if not ret==0:
+            raise Exception('Do you have convert installed in your PATH?')
         options = ' -set delay 8 -colorspace GRAY -colors 256 -dispose 1 -loop 0 '
         os.system('convert '  + tmpdir + '/frame*.png  ' + options + filename + vext + verb_)
         # 3) clean up
