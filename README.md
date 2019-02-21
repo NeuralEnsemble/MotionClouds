@@ -46,10 +46,8 @@ While this method was used in the following paper:
 
 This work was supported by the European Union project Number FP7-269921, ``BrainScaleS'' (Brain-inspired multiscale computation in neuromorphic hybrid systems), an EU FET-Proactive FP7 funded research project. The project started on 1 January 2011. It is a collaboration of 18 research groups from 10 European countries.
 
-<img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/e/e2/Public--BrainScalesLogo.svg/100px-Public--BrainScalesLogo.svg.png" width="10%">
-<img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/8/88/Public--FET--FETTreeLogo.jpg/70px-Public--FET--FETTreeLogo.jpg" width="10%">
-<img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/3/3b/Public--EU-FP7Logo.gif/90px-Public--EU-FP7Logo.gif" width="10%">
-<img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/5/5b/Public--EU-Logo.gif/90px-Public--EU-Logo.gif" width="10%">
+<img src="https://sos-ch-dk-2.exo.io/public-website-production/filer_public_thumbnails/filer_public/8d/2f/8d2f76cf-fa68-4c92-aa39-5d5434a677b4/public-brainscaleslogo_withwhitebackground_600dpi.png__1170x0_q85_subsampling-2_upscale.png" width="20%">
+<img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/5/5b/Public--EU-Logo.gif/90px-Public--EU-Logo.gif" width="20%">
 
 ***
 ## Code example - [demo](http://motionclouds.invibe.net/posts/testing_components.html)
