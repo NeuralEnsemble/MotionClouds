@@ -137,7 +137,7 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=False):
 def retina(fx, fy, ft, df=.07, sigma=.5):
     """
     A parametric description of the envelope of retinal processsing.
-    See http://blog.invibe.net/posts/2015-05-21-a-simple-pre-processing-filter-for-image-processing.html
+    See https://laurentperrinet.github.io/sciblog/posts/2015-05-21-a-simple-pre-processing-filter-for-image-processing.html
     for more information.
 
     In digital images, some of the energy in Fourier space is concentrated outside the
@@ -297,7 +297,7 @@ shape
 
     (N_X, N_Y, N_frame) = envelope.shape
     amps = 1.
-    if impulse: # TODO: becomes obsolete with the events matrix (singleton)
+    if impulse:
         fx, fy, ft = get_grids(N_X, N_Y, N_frame)
         phase = -2*np.pi*(N_X/2*fx + N_Y/2*fy + N_frame/2*ft)
         F_events = np.exp(1j * phase)

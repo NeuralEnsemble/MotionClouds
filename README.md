@@ -38,11 +38,11 @@ http://motionclouds.invibe.net/
 
 The description of this method was published in:
 
-* Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. _Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception._ [**Journal of Neurophysiology**](http://jn.physiology.org/content/early/2012/03/10/jn.00737.2011), 107(11):3217--3226, 2012  [URL](http://invibe.net/LaurentPerrinet/Publications/Sanz12) - [reprint](http://www.motionclouds.invibe.net/files/MotionClouds.pdf) - [Supplementary Information](http://www.motionclouds.invibe.net/files/MotionClouds_Supplementary.pdf) - [Supplementary Videos](http://www.motionclouds.invibe.net/files/MotionClouds_VideoFigures.pdf)
+* Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. _Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception._ [**Journal of Neurophysiology**](http://jn.physiology.org/content/early/2012/03/10/jn.00737.2011), 107(11):3217--3226, 2012  [URL](https://laurentperrinet.github.io/publication/sanz-12/) - [reprint](http://www.motionclouds.invibe.net/files/MotionClouds.pdf) - [Supplementary Information](http://www.motionclouds.invibe.net/files/MotionClouds_Supplementary.pdf) - [Supplementary Videos](http://www.motionclouds.invibe.net/files/MotionClouds_VideoFigures.pdf)
 
 While this method was used in the following paper:
 
-* Claudio Simoncini, Laurent U. Perrinet, Anna Montagnini, Pascal Mamassian, Guillaume S. Masson. _More is not always better: dissociation between perception and action explained by adaptive gain control._ [**Nature Neuroscience**](http://www.nature.com/neuro/journal/v15/n11/full/nn.3229.html), 2012 [URL](http://invibe.net/LaurentPerrinet/Publications/Simoncini12)
+* Claudio Simoncini, Laurent U. Perrinet, Anna Montagnini, Pascal Mamassian, Guillaume S. Masson. _More is not always better: dissociation between perception and action explained by adaptive gain control._ [**Nature Neuroscience**](http://www.nature.com/neuro/journal/v15/n11/full/nn.3229.html), 2012 [URL](https://laurentperrinet.github.io/publication/simoncini-12/)
 
 This work was supported by the European Union project Number FP7-269921, ``BrainScaleS'' (Brain-inspired multiscale computation in neuromorphic hybrid systems), an EU FET-Proactive FP7 funded research project. The project started on 1 January 2011. It is a collaboration of 18 research groups from 10 European countries.
 
