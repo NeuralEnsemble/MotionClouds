@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Instructions for Psychophysicists | Motion Clouds</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/bootblog.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="canonical" href="https://motionclouds.invibe.net/posts/instructions-for-psychophysicists.html">
+<link rel="icon" href="favicon.ico" sizes="16x16">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+    },
+    displayAlign: 'center', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]--><meta name="author" content="Laurent Perrinet">
+<link rel="prev" href="testing-color.html" title="Testing Color" type="text/html">
+<link rel="next" href="eschercube.html" title="Eschercube" type="text/html">
+<meta property="og:site_name" content="Motion Clouds">
+<meta property="og:title" content="Instructions for Psychophysicists">
+<meta property="og:url" content="https://motionclouds.invibe.net/posts/instructions-for-psychophysicists.html">
+<meta property="og:description" content="making experiments using motionclouds¶making psychophysics using psychopy¶installation (preparation 3min, cooking / downloading 10 min)¶
+it is easy to create a simple psychophysical experiment using a">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-10-14T10:37:55+02:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+<!-- Custom search -->
+<form method="get" id="search" action="//duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://motionclouds.invibe.net/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://motionclouds.invibe.net/">
+
+            <span id="blog-title">Motion Clouds</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="instructions-for-psychophysicists.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../index.html" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../archive.html" class="nav-link">How-to</a>
+                </li>
+<li class="nav-item">
+<a href="https://laurentperrinet.github.io/sciblog/categories/motionclouds.html" class="nav-link">Examples</a>
+                </li>
+<li class="nav-item">
+<a href="../install.html" class="nav-link">Install</a>
+                </li>
+<li class="nav-item">
+<a href="https://laurentperrinet.github.io" class="nav-link">About my research</a>
+                </li>
+<li class="nav-item">
+<a href="https://twitter.com/laurentperrinet" class="nav-link">Twitter</a>
+                </li>
+<li class="nav-item">
+<a href="https://github.com/NeuralEnsemble/MotionClouds" class="nav-link">Github</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Instructions for Psychophysicists</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Laurent Perrinet
+            </span></p>
+            <p class="dateline">
+            <a href="#" rel="bookmark">
+            <time class="published dt-published" datetime="2014-10-14T10:37:55+02:00" itemprop="datePublished" title="2014-10-14 10:37">2014-10-14 10:37</time></a>
+            </p>
+                <p class="commentline">
+        
+    <a href="instructions-for-psychophysicists.html#disqus_thread" data-disqus-identifier="cache/posts/instructions-for-psychophysicists.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="instructions-for-psychophysicists.ipynb" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="making-experiments-using-motionclouds">making experiments using motionclouds<a class="anchor-link" href="instructions-for-psychophysicists.html#making-experiments-using-motionclouds">¶</a>
+</h2>
+<h3 id="making-psychophysics-using-psychopy">making psychophysics using psychopy<a class="anchor-link" href="instructions-for-psychophysicists.html#making-psychophysics-using-psychopy">¶</a>
+</h3>
+<h4 id="installation-(preparation-3min,-cooking-/-downloading-10-min)">installation (preparation 3min, cooking / downloading 10 min)<a class="anchor-link" href="instructions-for-psychophysicists.html#installation-(preparation-3min,-cooking-/-downloading-10-min)">¶</a>
+</h4>
+<ul>
+<li>it is easy to create a simple psychophysical experiment using a combination of PsychoPy and MotionClouds. Simply download the standalone psychopy binary for your computer and try to load the example script psychopy_competing.py.</li>
+<li>for this, you may:<ol>
+<li>clone / download the <a href="https://github.com/NeuralEnsemble/MotionClouds">MC repository</a> on github.</li>
+<li>download <a href="http://www.psychopy.org/installation.html">PsychoPy</a>
+</li>
+</ol>
+</li>
+<li>then, open the psychopy_competing.py file in the editor (the so-called "PsychoPy Coder")</li>
+</ul>
+<p><img src="http://motionclouds.invibe.net/files/psy1.png"></p>
+<h4 id="running">running<a class="anchor-link" href="instructions-for-psychophysicists.html#running">¶</a>
+</h4>
+<ul>
+<li>Hit the run button (the green round button with a runner on it), it will then:</li>
+<li>tell you about some configuration parameters (be sure to enter the correct size of your screen)</li>
+<li>pre-generate data</li>
+<li>run the experiment, that is present a sequence of trials consisting of :<ol>
+<li>a movie presentation,</li>
+<li>a blank screen where the program waits for a key press: UP arrow if you saw the movie going up, DOWN if down or Q / Esc to exit</li>
+</ol>
+</li>
+</ul>
+<h4 id="results">results<a class="anchor-link" href="instructions-for-psychophysicists.html#results">¶</a>
+</h4>
+<ul>
+<li>the results are displayed at the end showing that :</li>
+<li>the movies consisted of 2 MotionClouds in opposite directions (UP and DOWN) but added with different contrasts,</li>
+<li>the percept was going up or down (on the y-axis) as a function of this contrast (x-axis)</li>
+<li>it seems I have a slight bias for UP movements as the contrast of equal probability seems inferior to 1/2 (a proper analysis would necessitate a fit).</li>
+</ul>
+<p><img src="http://motionclouds.invibe.net/files/psy2.png"></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="TODO:-Frequently-asked-questions">TODO: Frequently asked questions<a class="anchor-link" href="instructions-for-psychophysicists.html#TODO:-Frequently-asked-questions">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Experimental-protocol">Experimental protocol<a class="anchor-link" href="instructions-for-psychophysicists.html#Experimental-protocol">¶</a>
+</h3>
+<p>These instructions were given on VSG system but should work on similar working platforms:</p>
+<ol>
+<li>
+<p>Measure your experimental settings (screen size, frame rate, resolution, viewing distance) as these values will constraint your spatial and temporal sampling frequencies.</p>
+</li>
+<li>
+<p>Calibrate your screen (gamma / luminance).</p>
+</li>
+<li>
+<p>Experimental constants (with some default values):</p>
+<p>a.  $D$ : Viewing distance distance = 570 mm</p>
+<p>b.  $S$: screen size = 390 mm</p>
+<p>c.  $dt$ : Max frame period 0,01 s</p>
+<p>d.  $\text{VA}$ : Stimulus Width in degrees of visual angle at viewing distance $D$: 38,0958</p>
+<p>e.  $f_{d}$ : Desired spatial frequency in cycles per degree - cpd</p>
+<p>f.  $V_{drift}$: Drifting velocity in degrees per second - d/s</p>
+<p>g.  $X$, $Y$ : sampling step in degrees.</p>
+<p>h.  $F_X$, $F_Y$: spatial sampling rates in cpd</p>
+<p>i.  $T$ : Stimulus duration in seconds.</p>
+<p>j.  $\alpha$: mean orientation of the frequency component (called $\theta$ in the scripts)</p>
+<p>k.  $\theta$: direction of image motion.</p>
+</li>
+<li>
+<p>Parameters for the stimulus:</p>
+<p>a.  ($N_X$, $N_Y$) : Stimuli’s frame size in pixels as generated in Fourier space.</p>
+<p>b.  ($n_X$, $n_Y$): Screen resolution = 640 x 480 px (approx 0.06 deg/px)</p>
+<p>c.  ($N_frame$): Number of movie frames as generated in Fourier space.</p>
+<p>d.  $f_pref$ : Central frequency normalized in Fourier space</p>
+<p>e.  $V_X$: left - rightward motion</p>
+<p>f.  $V_Y$: up-downward motion</p>
+<p>g.  $W_X$, $W_Y$: spatial sampling frequencies in Fourier space</p>
+</li>
+</ol>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="How-do-I-compute-a-visual-angle?">How do I compute a visual angle?<a class="anchor-link" href="instructions-for-psychophysicists.html#How-do-I-compute-a-visual-angle?">¶</a>
+</h3>$$VA = 2*arctan\left( \frac{S}{2D} \right)$$<p>where $S$ is stimulus size on the screen (X or Y) and $D$ is the viewing distance.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="How-do-I-set-the-spatial-sampling?">How do I set the spatial sampling?<a class="anchor-link" href="instructions-for-psychophysicists.html#How-do-I-set-the-spatial-sampling?">¶</a>
+</h3>
+<p>$X = \frac{\text{VA}}{n_{x}}$ is the spatial step in the x-axis and for
+the y-axis the sampling step, Y, has the same value the x-axis.</p>
+<p>In practice, the spatial sampling step (X and/or Y) can not be larger
+than the semi-period of the finest spatial frequency ($F_X$ and or $F_Y$)
+that is represented in the image. The image will not contain those
+frequency components are higher than the Nyquist frequency along the two
+axes.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-the-unit-for-frequencies?">What is the unit for frequencies?<a class="anchor-link" href="instructions-for-psychophysicists.html#What-is-the-unit-for-frequencies?">¶</a>
+</h3>
+<p>The frequency distribution is periodic with period $F_S$. The normalized
+frequency ranges from 0.0 to 1.0, which corresponds to a real frequency
+range of 0 to the sampling frequency $F_S$.</p>
+<p>The normalized frequency also wraps around 1.0 so a normalized frequency
+of 1.1 is equivalent to 0.1.</p>
+<p>When the actual frequency, $f_t$, has units of <a href="http://en.wikipedia.org/wiki/Hertz">Hz</a>,
+for example, the normalized frequencies, also denoted by $f_t$, have
+units of <strong>cycles per sample</strong>, and the periodicity of the normalized
+distribution is 1.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="What-is-the-maximal-frequency-?">What is the maximal frequency ?<a class="anchor-link" href="instructions-for-psychophysicists.html#What-is-the-maximal-frequency-?">¶</a>
+</h3>
+<p>If a sampled signal is real-valued the periodicity of the frequency
+distribution is still $F_S$. But due to symmetry, it is completely
+defined by the content within a span of just $F_S/2$ (Nyquist frequency). 
+Accordingly, some applications use that as the normalization reference
+(and the resulting units are <em>half-cycles per sample</em>).</p>
+<p>Normalization produces a distribution that is independent of the
+sample-rate, and thus one plot is sufficient for all possible
+sample-rates.</p>
+<div class="highlight"><pre><span></span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">mgrid</span><span class="p">[(</span><span class="o">-</span><span class="n">N</span>\<span class="n">_X</span><span class="o">//</span><span class="mi">2</span><span class="p">):((</span><span class="n">N</span>\<span class="n">_X</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),</span>
+<span class="p">(</span><span class="o">-</span><span class="n">N</span>\<span class="n">_Y</span><span class="o">//</span><span class="mi">2</span><span class="p">):((</span><span class="n">N</span>\<span class="n">_Y</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">),(</span><span class="o">-</span><span class="n">N</span>\<span class="n">_frame</span><span class="o">//</span><span class="mi">2</span><span class="p">):((</span><span class="n">N</span>\<span class="n">_frame</span><span class="o">-</span><span class="mi">1</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+<span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span> <span class="o">=</span> <span class="n">fx</span>\<span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>\<span class="n">_X</span><span class="p">,</span> <span class="n">fy</span>\<span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>\<span class="n">_Y</span><span class="p">,</span> <span class="n">ft</span>\<span class="o">*</span><span class="mf">1.</span><span class="o">/</span><span class="n">N</span>\<span class="n">_frame</span>
+</pre></div>
+<p>The range is always $(-0.5, 0.5)$ which corresponds to the maximum
+frequency we can represent.</p>
+<p><strong>Example:</strong> N_X = N_Y = 512 and N_frames = 128 then,</p>
+<p>Nyquist limit is $2^{- 1}W\ cyc/width$, W is the width of the stimulus.</p>
+<p>The highest frequency band considered will be centered at
+$2^{- 2}W\ cyc/width$</p>
+<p>The blobs change spatial frequency in octave steps, the scale-k band
+will have a spatial frequency pass band centered at:
+$2^{- (k + 2)}W\ cyc/width$</p>
+<p>easy: it's just a design choice, we could have used B_tf, but defining
+B_sf then slicing in the envelope with a B_V envelope was more
+intuitive.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Convention-used-in-DFT">
+<strong>Convention used in DFT</strong><a class="anchor-link" href="instructions-for-psychophysicists.html#Convention-used-in-DFT">¶</a>
+</h3>
+<p>From numpy.fft.ifftn(<em>a</em>, <em>s=None</em>,
+<em>axes=None</em>)<a href="http://www.google.com/url?q=http%3A%2F%2Fdocs.scipy.org%2Fdoc%2Fnumpy%2Freference%2Fgenerated%2Fnumpy.fft.ifftn.html%23numpy.fft.ifftn&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNFgC0rRFzILtS80lxG_FRr_PhAcbA"><em>¶</em></a></p>
+<p><em>From</em>
+<a href="http://www.google.com/url?q=http%3A%2F%2Fdocs.scipy.org%2Fdoc%2Fnumpy%2Freference%2Froutines.fft.html%3A&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNEEnlwd7DPHe7Z-T4PYye18AC_nNg"><strong>http://docs.scipy.org/doc/numpy/reference/routines.fft.html:</strong></a></p>
+<p>The values in the result follow so-called “standard” order: If A =
+fft(a,n), then A[0] contains the zero-frequency term (the mean of the
+signal), which is always purely real for real inputs. <strong>Then A[1:n/2]
+contains the positive-frequency terms, and A[n/2+1:] contains the
+negative-frequency terms,</strong> in order of decreasingly negative frequency.</p>
+<p>For an even number of input points, A[n/2] represents both positive and
+negative Nyquist frequency (+/-0.5), and is also purely real for real
+input.</p>
+<p>For an odd number of input points, A[(n-1)/2] contains the largest
+positive frequency, while A[(n+1)/2] contains the largest negative
+frequency. The routine np.fft.fftfreq(A) returns an array giving the
+frequencies of corresponding elements in the output.</p>
+<p>The routine np.fft.fftshift(A) shifts transforms and their frequencies
+to put the zero-frequency components in the middle, and
+np.fft.ifftshift(A) undoes that shift. (...)</p>
+<p>When the input is purely real, its transform is Hermitian, i.e., the
+component at frequency <img src="media/image09.png" alt=""> is the complex conjugate
+of the component at frequency <img src="media/image08.png" alt="">, <strong>which means that
+for real inputs there is no information in the negative frequency
+components that is not already available from the positive frequency
+components.</strong> The family of <em>rfft</em> functions is designed to operate on
+real inputs, and exploits this symmetry by computing only the positive
+frequency components, <strong>up to and including the Nyquist frequency</strong>.
+Thus, n input points produce n/2+1 complex output points. The inverses
+of this family assumes the same symmetry of its input, and for an output
+of n points uses n/2+1 input points.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Theoretical-background:-Nyquist–Shannon-sampling-theorem">
+<strong>Theoretical background: Nyquist–Shannon sampling theorem</strong><a class="anchor-link" href="instructions-for-psychophysicists.html#Theoretical-background:-Nyquist%E2%80%93Shannon-sampling-theorem">¶</a>
+</h3>
+<p>Our function is band limited to [${- F}_{B},F_{B}{}_{}$] where B stands
+for bandwidth.</p>
+<p>The <a href="http://www.google.com/url?q=http%3A%2F%2Fen.wikipedia.org%2Fwiki%2FNyquist%25E2%2580%2593Shannon_sampling_theorem&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNEnip7g8qfBszTYOu0zMuhMkYZZFQ"><em>Nyquist sampling
+theorem</em></a>
+provides a prescription for the nominal sampling interval required to
+avoid aliasing and to perfectly reconstruct the signal:</p>
+<p><em>The sampling frequency should be at least twice the highest frequency
+contained in the signal.</em></p>
+<p>$F_{S} \geq {2F}_{B}$</p>
+<p>$F_{N} = \ \frac{F_{S}}{2}$ is called Nyquist frequency .</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Why-should-we-use-polar-coordinates-for--frequencies?">Why should we use polar coordinates for  frequencies?<a class="anchor-link" href="instructions-for-psychophysicists.html#Why-should-we-use-polar-coordinates-for--frequencies?">¶</a>
+</h3>
+<p>For the $f_x$ and $f_y$ axes units are cycles/px and for ft axis is</p>
+<p><strong>Example:</strong> $f_x= 0,25 cpd$ (vertical grating)</p>
+<p>$f_{\text{s\ }} =$\</p>
+<p>fd is the magnitude of the spatial frequency in polar coordinates. The
+direction \theta is
+$$
+\theta=\arctan (fx/fy) 
+$$
+(w.r.t cartesian coordinates) It can be seen as the
+rotation of the gaussian envelope.</p>
+<p>$f_{x_{\text{norm}}\ } = \ f_{s}\text{cos\ }\theta$</p>
+<p>$f_{y_{\text{norm}}\ } = \ f_{s}\text{sin\ }\theta$</p>
+<p>${f_{\text{spatial}{}_{cyc/pix}} = {(f}_{\text{pre}f_{\text{cpd}}}*\ VA)/N_{x}}_{}$</p>
+<p>$V_{X} = \ \frac{V_{\text{drift}}*T}{N_{f}}$</p>
+<p>$ft\ cyc/frame = fspatial\ /Vx$</p>
+<p>It’s not a deformation, projections (marginalization I would say) of
+gaussians are still gaussians</p>
+<p>B_tf = B_sf*V</p>
+<p>$V_{\max} = \ \frac{VA*T}{n_{f}}$</p>
+<p>Vx=(Vdrift * T) / VAx</p>
+<p>VAx or N_X for horizontal dispalcement</p>
+<p>Vmax= Width /Length = (deg/sec)</p>
+<p>Ex: vmax= 30deg/64frames*0,02sec/frame = 23deg/sec</p>
+<p>Vx= 16 deg/sec</p>
+<p>Vx_norm = 0,68</p>
+<p>f_t = Vx_norm * f_s norm (case of drifting grating, no rotation in
+x-y axes)</p>
+<p>f_t = 0,68 * 0,03152 = 0,02</p>
+<p>Log-Gabor filter construction process in the Fourier domain (<a href="http://www.google.com/url?q=http%3A%2F%2Fwww.journalofvision.org%2Fcontent%2F6%2F5%2F5.full&amp;sa=D&amp;sntz=1&amp;usg=AFQjCNGJf9VjJ-GajjU9ZkGN1Gq8OQAy9A"><em>Hanssen
+and Hess, 2006, Journal of Vision</em></a>)</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="an-example-physiology-experiment-using-VSDI">an example physiology experiment using VSDI<a class="anchor-link" href="instructions-for-psychophysicists.html#an-example-physiology-experiment-using-VSDI">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> ../files/experiment_VSDI.py
+<span class="ch">#!/usr/bin/env python</span>
+<span class="sd">"""</span>
+<span class="sd">experiment_VSDI.py</span>
+<span class="sd">Experiment designed for optical imaging showing a conversion of size from Fourier </span>
+<span class="sd">to screen coordinates and an export to a zipped file conaining BMP files (as the</span>
+<span class="sd">video card has limited memory)</span>
+
+<span class="sd">(c) Paula Sanz Leon - INT/CNRS</span>
+
+
+<span class="sd">"""</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">scipy</span>
+<span class="kn">import</span> <span class="nn">MotionClouds</span> <span class="k">as</span> <span class="nn">mc</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="c1"># uncomment to preview movies</span>
+<span class="c1"># vext, display = None, True</span>
+
+<span class="c1">#------------------------- Zipped grating ------------------------------- #</span>
+
+<span class="n">name</span> <span class="o">=</span> <span class="s1">'zipped_grating'</span>
+
+<span class="c1">#initialize - </span>
+<span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get_grids</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">N_X</span><span class="p">,</span> <span class="n">mc</span><span class="o">.</span><span class="n">N_Y</span><span class="p">,</span> <span class="n">mc</span><span class="o">.</span><span class="n">N_frame</span><span class="p">)</span>
+<span class="n">sf_0</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">B_sf</span> <span class="o">=</span> <span class="n">sf_0</span> <span class="o">/</span> <span class="mf">4.</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
+<span class="n">V_X</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">B_V</span> <span class="o">=</span> <span class="n">V_X</span> <span class="o">/</span> <span class="mf">10.</span>
+
+<span class="n">name_</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">figpath</span> <span class="o">+</span> <span class="n">name</span>
+<span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">424242</span><span class="p">,</span> <span class="mi">424242</span><span class="o">+</span><span class="mi">8</span><span class="p">):</span>
+    <span class="n">name_</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">figpath</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">'-seed-'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+    <span class="n">mc</span><span class="o">.</span><span class="n">figures_MC</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">name_</span><span class="p">,</span> <span class="n">B_V</span><span class="o">=</span><span class="n">B_V</span><span class="p">,</span> <span class="n">sf_0</span><span class="o">=</span><span class="n">sf_0</span><span class="p">,</span> <span class="n">B_sf</span><span class="o">=</span><span class="n">B_sf</span><span class="p">,</span> <span class="n">V_X</span><span class="o">=</span><span class="n">V_X</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mf">4.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">vext</span><span class="o">=</span><span class="s1">'.zip'</span><span class="p">)</span>
+
+<span class="c1">#-------------------- Narrowband vs Braodband experiment ---------------- #</span>
+<span class="n">vext</span> <span class="o">=</span> <span class="s1">'.mpg'</span>
+<span class="c1">#vext = '.mat'</span>
+<span class="c1">#vext = '.zip'</span>
+<span class="c1">#display = False</span>
+
+<span class="c1"># Initialize frequency cube</span>
+<span class="n">N_X</span> <span class="o">=</span> <span class="mf">640.</span>
+<span class="n">N_Y</span> <span class="o">=</span> <span class="mf">480.</span>
+<span class="n">N_frame</span> <span class="o">=</span> <span class="mf">30.</span> <span class="c1"># a full period in time frames</span>
+<span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get_grids</span><span class="p">(</span><span class="n">N_X</span><span class="p">,</span> <span class="n">N_Y</span><span class="p">,</span> <span class="n">N_frame</span><span class="p">)</span>
+
+<span class="c1"># Experimental constants </span>
+<span class="n">contrast</span> <span class="o">=</span> <span class="mf">0.5</span>
+<span class="n">seeds</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="n">VA</span> <span class="o">=</span> <span class="mf">38.0958</span>       <span class="c1"># VSG constants for a viewing ditance 570 mm. </span>
+<span class="n">framerate</span> <span class="o">=</span> <span class="mf">50.</span>    <span class="c1"># Refreshing rate in [Hz]</span>
+<span class="n">T</span> <span class="o">=</span> <span class="mf">0.6</span>            <span class="c1"># Stimulus duration [s] </span>
+<span class="n">f_d</span> <span class="o">=</span> <span class="mf">0.5</span>         <span class="c1"># Desired spatial frequency [cpd]</span>
+
+<span class="c1"># Clouds parameters      </span>
+<span class="n">B_V</span> <span class="o">=</span> <span class="mf">0.2</span>     <span class="c1"># BW temporal frequency (speed plane thickness)</span>
+<span class="n">B_sf</span> <span class="o">=</span> <span class="mf">0.15</span>   <span class="c1"># BW spatial frequency</span>
+<span class="n">theta</span> <span class="o">=</span> <span class="mf">0.0</span>   <span class="c1"># Central orientation</span>
+<span class="n">B_theta</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="mi">12</span> <span class="c1"># BW orientation</span>
+<span class="n">verbose</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">alpha</span> <span class="o">=</span> <span class="mf">1.0</span>
+
+<span class="c1"># Get normalised units</span>
+<span class="n">sf_0</span><span class="o">=</span><span class="mf">0.1</span>
+<span class="n">V_X</span><span class="o">=</span><span class="mf">0.5</span>
+
+<span class="k">def</span> <span class="nf">physicalUnits2discreteUnits</span><span class="p">(</span><span class="n">sf0_cpd</span><span class="p">,</span> <span class="n">Bsf_cpd</span><span class="p">,</span> <span class="n">v_dps</span><span class="p">,</span> <span class="n">B_dps</span><span class="p">,</span><span class="n">pixelPitch</span><span class="p">,</span><span class="n">viewingDistance</span><span class="p">,</span><span class="n">frameRate</span><span class="p">):</span>
+    <span class="sd">"""%   % laptop monitor</span>
+<span class="sd">    %   pixelPitch      = 0.22/10; % in cm</span>
+<span class="sd">    %   viewingDistance = 50;</span>
+<span class="sd">    %   sf0_cpd         = 4 ;</span>
+<span class="sd">    %   Bsf_cpd         = 1 ;</span>
+<span class="sd">    %   v_dps           = 4 ;</span>
+<span class="sd">    %   B_dps           = 1 ;</span>
+<span class="sd">    %   frameRate       = 20 ;</span>
+<span class="sd">    % convert to machine units</span>
+<span class="sd">    """</span>
+    <span class="n">cmPerDegree</span>    <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">viewingDistance</span><span class="o">*</span><span class="n">tand</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">pxPerDegree</span>    <span class="o">=</span> <span class="n">cmPerDegree</span><span class="o">/</span><span class="n">pixelPitch</span>
+    <span class="n">sf0</span>            <span class="o">=</span> <span class="n">sf0_cpd</span><span class="o">/</span><span class="n">pxPerDegree</span>
+    <span class="n">Bsf</span>            <span class="o">=</span> <span class="n">Bsf_cpd</span><span class="o">/</span><span class="n">pxPerDegree</span>
+
+    <span class="n">v</span>              <span class="o">=</span> <span class="n">v_dps</span><span class="o">/</span><span class="n">frameRate</span><span class="o">*</span><span class="n">pxPerDegree</span>
+    <span class="n">Bv</span>             <span class="o">=</span> <span class="n">B_dps</span><span class="o">/</span><span class="n">frameRate</span><span class="o">*</span><span class="n">pxPerDegree</span>
+    <span class="k">return</span> <span class="n">sf0</span><span class="p">,</span> <span class="n">Bsf</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">Bv</span>
+
+
+<span class="c1"># take monitor parameters</span>
+<span class="c1"># planar display</span>
+<span class="n">monitorRefresh</span> <span class="o">=</span> <span class="mi">60</span> <span class="p">;</span>
+<span class="n">pixelPitch</span>     <span class="o">=</span> <span class="mf">0.2865</span><span class="o">/</span><span class="mi">10</span> <span class="p">;</span><span class="o">%</span> <span class="n">pixelsize</span> <span class="ow">in</span> <span class="n">cm</span>
+
+<span class="c1"># experiments parameter</span>
+<span class="n">viewingDistance</span> <span class="o">=</span> <span class="mi">70</span> <span class="p">;</span>
+
+<span class="n">frameRefresh</span>   <span class="o">=</span> <span class="n">monitorRefresh</span><span class="o">/</span><span class="mi">3</span> <span class="p">;</span>
+<span class="n">stimModRate</span>    <span class="o">=</span> <span class="mi">1</span> <span class="p">;</span>
+<span class="n">numberOfReps</span>   <span class="o">=</span> <span class="mi">12</span> <span class="p">;</span>
+<span class="n">framesPerMod</span>   <span class="o">=</span> <span class="n">frameRefresh</span><span class="o">/</span><span class="n">stimModRate</span><span class="o">/</span><span class="mi">2</span> <span class="p">;</span> 
+
+
+<span class="c1"># Masks</span>
+<span class="c1"># gaussian mask</span>
+<span class="n">sigma_mask_x</span> <span class="o">=</span> <span class="mf">0.15</span>
+<span class="n">sigma_mask_y</span> <span class="o">=</span> <span class="mf">0.2</span>
+<span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">t</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get_grids</span><span class="p">(</span><span class="n">N_X</span><span class="p">,</span> <span class="n">N_Y</span><span class="p">,</span> <span class="n">N_frame</span><span class="p">)</span>
+<span class="n">n_x</span><span class="p">,</span> <span class="n">n_y</span> <span class="o">=</span> <span class="n">N_X</span><span class="p">,</span> <span class="n">N_Y</span>
+<span class="n">gauss</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(((</span><span class="n">x</span><span class="o">-</span><span class="mf">172.</span><span class="o">/</span><span class="n">n_x</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">sigma_mask_x</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span> <span class="o">+</span> <span class="p">(((</span><span class="n">y</span><span class="o">-</span><span class="mf">108.</span><span class="o">/</span><span class="n">n_y</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">sigma_mask_y</span><span class="o">**</span><span class="mi">2</span><span class="p">))))</span>
+
+
+<span class="k">def</span> <span class="nf">tukey</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.5</span><span class="p">):</span>
+    <span class="sd">'''The Tukey window, also known as the tapered cosine window, can be regarded as a </span>
+<span class="sd">    cosine lobe of width r * N / 2 that is convolved with a rectangle window of width </span>
+<span class="sd">    (1 - r / 2). At r = 1 it becomes rectangular, and at r = 0 it becomes a Hann window.</span>
+<span class="sd">    http://www.mathworks.com/access/helpdesk/help/toolbox/signal/tukeywin.html</span>
+<span class="sd">    '''</span>
+    <span class="c1"># Special cases</span>
+    <span class="k">if</span> <span class="n">r</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span> <span class="c1">#rectangular window</span>
+    <span class="k">elif</span> <span class="n">r</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">hanning</span><span class="p">(</span><span class="n">n</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># Normal case</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+    <span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">ones</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+
+    <span class="c1"># first condition 0 &lt;= x &lt; r/2</span>
+    <span class="n">first_condition</span> <span class="o">=</span> <span class="n">x</span><span class="o">&lt;</span><span class="n">r</span><span class="o">/</span><span class="mi">2</span>
+    <span class="n">w</span><span class="p">[</span><span class="n">first_condition</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">first_condition</span><span class="p">]</span> <span class="o">-</span> <span class="n">r</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="p">))</span>
+
+    <span class="c1"># second condition already taken care of</span>
+
+    <span class="c1"># third condition 1 - r / 2 &lt;= x &lt;= 1</span>
+    <span class="n">third_condition</span> <span class="o">=</span> <span class="n">x</span><span class="o">&gt;=</span><span class="p">(</span><span class="mi">1</span> <span class="o">-</span> <span class="n">r</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">w</span><span class="p">[</span><span class="n">third_condition</span><span class="p">]</span> <span class="o">=</span> <span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="o">/</span><span class="n">r</span> <span class="o">*</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">third_condition</span><span class="p">]</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">+</span> <span class="n">r</span><span class="o">/</span><span class="mi">2</span><span class="p">)))</span> 
+
+    <span class="k">return</span> <span class="n">w</span>
+
+<span class="c1"># Tukey mask - fading effect</span>
+<span class="n">tw_x</span> <span class="o">=</span> <span class="n">tukey</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_x</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">tw_y</span> <span class="o">=</span> <span class="n">tukey</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">n_y</span><span class="p">,</span> <span class="n">r</span><span class="o">=</span><span class="mf">0.15</span><span class="p">)</span>
+<span class="n">w</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">tile</span><span class="p">(((</span><span class="n">np</span><span class="o">.</span><span class="n">outer</span><span class="p">(</span><span class="n">tw_y</span><span class="p">,</span><span class="n">tw_x</span><span class="p">))),</span> <span class="p">(</span><span class="n">N_frame</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">))</span>
+<span class="n">tukey_mask</span> <span class="o">=</span> <span class="n">w</span><span class="o">.</span><span class="n">T</span>
+
+
+<span class="c1"># Get Random Clouds</span>
+<span class="n">name_</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">figpath</span> <span class="o">+</span> <span class="n">name</span>
+
+<span class="k">for</span> <span class="n">seed</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">123456</span> <span class="o">+</span> <span class="n">step</span> <span class="k">for</span> <span class="n">step</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seeds</span><span class="p">)]:</span>
+    <span class="n">name__</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">figpath</span> <span class="o">+</span> <span class="n">name</span> <span class="o">+</span> <span class="s1">'-seed-'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'-sf0-'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">sf_0</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'.'</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span> <span class="o">+</span> <span class="s1">'-V_X-'</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">V_X</span><span class="p">)</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">'.'</span><span class="p">,</span> <span class="s1">'_'</span><span class="p">)</span>
+    <span class="c1"># broadband </span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">envelope_gabor</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">name_</span><span class="p">,</span> <span class="n">B_sf</span><span class="o">=</span><span class="n">Bsf</span><span class="p">,</span> <span class="n">sf_0</span><span class="o">=</span><span class="n">sf_0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">B_V</span><span class="o">=</span><span class="n">B_V</span><span class="p">,</span> <span class="n">B_theta</span> <span class="o">=</span> <span class="n">B_theta</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">movie</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">figures</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vext</span><span class="o">=</span><span class="n">vext</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">masking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>    
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">mask</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">'_mask'</span><span class="p">,</span> <span class="s1">'_tukey_mask'</span><span class="p">],</span> <span class="p">[</span><span class="n">gauss</span><span class="p">,</span> <span class="n">tukey_mask</span><span class="p">]):</span>
+        <span class="n">name_</span> <span class="o">=</span> <span class="n">name__</span> <span class="o">+</span> <span class="s1">'-cloud-'</span> <span class="o">+</span> <span class="n">label</span>
+        <span class="k">if</span> <span class="n">anim_exist</span><span class="p">(</span><span class="n">name_</span><span class="p">):</span> 
+            <span class="n">movie</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">rectif</span><span class="p">(</span><span class="n">movie</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">mc</span><span class="o">.</span><span class="n">anim_save</span><span class="p">(</span><span class="n">movie</span><span class="p">,</span> <span class="n">name_</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vext</span><span class="o">=</span><span class="n">vext</span><span class="p">)</span>
+
+   <span class="c1"># narrowband </span>
+    <span class="n">z</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">envelope</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">name_</span><span class="p">,</span> <span class="n">B_sf</span><span class="o">=</span><span class="n">B_sf</span><span class="o">/</span><span class="mf">10.</span><span class="p">,</span> <span class="n">sf_0</span><span class="o">=</span><span class="n">sf_0</span><span class="p">,</span> <span class="n">theta</span><span class="o">=</span><span class="n">theta</span><span class="p">,</span> <span class="n">B_V</span><span class="o">=</span><span class="n">B_V</span><span class="p">,</span> <span class="n">B_theta</span><span class="o">=</span><span class="n">B_theta</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
+    <span class="n">movie</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">figures</span><span class="p">(</span><span class="n">z</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">vext</span><span class="o">=</span><span class="n">vext</span><span class="p">,</span> <span class="n">seed</span><span class="o">=</span><span class="n">seed</span><span class="p">,</span> <span class="n">masking</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">label</span><span class="p">,</span> <span class="n">mask</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">([</span><span class="s1">'_mask'</span><span class="p">,</span> <span class="s1">'tukey_mask'</span><span class="p">],</span> <span class="p">[</span><span class="n">gauss</span><span class="p">,</span> <span class="n">tukey_mask</span><span class="p">]):</span>
+        <span class="n">name_</span> <span class="o">=</span> <span class="n">name__</span> <span class="o">+</span> <span class="s1">'-blob-'</span> <span class="o">+</span> <span class="n">label</span>
+        <span class="k">if</span> <span class="n">anim_exist</span><span class="p">(</span><span class="n">name_</span><span class="p">):</span>
+            <span class="n">movie</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">rectif</span><span class="p">(</span><span class="n">movie</span><span class="o">*</span><span class="n">mask</span><span class="p">)</span>
+            <span class="n">mc</span><span class="o">.</span><span class="n">anim_save</span><span class="p">(</span><span class="n">movie</span><span class="p">,</span> <span class="n">name_</span><span class="p">,</span> <span class="n">display</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">vext</span><span class="o">=</span><span class="n">vext</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Overwriting ../files/experiment_VSDI.py
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul class="pager hidden-print">
+<li class="previous">
+                <a href="testing-color.html" rel="prev" title="Testing Color">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="eschercube.html" rel="next" title="Eschercube">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="invibe",
+            disqus_url="https://motionclouds.invibe.net/posts/instructions-for-psychophysicists.html",
+        disqus_title="Instructions for Psychophysicists",
+        disqus_identifier="cache/posts/instructions-for-psychophysicists.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+    },
+    displayAlign: 'center', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><script>var disqus_shortname="invibe";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><!--End of body content--><footer id="footer">
+            Contents © 2019 <a href="mailto:laurent.perrinet@univ-amu.fr">Laurent Perrinet</a> -
+Powered by <a href="http://getnikola.com">Nikola</a> with <a href="https://themes.getnikola.com/v7/maupassant/">Maupassant</a> theme <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

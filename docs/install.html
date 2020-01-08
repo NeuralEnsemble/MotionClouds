@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Install | Motion Clouds</title>
+<link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="assets/css/bootblog.css" rel="stylesheet" type="text/css">
+<link href="assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="canonical" href="https://motionclouds.invibe.net/install.html">
+<link rel="icon" href="favicon.ico" sizes="16x16">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+    },
+    displayAlign: 'center', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="assets/js/html5.js"></script><![endif]--><meta name="author" content="Laurent Perrinet">
+<meta property="og:site_name" content="Motion Clouds">
+<meta property="og:title" content="Install">
+<meta property="og:url" content="https://motionclouds.invibe.net/install.html">
+<meta property="og:description" content="This page covers the installation of the MotionClouds library.
+This library depends on a number of dependencies, among which numpy is the only that is mandatory.
+There is a dedicated page describing i">
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2014-06-19T13:30:05+02:00">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+<!-- Custom search -->
+<form method="get" id="search" action="//duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://motionclouds.invibe.net/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://motionclouds.invibe.net/">
+
+            <span id="blog-title">Motion Clouds</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="install.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="index.html" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="archive.html" class="nav-link">How-to</a>
+                </li>
+<li class="nav-item">
+<a href="https://laurentperrinet.github.io/sciblog/categories/motionclouds.html" class="nav-link">Examples</a>
+                </li>
+<li class="nav-item active">
+<a href="#" class="nav-link">Install <span class="sr-only">(active)</span></a>
+                </li>
+<li class="nav-item">
+<a href="https://laurentperrinet.github.io" class="nav-link">About my research</a>
+                </li>
+<li class="nav-item">
+<a href="https://twitter.com/laurentperrinet" class="nav-link">Twitter</a>
+                </li>
+<li class="nav-item">
+<a href="https://github.com/NeuralEnsemble/MotionClouds" class="nav-link">Github</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+<article class="post-text storypage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Install</a></h1>
+
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>This page covers the installation of the MotionClouds library.</p>
+<p>This library depends on a number of dependencies, among which <code>numpy</code> is the only that is mandatory.</p>
+<p>There is a dedicated page describing <a href="http://motionclouds.invibe.net/posts/instructions-for-psychophysicists.html">instructions oriented toward psychophysicists</a></p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="MotionClouds:-installing-and-running-the-python-scripts">MotionClouds: installing and running the python scripts<a class="anchor-link" href="install.html#MotionClouds:-installing-and-running-the-python-scripts">¶</a>
+</h2>
+<p>MotionClouds are parameterized stimuli with controlled motion content and no spatial coherence.  They are precisely tuned in the frequency space.</p>
+<ul>
+<li>A full description can be found in Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception, URL . Journal of Neurophysiology, 107(11):3217--3226, 2012, see  <a href="http://www.ncbi.nlm.nih.gov/pubmed/22423003">http://www.ncbi.nlm.nih.gov/pubmed/22423003</a> or <a href="http://jn.physiology.org/content/107/11/3217">http://jn.physiology.org/content/107/11/3217</a> .</li>
+</ul>
+<h3 id="download">download<a class="anchor-link" href="install.html#download">¶</a>
+</h3>
+<ul>
+<li>to get the latest version, download the current state from the repository:
+<pre><code>git clone https://github.com/NeuralEnsemble/MotionClouds.git</code></pre>
+</li>
+</ul>
+<h3 id="installing-and-running-the-python-scripts">installing and running the python scripts<a class="anchor-link" href="install.html#installing-and-running-the-python-scripts">¶</a>
+</h3>
+<p>This package consists of:</p>
+<ul>
+<li>
+<code>MotionClouds.py</code> : the API with all the math and display routines,</li>
+<li>
+<code>test_*.py</code> : different types of stimuli are tested,</li>
+<li>
+<code>experiment_*py</code> : different experiments.</li>
+<li>
+<code>fig_*py</code> : different scripts used to generate wiki pages.</li>
+<li>
+<code>figures</code> : resulting figures of tests and experiments (as set in the variable <code>MotionClouds.figpath</code>.</li>
+<li>
+<code>Makefile</code> : a GNUmake file to edit files <code>make edit</code>, generate figures <code>make figures</code> or compile the documentation <code>make doc</code>.</li>
+</ul>
+<h3 id="Installation">Installation<a class="anchor-link" href="install.html#Installation">¶</a>
+</h3>
+<ul>
+<li>
+<p>MotionClouds consist of a one-file python script: Installation consists simply in downloading the <code>MotionClouds.py</code> file which contains all routines to compute and use the MotionClouds textures. This script uses python (<a href="http://python.org">http://python.org</a>) which comes (pre-installed /  easy to download and install) on many operating systems.</p>
+</li>
+<li>
+<p>MotionClouds may easily be installed using</p>
+
+<pre><code>  pip install MotionClouds</code></pre>
+</li>
+<li>
+<p>Other solutions consist to simply grab this file at: <a href="https://raw.githubusercontent.com/NeuralEnsemble/MotionClouds/master/MotionClouds.py">https://raw.githubusercontent.com/NeuralEnsemble/MotionClouds/master/MotionClouds.py</a> and to use it along with the examples.</p>
+</li>
+<li>
+<p>Installation has some dependencies:</p>
+<ol>
+<li>mandatory: <code>numpy</code> is the core library used to compute textures,</li>
+<li>optional: <code>vispy</code> is used to visualize envelopes,</li>
+<li>optional: <code>ffmpeg</code> is used to generate movies.</li>
+<li>optional: <code>matplotlib</code>, <code>scipy</code> (with PIL support) and <code>imagemagick</code> are used to generate figures in the documentation.</li>
+<li>optional: <code>progressbar</code> for displaying progress of encoding.</li>
+<li>optional: <code>texlive-latex-recommended  latexmk latexdiff</code> to compile the documentation</li>
+<li>optional: <code>ipython</code>, <code>jupyter-notebook</code>, <code>pymovie</code> to test MotionClouds within an ipython notebook (recommended)</li>
+</ol>
+</li>
+<li>
+<p>These dependencies may  be easily met using the dedicated scripts:</p>
+<ul>
+<li>
+<p>For MacOsX, first install command line tools by typing the <code>git</code> command in the terminal (a pop-up message should happen if these tools are not installed). Then I recommend using a python toolchain such as that described in <a href="https://github.com/laurentperrinet/config-scripts/blob/master/osx_brew_python.sh">https://github.com/laurentperrinet/config-scripts/blob/master/osx_brew_python.sh</a></p>
+</li>
+<li>
+<p>For Debian-like systems, use the package manager to install missing dependencies (most likely, everything is already installed)</p>
+</li>
+</ul>
+</li>
+</ul>
+<p>Again, these line of code may be copy-and-pasted in your terminal.</p>
+<h3 id="testing">testing<a class="anchor-link" href="install.html#testing">¶</a>
+</h3>
+<ul>
+<li>
+<p>To test the basic functionality of Motion Clouds, try in the terminal:</p>
+
+<pre><code>python -c'import MotionClouds as mc; fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, mc.N_frame); z = mc.envelope_gabor(fx, fy, ft)'</code></pre>
+</li>
+<li>
+<p>other sources exist to get a stable release, such as ModelDb (<a href="http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=146953">http://senselab.med.yale.edu/modeldb/ShowModel.asp?model=146953</a>).</p>
+</li>
+<li>
+<p>This was tested on several MacOsX/Mavericks 64bit machines and on ubuntu 14.04 LTS and Debian squeezy 64bit machines.</p>
+</li>
+<li>
+<p>If that fails, we will be happy to help out, so send an e-mail to <a href="mailto://laurent.perrinet@univ-amu.fr">laurent.perrinet@univ-amu.fr</a>.</p>
+</li>
+</ul>
+</div>
+</div>
+</div>
+</div>
+    </div>
+    
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+    },
+    displayAlign: 'center', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><!--End of body content--><footer id="footer">
+            Contents © 2019 <a href="mailto:laurent.perrinet@univ-amu.fr">Laurent Perrinet</a> -
+Powered by <a href="http://getnikola.com">Nikola</a> with <a href="https://themes.getnikola.com/v7/maupassant/">Maupassant</a> theme <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="assets/js/jquery.min.js"></script><script src="assets/js/popper.min.js"></script><script src="assets/js/bootstrap.min.js"></script><script src="assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>

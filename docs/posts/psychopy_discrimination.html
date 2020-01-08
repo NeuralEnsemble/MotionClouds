@@ -1,0 +1,877 @@
+<!DOCTYPE html>
+<html prefix="og: http://ogp.me/ns# article: http://ogp.me/ns/article# " lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Testing discrimination between Motion Clouds with psychopy | Motion Clouds</title>
+<link href="../assets/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/baguetteBox.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/rst.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/code.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/theme.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/bootblog.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/ipython.min.css" rel="stylesheet" type="text/css">
+<link href="../assets/css/nikola_ipython.css" rel="stylesheet" type="text/css">
+<link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+<meta name="theme-color" content="#5670d4">
+<meta name="generator" content="Nikola (getnikola.com)">
+<link rel="canonical" href="https://motionclouds.invibe.net/posts/psychopy_discrimination.html">
+<link rel="icon" href="favicon.ico" sizes="16x16">
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+    },
+    displayAlign: 'center', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script><!--[if lt IE 9]><script src="../assets/js/html5.js"></script><![endif]--><meta name="author" content="Laurent Perrinet">
+<link rel="prev" href="testing_basis.html" title="Testing basic functions of Motion Clouds " type="text/html">
+<link rel="next" href="psychopy_competing.html" title="Testing competing Motion Clouds with psychopy" type="text/html">
+<meta property="og:site_name" content="Motion Clouds">
+<meta property="og:title" content="Testing discrimination between Motion Clouds with psychopy">
+<meta property="og:url" content="https://motionclouds.invibe.net/posts/psychopy_discrimination.html">
+<meta property="og:description" content='A discrimination experiment¶
+
+
+
+
+
+In [1]:
+
+    
+%%writefile ../files/psychopy_discrimination.py
+
+#!/usr/bin/env python
+"""
+
+Using psychopy to perform an experiment on discriminating clouds
+
+(c) Lauren'>
+<meta property="og:type" content="article">
+<meta property="article:published_time" content="2013-08-21T08:17:00+02:00">
+<meta property="article:tag" content="motionclouds">
+<meta property="article:tag" content="psychopy">
+<meta property="article:tag" content="python">
+</head>
+<body>
+<a href="#content" class="sr-only sr-only-focusable">Skip to main content</a>
+
+<!-- Header and menu bar -->
+<div class="container">
+      <header class="blog-header py-3"><div class="row nbb-header align-items-center">
+          <div class="col-md-3 col-xs-2 col-sm-2" style="width: auto;">
+            <button class="navbar-toggler navbar-light bg-light nbb-navbar-toggler" type="button" data-toggle="collapse" data-target=".bs-nav-collapsible" aria-controls="bs-navbar" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
+                
+<!-- Custom search -->
+<form method="get" id="search" action="//duckduckgo.com/" class="navbar-form pull-left">
+<input type="hidden" name="sites" value="https://motionclouds.invibe.net/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
+</form>
+<!-- End of custom search -->
+
+            </div>
+        </div>
+          <div class="col-md-6 col-xs-10 col-sm-10 bootblog4-brand" style="width: auto;">
+            <a class="navbar-brand blog-header-logo text-dark" href="https://motionclouds.invibe.net/">
+
+            <span id="blog-title">Motion Clouds</span>
+        </a>
+          </div>
+            <div class="col-md-3 justify-content-end align-items-center bs-nav-collapsible collapse flex-collapse bootblog4-right-nav">
+            <nav class="navbar navbar-light bg-white"><ul class="navbar-nav bootblog4-right-nav">
+<li class="nav-item">
+    <a href="psychopy_discrimination.ipynb" id="sourcelink" class="nav-link">Source</a>
+    </li>
+
+
+                    
+            </ul></nav>
+</div>
+    </div>
+</header><nav class="navbar navbar-expand-md navbar-light bg-white static-top"><div class="collapse navbar-collapse bs-nav-collapsible" id="bs-navbar">
+            <ul class="navbar-nav nav-fill d-flex w-100">
+<li class="nav-item">
+<a href="../index.html" class="nav-link">Home</a>
+                </li>
+<li class="nav-item">
+<a href="../archive.html" class="nav-link">How-to</a>
+                </li>
+<li class="nav-item">
+<a href="https://laurentperrinet.github.io/sciblog/categories/motionclouds.html" class="nav-link">Examples</a>
+                </li>
+<li class="nav-item">
+<a href="../install.html" class="nav-link">Install</a>
+                </li>
+<li class="nav-item">
+<a href="https://laurentperrinet.github.io" class="nav-link">About my research</a>
+                </li>
+<li class="nav-item">
+<a href="https://twitter.com/laurentperrinet" class="nav-link">Twitter</a>
+                </li>
+<li class="nav-item">
+<a href="https://github.com/NeuralEnsemble/MotionClouds" class="nav-link">Github</a>
+
+                
+            </li>
+</ul>
+</div>
+<!-- /.navbar-collapse -->
+</nav>
+</div>
+
+<div class="container" id="content" role="main">
+    <div class="body-content">
+        <!--Body content-->
+        
+        
+<article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Testing discrimination between Motion Clouds with psychopy</a></h1>
+
+        <div class="metadata">
+            <p class="byline author vcard"><span class="byline-name fn" itemprop="author">
+                    Laurent Perrinet
+            </span></p>
+            <p class="dateline">
+            <a href="#" rel="bookmark">
+            <time class="published dt-published" datetime="2013-08-21T08:17:00+02:00" itemprop="datePublished" title="2013-08-21 08:17">2013-08-21 08:17</time></a>
+            </p>
+                <p class="commentline">
+        
+    <a href="psychopy_discrimination.html#disqus_thread" data-disqus-identifier="cache/posts/psychopy_discrimination.html">Comments</a>
+
+
+            
+        </p>
+<p class="sourceline"><a href="psychopy_discrimination.ipynb" class="sourcelink">Source</a></p>
+
+        </div>
+        
+
+    </header><div class="e-content entry-content" itemprop="articleBody text">
+    <div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h2 id="A-discrimination-experiment">A discrimination experiment<a class="anchor-link" href="psychopy_discrimination.html#A-discrimination-experiment">¶</a>
+</h2>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [1]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%%writefile</span> ../files/psychopy_discrimination.py
+
+<span class="c1">#!/usr/bin/env python</span>
+<span class="sd">"""</span>
+
+<span class="sd">Using psychopy to perform an experiment on discriminating clouds</span>
+
+<span class="sd">(c) Laurent Perrinet - INT/CNRS &amp; Jonathan Vacher - CeReMaDe</span>
+
+<span class="sd">"""</span>
+<span class="c1"># width and height of your screen</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">1920</span><span class="p">,</span> <span class="mi">1200</span>
+<span class="n">w</span><span class="p">,</span> <span class="n">h</span> <span class="o">=</span> <span class="mi">2560</span><span class="p">,</span> <span class="mi">1440</span> <span class="c1"># iMac 27''</span>
+
+<span class="c1"># width and height of the stimulus</span>
+<span class="n">w_stim</span><span class="p">,</span> <span class="n">h_stim</span> <span class="o">=</span> <span class="mi">1024</span><span class="p">,</span> <span class="mi">1024</span>
+
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'launching experiment'</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">psychopy</span> <span class="k">import</span> <span class="n">visual</span><span class="p">,</span> <span class="n">core</span><span class="p">,</span> <span class="n">event</span><span class="p">,</span> <span class="n">logging</span><span class="p">,</span> <span class="n">misc</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
+
+<span class="kn">import</span> <span class="nn">os</span><span class="o">,</span> <span class="nn">numpy</span>
+<span class="kn">import</span> <span class="nn">MotionClouds</span> <span class="k">as</span> <span class="nn">mc</span>
+<span class="kn">import</span> <span class="nn">time</span><span class="o">,</span> <span class="nn">datetime</span>
+
+<span class="c1">#if no file use some defaults</span>
+<span class="n">info</span> <span class="o">=</span> <span class="p">{}</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'observer'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'anonymous'</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span> <span class="o">=</span> <span class="n">w</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'screen_height'</span><span class="p">]</span> <span class="o">=</span> <span class="n">h</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'nTrials'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">50</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'N_X'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">N_X</span> <span class="c1"># size of image</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'N_Y'</span><span class="p">]</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">N_Y</span> <span class="c1"># size of image</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'N_frame_total'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">32</span> <span class="c1"># a full period. in time frames</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'N_frame'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">32</span> <span class="c1"># length of the presented period. in time frames</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'timeStr'</span><span class="p">]</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span><span class="o">.</span><span class="n">date</span><span class="p">()</span><span class="o">.</span><span class="n">isoformat</span><span class="p">()</span> <span class="o">+</span> <span class="n">time</span><span class="o">.</span><span class="n">strftime</span><span class="p">(</span><span class="s2">"_%H%M"</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">localtime</span><span class="p">())</span>
+
+<span class="n">fileName</span> <span class="o">=</span> <span class="s1">'data/discriminating_v2_'</span> <span class="o">+</span> <span class="n">info</span><span class="p">[</span><span class="s1">'observer'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'_'</span> <span class="o">+</span> <span class="n">info</span><span class="p">[</span><span class="s1">'timeStr'</span><span class="p">]</span> <span class="o">+</span> <span class="s1">'.pickle'</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'generating data'</span><span class="p">)</span>
+
+<span class="n">alphas</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="mf">1.</span><span class="p">,</span> <span class="o">-.</span><span class="mi">5</span><span class="p">,</span> <span class="mf">0.</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">,</span> <span class="mf">1.</span><span class="p">,</span> <span class="mf">1.5</span><span class="p">,</span> <span class="mf">2.</span><span class="p">]</span>
+<span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span> <span class="o">=</span> <span class="n">mc</span><span class="o">.</span><span class="n">get_grids</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'N_X'</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">'N_Y'</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">'N_frame_total'</span><span class="p">])</span>
+<span class="n">slows</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">rectif</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">random_cloud</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">envelope_gabor</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">V_Y</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">V_X</span> <span class="o">=</span> <span class="mf">1.1</span><span class="p">,</span> <span class="n">B_sf</span> <span class="o">=</span> <span class="mf">10.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">]</span>
+<span class="n">fasts</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="n">mc</span><span class="o">.</span><span class="n">rectif</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">random_cloud</span><span class="p">(</span><span class="n">mc</span><span class="o">.</span><span class="n">envelope_gabor</span><span class="p">(</span><span class="n">fx</span><span class="p">,</span> <span class="n">fy</span><span class="p">,</span> <span class="n">ft</span><span class="p">,</span> <span class="n">V_Y</span><span class="o">=</span><span class="mf">0.</span><span class="p">,</span> <span class="n">V_X</span> <span class="o">=</span> <span class="mf">0.9</span><span class="p">,</span> <span class="n">B_sf</span> <span class="o">=</span> <span class="mf">10.</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)))</span> <span class="o">-</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">alpha</span> <span class="ow">in</span> <span class="n">alphas</span><span class="p">]</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="s1">'go!      '</span><span class="p">)</span>
+<span class="n">win</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Window</span><span class="p">([</span><span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">],</span> <span class="n">info</span><span class="p">[</span><span class="s1">'screen_height'</span><span class="p">]],</span> <span class="n">fullscr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+<span class="n">stimLeft</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">GratingStim</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> 
+                            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> 
+                            <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="o">-</span><span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> 
+                            <span class="n">units</span><span class="o">=</span><span class="s1">'pix'</span><span class="p">,</span>
+                            <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">mask</span> <span class="o">=</span> <span class="s1">'gauss'</span><span class="p">,</span>
+                            <span class="n">autoLog</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="c1">#this stim changes too much for autologging to be useful</span>
+
+<span class="n">stimRight</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">GratingStim</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> 
+                            <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span><span class="o">/</span><span class="mi">2</span><span class="p">),</span> 
+                            <span class="n">pos</span><span class="o">=</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'screen_width'</span><span class="p">]</span><span class="o">/</span><span class="mi">4</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span> 
+                            <span class="n">units</span><span class="o">=</span><span class="s1">'pix'</span><span class="p">,</span>
+                            <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                            <span class="n">mask</span> <span class="o">=</span> <span class="s1">'gauss'</span><span class="p">,</span>
+                            <span class="n">autoLog</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="c1">#this stim changes too much for autologging to be useful</span>
+
+<span class="n">wait_for_response</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">TextStim</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> 
+                        <span class="n">text</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">"?"</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">'norm'</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'DarkSlateBlue'</span><span class="p">,</span>
+                        <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.</span><span class="p">],</span> <span class="n">alignHoriz</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">alignVert</span><span class="o">=</span><span class="s1">'center'</span> <span class="p">)</span> 
+<span class="n">wait_for_next</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">TextStim</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> 
+                        <span class="n">text</span> <span class="o">=</span> <span class="sa">u</span><span class="s2">"+"</span><span class="p">,</span> <span class="n">units</span><span class="o">=</span><span class="s1">'norm'</span><span class="p">,</span> <span class="n">height</span><span class="o">=</span><span class="mf">0.15</span><span class="p">,</span> <span class="n">color</span><span class="o">=</span><span class="s1">'BlanchedAlmond'</span><span class="p">,</span>
+                        <span class="n">pos</span><span class="o">=</span><span class="p">[</span><span class="mf">0.</span><span class="p">,</span> <span class="o">-</span><span class="mf">0.</span><span class="p">],</span> <span class="n">alignHoriz</span><span class="o">=</span><span class="s1">'center'</span><span class="p">,</span> <span class="n">alignVert</span><span class="o">=</span><span class="s1">'center'</span> <span class="p">)</span> 
+                        
+<span class="k">def</span> <span class="nf">getResponse</span><span class="p">():</span>
+    <span class="n">event</span><span class="o">.</span><span class="n">clearEvents</span><span class="p">()</span><span class="c1">#clear the event buffer to start with</span>
+    <span class="n">resp</span> <span class="o">=</span> <span class="kc">None</span><span class="c1">#initially</span>
+    <span class="k">while</span> <span class="mi">1</span><span class="p">:</span><span class="c1">#forever until we return a keypress</span>
+        <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">event</span><span class="o">.</span><span class="n">getKeys</span><span class="p">():</span>
+            <span class="c1">#quit</span>
+            <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'escape'</span><span class="p">,</span> <span class="s1">'q'</span><span class="p">]:</span>
+                <span class="n">win</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+                <span class="n">core</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span>
+                <span class="k">return</span> <span class="kc">None</span>
+            <span class="c1">#valid response - check to see if correct</span>
+            <span class="k">elif</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'left'</span><span class="p">,</span> <span class="s1">'right'</span><span class="p">]:</span>
+                <span class="k">if</span> <span class="n">key</span> <span class="ow">in</span> <span class="p">[</span><span class="s1">'left'</span><span class="p">]</span> <span class="p">:</span><span class="k">return</span> <span class="mf">0.</span>
+                <span class="k">else</span><span class="p">:</span> <span class="k">return</span> <span class="mf">1.</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="s2">"hit LEFT or RIGHT (or Esc) (You hit </span><span class="si">%s</span><span class="s2">)"</span> <span class="o">%</span><span class="n">key</span>
+
+<span class="n">clock</span> <span class="o">=</span> <span class="n">core</span><span class="o">.</span><span class="n">Clock</span><span class="p">()</span>
+<span class="n">FPS</span> <span class="o">=</span> <span class="mf">50.</span>
+<span class="k">def</span> <span class="nf">presentStimulus</span><span class="p">(</span><span class="n">i_alpha</span><span class="p">,</span> <span class="n">left</span><span class="p">):</span>
+    <span class="sd">"""</span>
+<span class="sd">    Present stimulus</span>
+<span class="sd">    </span>
+<span class="sd">    TODO : switch randomly up / down</span>
+<span class="sd">    </span>
+<span class="sd">    """</span>
+    <span class="n">phase_up</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'N_frame_total'</span><span class="p">]</span><span class="o">-</span><span class="n">info</span><span class="p">[</span><span class="s1">'N_frame'</span><span class="p">]))</span>
+    <span class="n">phase_down</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">floor</span><span class="p">(</span><span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">rand</span><span class="p">()</span> <span class="o">*</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'N_frame_total'</span><span class="p">]</span><span class="o">-</span><span class="n">info</span><span class="p">[</span><span class="s1">'N_frame'</span><span class="p">]))</span>
+    <span class="n">up</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">clock</span><span class="o">.</span><span class="n">reset</span><span class="p">()</span>
+    <span class="k">for</span> <span class="n">i_frame</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'N_frame'</span><span class="p">]):</span> <span class="c1"># length of the stimulus</span>
+        <span class="n">wait_for_next</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="n">stimLeft</span><span class="o">.</span><span class="n">setTex</span><span class="p">(</span><span class="n">left</span> <span class="o">*</span> <span class="n">fasts</span><span class="p">[</span><span class="n">i_alpha</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">up</span><span class="o">*</span><span class="n">i_frame</span><span class="o">+</span><span class="n">phase_up</span><span class="p">]</span><span class="o">+</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">left</span><span class="p">)</span> <span class="o">*</span> <span class="n">slows</span><span class="p">[</span><span class="n">i_alpha</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">up</span><span class="o">*</span><span class="n">i_frame</span><span class="o">+</span><span class="n">phase_down</span><span class="p">])</span>
+        <span class="n">stimRight</span><span class="o">.</span><span class="n">setTex</span><span class="p">((</span><span class="mf">1.</span><span class="o">-</span><span class="n">left</span><span class="p">)</span> <span class="o">*</span> <span class="n">fasts</span><span class="p">[</span><span class="n">i_alpha</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">up</span><span class="o">*</span><span class="n">i_frame</span><span class="o">+</span><span class="n">phase_up</span><span class="p">]</span><span class="o">+</span> <span class="n">left</span> <span class="o">*</span> <span class="n">slows</span><span class="p">[</span><span class="n">i_alpha</span><span class="p">][:,</span> <span class="p">:,</span> <span class="n">up</span><span class="o">*</span><span class="n">i_frame</span><span class="o">+</span><span class="n">phase_down</span><span class="p">])</span>
+        <span class="n">stimLeft</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+        <span class="n">stimRight</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+<span class="c1">#        while clock.getTime() &lt; i_frame/FPS:</span>
+<span class="c1">#            print clock.getTime(), i_frame/FPS</span>
+<span class="c1">#            print('waiting')</span>
+        <span class="n">win</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+
+<span class="n">n_alpha</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">alphas</span><span class="p">)</span>
+<span class="n">results</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_alpha</span><span class="p">,</span> <span class="n">info</span><span class="p">[</span><span class="s1">'nTrials'</span><span class="p">]))</span>
+<span class="k">for</span> <span class="n">i_trial</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">info</span><span class="p">[</span><span class="s1">'nTrials'</span><span class="p">]):</span>
+    <span class="n">wait_for_next</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+    <span class="n">core</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+    <span class="n">left</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="c1"># a random number between 0 and 1</span>
+    <span class="n">i_alpha</span> <span class="o">=</span> <span class="n">numpy</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="n">n_alpha</span><span class="p">)</span> <span class="c1"># a random number between 0 and 1</span>
+    <span class="n">presentStimulus</span><span class="p">(</span><span class="n">i_alpha</span><span class="p">,</span> <span class="n">left</span><span class="p">)</span>
+    <span class="n">wait_for_response</span><span class="o">.</span><span class="n">draw</span><span class="p">()</span>
+    <span class="n">win</span><span class="o">.</span><span class="n">flip</span><span class="p">()</span>
+    <span class="n">results</span><span class="p">[</span><span class="n">i_alpha</span><span class="p">,</span> <span class="n">i_trial</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="p">(</span><span class="n">left</span> <span class="o">==</span> <span class="n">getResponse</span><span class="p">())</span><span class="o">-</span><span class="mi">1</span>
+
+<span class="n">win</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+<span class="n">core</span><span class="o">.</span><span class="n">wait</span><span class="p">(</span><span class="mf">0.5</span><span class="p">)</span>
+
+<span class="n">win</span><span class="o">.</span><span class="n">close</span><span class="p">()</span>
+
+<span class="c1">#save data</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'alphas'</span><span class="p">]</span> <span class="o">=</span> <span class="n">alphas</span>
+<span class="n">info</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span>
+<span class="n">misc</span><span class="o">.</span><span class="n">toFile</span><span class="p">(</span><span class="n">fileName</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+
+<span class="n">core</span><span class="o">.</span><span class="n">quit</span><span class="p">()</span> <span class="c1">#quit</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Overwriting ../files/psychopy_discrimination.py
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [2]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">cd</span> ../files
+<span class="c1">#!python2 psychopy_discrimination.py</span>
+<span class="o">%</span><span class="k">cd</span> ../posts
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>/Users/laurentperrinet/pool/blog/motionclouds.invibe.net/files
+/Users/laurentperrinet/pool/blog/motionclouds.invibe.net/posts
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Analysis-of-the-discrimination-experiment">Analysis of the discrimination experiment<a class="anchor-link" href="psychopy_discrimination.html#Analysis-of-the-discrimination-experiment">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the <code>psychopy_discrimination.py</code> script, we implemented an experiment to test whether the overall shape of motion clouds could influence discrimination of speed.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Herein, we analyse the data that was collected over different sessions and try to draw some conclusions.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [3]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="n">np</span><span class="o">.</span><span class="n">set_printoptions</span><span class="p">(</span><span class="n">precision</span><span class="o">=</span><span class="mi">3</span><span class="p">,</span> <span class="n">suppress</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="o">%</span><span class="k">matplotlib</span> inline
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Analysis---version-1">Analysis - version 1<a class="anchor-link" href="psychopy_discrimination.html#Analysis---version-1">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In a first version of the experiment, we only stored the results in a numpy file.</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [4]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls  ../files/data/discriminating_*
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>../files/data/discriminating_john_Jan_23_1515.npy
+../files/data/discriminating_lup_Jan_23_1401.npy
+../files/data/discriminating_lup_Jan_23_1735.npy
+../files/data/discriminating_lup_Jan_24_0914.npy
+../files/data/discriminating_lup_Jan_24_0919.npy
+../files/data/discriminating_lup_Jan_24_0931.npy
+../files/data/discriminating_lup_Jan_24_0937.npy
+../files/data/discriminating_v2_anonymous_2015-07-01_1422.pickle
+../files/data/discriminating_v2_lup_Feb_07_1409.pickle
+../files/data/discriminating_v2_lup_Feb_07_1434.pickle
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [5]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">!</span>ls  ../files/data/
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>competing_v1_bruno_Dec_14_1210.npy
+competing_v1_lup_Dec_12_1003.npy
+competing_v1_lup_Dec_12_1013.npy
+competing_v1_lup_Dec_14_1201.npy
+competing_v1_meduz_Dec_14_1204.npy
+competing_v2_anonymous_2015-07-01.npy
+competing_v2_anonymous_2015-07-01.pickle
+competing_v2_anonymous_2015-07-01_1344.npy
+competing_v2_anonymous_2015-07-01_1344.pickle
+competing_v2_jean_Sep_03_1536.npy
+competing_v2_jean_Sep_03_1536.pickle
+competing_v2_laurent_Sep_17_1522.npy
+competing_v2_laurent_Sep_17_1522.pickle
+discriminating_john_Jan_23_1515.npy
+discriminating_lup_Jan_23_1401.npy
+discriminating_lup_Jan_23_1735.npy
+discriminating_lup_Jan_24_0914.npy
+discriminating_lup_Jan_24_0919.npy
+discriminating_lup_Jan_24_0931.npy
+discriminating_lup_Jan_24_0937.npy
+discriminating_v2_anonymous_2015-07-01_1422.pickle
+discriminating_v2_lup_Feb_07_1409.pickle
+discriminating_v2_lup_Feb_07_1434.pickle
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [6]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'../files/data/discriminating_*npy'</span><span class="p">):</span>
+    <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'analyzing results'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'# of trials :'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s1">'average results: '</span><span class="p">,</span> <span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">results</span><span class="p">)</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*.</span><span class="mi">5</span><span class="o">+.</span><span class="mi">5</span><span class="p">))</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>../files/data/discriminating_john_Jan_23_1515.npy (2, 50)
+analyzing results
+# of trials : [ 50.     24.508]
+average results:  [ 0.48  1.  ]
+../files/data/discriminating_lup_Jan_23_1401.npy (2, 50)
+analyzing results
+# of trials : [ 50.     28.126]
+average results:  [ 0.66  1.  ]
+../files/data/discriminating_lup_Jan_23_1735.npy (3, 50)
+analyzing results
+# of trials : [  9.  14.  13.]
+average results:  [ 1.  1.  1.]
+../files/data/discriminating_lup_Jan_24_0914.npy (3, 50)
+analyzing results
+# of trials : [ 17.  21.  12.]
+average results:  [ 0.647  0.857  1.   ]
+../files/data/discriminating_lup_Jan_24_0919.npy (3, 50)
+analyzing results
+# of trials : [ 10.  25.  15.]
+average results:  [ 0.7    0.32   0.533]
+../files/data/discriminating_lup_Jan_24_0931.npy (7, 50)
+analyzing results
+# of trials : [  3.   4.   8.   8.   7.  12.   8.]
+average results:  [ 0.667  1.     0.625  0.375  1.     0.167  0.125]
+../files/data/discriminating_lup_Jan_24_0937.npy (7, 50)
+analyzing results
+# of trials : [  7.   5.   6.  12.  10.   2.   8.]
+average results:  [ 0.857  0.8    0.833  0.417  0.2    1.     0.375]
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [7]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="o">%</span><span class="k">whos</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Variable   Type       Data/Info
+-------------------------------
+fn         str        ../files/data/discriminating_lup_Jan_24_0937.npy
+glob       module     &lt;module 'glob' from '/usr&lt;...&gt;5/lib/python3.5/glob.py'&gt;
+np         module     &lt;module 'numpy' from '/us&lt;...&gt;kages/numpy/__init__.py'&gt;
+plt        module     &lt;module 'matplotlib.pyplo&lt;...&gt;es/matplotlib/pyplot.py'&gt;
+pylab      module     &lt;module 'pylab' from '/us&lt;...&gt;/site-packages/pylab.py'&gt;
+results    ndarray    7x50: 350 elems, type `float64`, 2800 bytes
+</pre>
+</div>
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>Another solution is to use:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [8]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#data= 1</span>
+<span class="c1">#np.savez('toto', data=data, results=results)</span>
+<span class="c1">#print np.load('toto.npz')['data']</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>or directly <code>psychopy.misc</code>:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [9]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1">#from psychopy import misc</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>#info = misc.fromFile('../data/discriminating.pickle')
+with open('../files/data/discriminating.pickle', 'rb') as f: info = pickle.load(f)alphas = [-1., -.5, 0., 0.5, 1., 1.5, 2.]
+fileName = '/tmp/discriminating_' + info['observer'] + '.pickle'
+info['alphas'] = alphas
+info['results'] = results
+#numpy.savez(fileName, results=results, alphas=alphas)
+#misc.toFile(fileName, info)
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<h3 id="Analysis---version-2">Analysis - version 2<a class="anchor-link" href="psychopy_discrimination.html#Analysis---version-2">¶</a>
+</h3>
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing text_cell rendered">
+<div class="prompt input_prompt">
+</div>
+<div class="inner_cell">
+<div class="text_cell_render border-box-sizing rendered_html">
+<p>In the second version, we stored more data:</p>
+
+</div>
+</div>
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [10]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">glob</span>
+<span class="c1">#from psychopy import misc</span>
+<span class="kn">import</span> <span class="nn">pickle</span>
+<span class="n">fig</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">111</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">fn</span> <span class="ow">in</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s1">'../files/data/discriminating_v2_*pickle'</span><span class="p">):</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s1">'Loading '</span><span class="p">,</span> <span class="n">fn</span><span class="p">)</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">fn</span><span class="p">,</span> <span class="s1">'rb'</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span> <span class="n">data</span> <span class="o">=</span> <span class="n">pickle</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="n">encoding</span><span class="o">=</span><span class="s1">'latin1'</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="n">fn</span><span class="p">,</span> <span class="n">results</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'analyzing results'</span><span class="p">)</span>
+    <span class="n">alphas</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'alphas'</span><span class="p">])</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s1">' alphas = '</span><span class="p">,</span> <span class="n">alphas</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s1">'# of trials :'</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'results'</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">))</span>
+    <span class="nb">print</span><span class="p">(</span> <span class="s1">'average results: '</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'results'</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*.</span><span class="mi">5</span><span class="o">+.</span><span class="mi">5</span><span class="p">))</span>
+    <span class="n">width</span> <span class="o">=</span> <span class="p">(</span><span class="n">alphas</span><span class="o">.</span><span class="n">max</span><span class="p">()</span><span class="o">-</span><span class="n">alphas</span><span class="o">.</span><span class="n">min</span><span class="p">())</span><span class="o">/</span><span class="nb">len</span><span class="p">(</span><span class="n">alphas</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">bar</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'alphas'</span><span class="p">]</span> <span class="o">-</span> <span class="n">width</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'results'</span><span class="p">]</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">data</span><span class="p">[</span><span class="s1">'results'</span><span class="p">])</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span><span class="o">*.</span><span class="mi">5</span><span class="o">+.</span><span class="mi">5</span><span class="p">),</span> <span class="n">width</span><span class="o">=</span><span class="n">width</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=.</span><span class="mi">3</span> <span class="p">)</span>
+<span class="c1">#    for i_trial in xrange(data['results'].shape[1]):</span>
+<span class="c1">#        ax.scatter(data['alphas'][data['results']</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s1">'alpha'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s1">'</span><span class="si">% c</span><span class="s1">orrect'</span><span class="p">)</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+<div class="output_wrapper">
+<div class="output">
+
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+<div class="output_subarea output_stream output_stdout output_text">
+<pre>Loading  ../files/data/discriminating_v2_anonymous_2015-07-01_1422.pickle
+../files/data/discriminating_v2_anonymous_2015-07-01_1422.pickle (7, 50)
+analyzing results
+ alphas =  [-1.  -0.5  0.   0.5  1.   1.5  2. ]
+# of trials : [  5.  10.   9.   9.   4.   8.   5.]
+average results:  [ 0.6    0.5    0.222  0.667  1.     0.75   0.8  ]
+Loading  ../files/data/discriminating_v2_lup_Feb_07_1409.pickle
+../files/data/discriminating_v2_lup_Feb_07_1409.pickle (7, 50)
+analyzing results
+ alphas =  [-1.  -0.5  0.   0.5  1.   1.5  2. ]
+# of trials : [ 10.   4.   5.  11.   6.  11.   3.]
+average results:  [ 0.7    1.     0.4    0.545  0.833  0.273  1.   ]
+Loading  ../files/data/discriminating_v2_lup_Feb_07_1434.pickle
+../files/data/discriminating_v2_lup_Feb_07_1434.pickle (7, 50)
+analyzing results
+ alphas =  [-1.  -0.5  0.   0.5  1.   1.5  2. ]
+# of trials : [  4.   3.  10.  12.   8.   8.   5.]
+average results:  [ 0.75   0.667  0.8    0.5    0.125  0.25   0.4  ]
+</pre>
+</div>
+</div>
+
+<div class="output_area">
+
+    <div class="prompt output_prompt">Out[10]:</div>
+
+
+
+
+<div class="output_text output_subarea output_execute_result">
+<pre>&lt;matplotlib.text.Text at 0x104cebcf8&gt;</pre>
+</div>
+
+</div>
+
+<div class="output_area">
+
+    <div class="prompt"></div>
+
+
+
+
+<div class="output_png output_subarea ">
+<img src="data:image/png;base64,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">
+</div>
+
+</div>
+
+</div>
+</div>
+
+</div>
+<div class="cell border-box-sizing code_cell rendered">
+<div class="input">
+<div class="prompt input_prompt">In [11]:</div>
+<div class="inner_cell">
+    <div class="input_area">
+<div class=" highlight hl-ipython3"><pre><span></span><span class="c1"># TODO : correct for the number of trials / make global reading / make a new draw of alphas</span>
+<span class="c1"># TODO : test f_0</span>
+</pre></div>
+
+    </div>
+</div>
+</div>
+
+</div>
+</div>
+    </div>
+    <aside class="postpromonav"><nav><ul itemprop="keywords" class="tags">
+<li><a class="tag p-category" href="../categories/motionclouds.html" rel="tag">motionclouds</a></li>
+            <li><a class="tag p-category" href="../categories/psychopy.html" rel="tag">psychopy</a></li>
+            <li><a class="tag p-category" href="../categories/python.html" rel="tag">python</a></li>
+        </ul>
+<ul class="pager hidden-print">
+<li class="previous">
+                <a href="testing_basis.html" rel="prev" title="Testing basic functions of Motion Clouds ">Previous post</a>
+            </li>
+            <li class="next">
+                <a href="psychopy_competing.html" rel="next" title="Testing competing Motion Clouds with psychopy">Next post</a>
+            </li>
+        </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
+        
+        
+        <div id="disqus_thread"></div>
+        <script>
+        var disqus_shortname ="invibe",
+            disqus_url="https://motionclouds.invibe.net/posts/psychopy_discrimination.html",
+        disqus_title="Testing discrimination between Motion Clouds with psychopy",
+        disqus_identifier="cache/posts/psychopy_discrimination.html",
+        disqus_config = function () {
+            this.language = "en";
+        };
+        (function() {
+            var dsq = document.createElement('script'); dsq.async = true;
+            dsq.src = 'https://' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script><noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a>
+</noscript>
+    <a href="https://disqus.com" class="dsq-brlink" rel="nofollow">Comments powered by <span class="logo-disqus">Disqus</span></a>
+
+
+        </section><script src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML" integrity="sha256-SDRP1VVYu+tgAGKhddBSl5+ezofHKZeI+OzxakbIe/Y=" crossorigin="anonymous"></script><script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    tex2jax: {
+        inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+        displayMath: [ ['$$','$$'], ["\\[","\\]"] ]
+    },
+    displayAlign: 'center', // Change this to 'center' to center equations.
+    "HTML-CSS": {
+        styles: {'.MathJax_Display': {"margin": 0}}
+    }
+});
+</script></article><script>var disqus_shortname="invibe";(function(){var a=document.createElement("script");a.async=true;a.src="https://"+disqus_shortname+".disqus.com/count.js";(document.getElementsByTagName("head")[0]||document.getElementsByTagName("body")[0]).appendChild(a)}());</script><!--End of body content--><footer id="footer">
+            Contents © 2019 <a href="mailto:laurent.perrinet@univ-amu.fr">Laurent Perrinet</a> -
+Powered by <a href="http://getnikola.com">Nikola</a> with <a href="https://themes.getnikola.com/v7/maupassant/">Maupassant</a> theme <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
+<img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
+            
+        </footer>
+</div>
+</div>
+
+
+            <script src="../assets/js/jquery.min.js"></script><script src="../assets/js/popper.min.js"></script><script src="../assets/js/bootstrap.min.js"></script><script src="../assets/js/baguetteBox.min.js"></script><script>
+    baguetteBox.run('div#content', {
+        ignoreClass: 'islink',
+        captions: function(element) {
+            return element.getElementsByTagName('img')[0].alt;
+    }});
+    </script>
+</body>
+</html>
