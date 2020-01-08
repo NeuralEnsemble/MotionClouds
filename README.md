@@ -38,7 +38,7 @@ https://neuralensemble.github.io/MotionClouds/
 
 The description of this method was published in:
 
-* Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. _Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception._ [**Journal of Neurophysiology**](http://jn.physiology.org/content/early/2012/03/10/jn.00737.2011), 107(11):3217--3226, 2012  [URL](https://laurentperrinet.github.io/publication/sanz-12/) - [reprint](http://www.motionclouds.invibe.net/files/MotionClouds.pdf) - [Supplementary Information](http://www.motionclouds.invibe.net/files/MotionClouds_Supplementary.pdf) - [Supplementary Videos](http://www.motionclouds.invibe.net/files/MotionClouds_VideoFigures.pdf)
+* Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. _Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception._ [**Journal of Neurophysiology**](http://jn.physiology.org/content/early/2012/03/10/jn.00737.2011), 107(11):3217--3226, 2012  [URL](https://laurentperrinet.github.io/publication/sanz-12/) - [reprint](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds.pdf) - [Supplementary Information](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds_Supplementary.pdf) - [Supplementary Videos](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds_VideoFigures.pdf)
 
 While this method was used in the following paper:
 
