@@ -1,4 +1,4 @@
-Sitemap: https://motionclouds.invibe.net/sitemapindex.xml
+Sitemap: https://neuralensemble.github.io/MotionClouds/sitemapindex.xml
 
 User-Agent: *
 Host: motionclouds.invibe.net

@@ -10,7 +10,7 @@
 
 In particular, these stimuli can be made closer to naturalistic textures compared to usual stimuli such as gratings and random-dot kinetograms. These have controlled information content: We simplified the definition to parametrically define these "Motion Clouds" around the most prevalent feature axis (mean and bandwith): direction, scale (spatial frequency), orientation. These scripts implement a framework to generate these random texture movies.
 
-<center><img src="http://www.motionclouds.invibe.net/files/grating.gif" width="50%"></center>
+<center><img src="grating.gif" width="50%"></center>
 
 The description of this method was published in:
 
@@ -36,7 +36,7 @@ This work was supported by the European Union project Number FP7-269921, ``Brain
 <img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/5/5b/Public--EU-Logo.gif/90px-Public--EU-Logo.gif" width="10%">
 
 ***
-## Code example - [demo](http://motionclouds.invibe.net/posts/testing_components.html)
+## Code example - [demo](https://neuralensemble.github.io/MotionClouds/posts/testing_components.html)
 
 Motion Clouds are built using a collection of scripts that provides a simple way of generating complex stimuli suitable for neuroscience and psychophysics experiments. It is meant to be an open-source package that can be combined with other packages such as PsychoPy or NeuroTools.
 

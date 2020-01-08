@@ -189,7 +189,7 @@ def envelope_radial(fx, fy, ft, sf_0=sf_0, B_sf=B_sf, ft_0=ft_0, loggabor=loggab
     Selects a preferred spatial frequency ``sf_0`` and a bandwidth ``B_sf``.
 
     Run the 'test_radial' notebook to see the explore the effect of ``sf_0`` and ``B_sf``, see
-    http://motionclouds.invibe.net/posts/testing-radial.html
+    https://neuralensemble.github.io/MotionClouds/posts/testing-radial.html
 
     """
     if sf_0 == 0. or B_sf==np.inf:
@@ -222,7 +222,7 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     to avoid aliasing problems.
 
     Run the 'test_speed' notebook to explore the speed parameters, see
-    http://motionclouds.invibe.net/posts/testing-speed.html
+    https://neuralensemble.github.io/MotionClouds/posts/testing-speed.html
 
     """
     if ft.shape[2]==1:
@@ -245,7 +245,7 @@ def envelope_orientation(fx, fy, ft, theta=theta, B_theta=B_theta):
     given by approximately np.sqrt(2*B_theta_**2*np.log(2)).
 
     Run 'testing-grating.py' notebook to see the effect of changing theta and B_theta, see
-    http://motionclouds.invibe.net/posts/testing-grating.html
+    https://neuralensemble.github.io/MotionClouds/posts/testing-grating.html
 
     """
     if B_theta is np.inf: # for large bandwidth, returns a strictly flat envelope
