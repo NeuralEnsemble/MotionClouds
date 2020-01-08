@@ -1,5 +1,7 @@
 .ipynb_checkpoints
 figures
+
+website
 # Byte-compiled / optimized / DLL files
 test/results
 __pycache__/
