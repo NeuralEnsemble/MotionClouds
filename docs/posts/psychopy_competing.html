@@ -52,7 +52,7 @@ MathJax.Hub.Config({
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse bs-nav-collapsible bootblog4-search-form-holder">
-                
+
 <!-- Custom search -->
 <form method="get" id="search" action="//duckduckgo.com/" class="navbar-form pull-left">
 <input type="hidden" name="sites" value="https://neuralensemble.github.io/MotionClouds/"><input type="hidden" name="k8" value="#444444"><input type="hidden" name="k9" value="#D51920"><input type="hidden" name="kt" value="h"><input type="text" name="q" maxlength="255" placeholder="Search…" class="span2" style="margin-top: 4px;"><input type="submit" value="DuckDuckGo Search" style="visibility: hidden;">
@@ -74,7 +74,7 @@ MathJax.Hub.Config({
     </li>
 
 
-                    
+
             </ul></nav>
 </div>
     </div>
@@ -101,7 +101,7 @@ MathJax.Hub.Config({
 <li class="nav-item">
 <a href="https://github.com/NeuralEnsemble/MotionClouds" class="nav-link">Github</a>
 
-                
+
             </li>
 </ul>
 </div>
@@ -112,8 +112,8 @@ MathJax.Hub.Config({
 <div class="container" id="content" role="main">
     <div class="body-content">
         <!--Body content-->
-        
-        
+
+
 <article class="post-text h-entry hentry postpage" itemscope="itemscope" itemtype="http://schema.org/Article"><header><h1 class="p-name entry-title" itemprop="headline name"><a href="#" class="u-url">Testing competing Motion Clouds with psychopy</a></h1>
 
         <div class="metadata">
@@ -125,16 +125,16 @@ MathJax.Hub.Config({
             <time class="published dt-published" datetime="2013-08-21T08:17:00+02:00" itemprop="datePublished" title="2013-08-21 08:17">2013-08-21 08:17</time></a>
             </p>
                 <p class="commentline">
-        
+
     <a href="psychopy_competing.html#disqus_thread" data-disqus-identifier="cache/posts/psychopy_competing.html">Comments</a>
 
 
-            
+
         </p>
 <p class="sourceline"><a href="psychopy_competing.ipynb" class="sourcelink">Source</a></p>
 
         </div>
-        
+
 
     </header><div class="e-content entry-content" itemprop="articleBody text">
     <div>
@@ -617,38 +617,6 @@ MathJax.Hub.Config({
 
 </div>
 
-<div class="output_area">
-
-    <div class="prompt"></div>
-
-
-<div class="output_subarea output_text output_error">
-<pre>
-<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
-<span class="ansi-red-fg">AttributeError</span>                            Traceback (most recent call last)
-<span class="ansi-green-fg">./files/experiment_competing.py</span> in <span class="ansi-cyan-fg">&lt;module&gt;</span><span class="ansi-blue-fg">()</span>
-<span class="ansi-green-intense-fg ansi-bold">     68</span>     name_ <span class="ansi-blue-fg">=</span> name <span class="ansi-blue-fg">+</span> <span class="ansi-blue-fg">'-theta_pi-over-'</span> <span class="ansi-blue-fg">+</span> str<span class="ansi-blue-fg">(</span>div<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">.</span>replace<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">'.'</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">'_'</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     69</span>     z <span class="ansi-blue-fg">=</span> <span class="ansi-blue-fg">(</span>mc<span class="ansi-blue-fg">.</span>envelope_gabor<span class="ansi-blue-fg">(</span>fx<span class="ansi-blue-fg">,</span> fy<span class="ansi-blue-fg">,</span> ft<span class="ansi-blue-fg">,</span> theta<span class="ansi-blue-fg">=</span>numpy<span class="ansi-blue-fg">.</span>pi<span class="ansi-blue-fg">/</span>div<span class="ansi-blue-fg">)</span> <span class="ansi-blue-fg">+</span> mc<span class="ansi-blue-fg">.</span>envelope_gabor<span class="ansi-blue-fg">(</span>fx<span class="ansi-blue-fg">,</span> fy<span class="ansi-blue-fg">,</span> ft<span class="ansi-blue-fg">,</span> theta<span class="ansi-blue-fg">=</span><span class="ansi-blue-fg">-</span>numpy<span class="ansi-blue-fg">.</span>pi<span class="ansi-blue-fg">/</span>div<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">---&gt; 70</span><span class="ansi-red-fg">     </span>mc<span class="ansi-blue-fg">.</span>figures<span class="ansi-blue-fg">(</span>z<span class="ansi-blue-fg">,</span> name_<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">     71</span>     mc<span class="ansi-blue-fg">.</span>in_show_video<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">)</span>
-
-<span class="ansi-green-fg">/Users/lolo/pool/science/MotionClouds/MotionClouds/MotionClouds.py</span> in <span class="ansi-cyan-fg">figures</span><span class="ansi-blue-fg">(z, name, vext, do_movie, do_figs, recompute, seed, impulse, verbose, masking, do_amp, figpath, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    742</span>     <span class="ansi-green-fg">if</span> do_figs <span class="ansi-green-fg">and</span> <span class="ansi-green-fg">not</span> z <span class="ansi-green-fg">is</span> <span class="ansi-green-fg">None</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-intense-fg ansi-bold">    743</span>         <span class="ansi-green-fg">if</span> recompute <span class="ansi-green-fg">or</span> check_if_anim_exist<span class="ansi-blue-fg">(</span>name<span class="ansi-blue-fg">,</span> vext<span class="ansi-blue-fg">=</span>ext<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">:</span>
-<span class="ansi-green-fg">--&gt; 744</span><span class="ansi-red-fg">             </span>visualize<span class="ansi-blue-fg">(</span>z<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">=</span>os<span class="ansi-blue-fg">.</span>path<span class="ansi-blue-fg">.</span>join<span class="ansi-blue-fg">(</span>figpath<span class="ansi-blue-fg">,</span> name<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>kwargs<span class="ansi-blue-fg">)</span>           <span class="ansi-red-fg"># Visualize the Fourier Spectrum</span>
-<span class="ansi-green-intense-fg ansi-bold">    745</span> 
-<span class="ansi-green-intense-fg ansi-bold">    746</span>     <span class="ansi-green-fg">if</span> do_movie <span class="ansi-green-fg">or</span> do_figs<span class="ansi-blue-fg">:</span>
-
-<span class="ansi-green-fg">/Users/lolo/pool/science/MotionClouds/MotionClouds/MotionClouds.py</span> in <span class="ansi-cyan-fg">visualize</span><span class="ansi-blue-fg">(z_in, azimuth, elevation, thresholds, opacities, fourier_label, name, ext, do_axis, do_grids, draw_projections, colorbar, f_N, f_tN, figsize, figpath, **kwargs)</span>
-<span class="ansi-green-intense-fg ansi-bold">    372</span>         energy_xy <span class="ansi-blue-fg">=</span> np<span class="ansi-blue-fg">.</span>rot90<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>max<span class="ansi-blue-fg">(</span>z<span class="ansi-blue-fg">,</span> axis<span class="ansi-blue-fg">=</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">[</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">:</span><span class="ansi-blue-fg">-</span><span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">]</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">3</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    373</span>         fourier_xy <span class="ansi-blue-fg">=</span> scene<span class="ansi-blue-fg">.</span>visuals<span class="ansi-blue-fg">.</span>Image<span class="ansi-blue-fg">(</span>np<span class="ansi-blue-fg">.</span>rot90<span class="ansi-blue-fg">(</span>energy_xy<span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">**</span>opts<span class="ansi-blue-fg">)</span>
-<span class="ansi-green-fg">--&gt; 374</span><span class="ansi-red-fg">         </span>tr_xy <span class="ansi-blue-fg">=</span> scene<span class="ansi-blue-fg">.</span>transforms<span class="ansi-blue-fg">.</span>MatrixTransform<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    375</span>         tr_xy<span class="ansi-blue-fg">.</span>rotate<span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">90</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">(</span><span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">0</span><span class="ansi-blue-fg">,</span> <span class="ansi-cyan-fg">1</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-<span class="ansi-green-intense-fg ansi-bold">    376</span>         tr_xy<span class="ansi-blue-fg">.</span>translate<span class="ansi-blue-fg">(</span><span class="ansi-blue-fg">(</span>N_X<span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">-</span>N_Y<span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">,</span> <span class="ansi-blue-fg">-</span>N_frame<span class="ansi-blue-fg">/</span><span class="ansi-cyan-fg">2</span><span class="ansi-blue-fg">)</span><span class="ansi-blue-fg">)</span>
-
-<span class="ansi-red-fg">AttributeError</span>: module 'vispy.visuals.transforms' has no attribute 'MatrixTransform'</pre>
-</div>
-</div>
 
 <div class="output_area">
 
@@ -711,7 +679,7 @@ MathJax.Hub.Config({
 <span class="n">logging</span><span class="o">.</span><span class="n">console</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="n">logging</span><span class="o">.</span><span class="n">DEBUG</span><span class="p">)</span>
 
 <span class="n">win</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">Window</span><span class="p">([</span><span class="n">w</span><span class="p">,</span> <span class="n">h</span><span class="p">],</span> <span class="n">fullscr</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
-<span class="n">stim</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">GratingStim</span><span class="p">(</span><span class="n">win</span><span class="p">,</span> 
+<span class="n">stim</span> <span class="o">=</span> <span class="n">visual</span><span class="o">.</span><span class="n">GratingStim</span><span class="p">(</span><span class="n">win</span><span class="p">,</span>
         <span class="n">size</span><span class="o">=</span><span class="p">(</span><span class="n">w_stim</span><span class="p">,</span> <span class="n">h_stim</span><span class="p">),</span> <span class="n">units</span><span class="o">=</span><span class="s1">'pix'</span><span class="p">,</span>
         <span class="n">interpolate</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
         <span class="n">mask</span><span class="o">=</span><span class="s1">'gauss'</span><span class="p">,</span>
@@ -978,7 +946,7 @@ launching experiment
 2016-11-21 09:47:25.929 Python[21721:1705469] ApplePersistenceIgnoreState: Existing state will not be touched. New state will be written to /var/folders/3p/m0g52j9j69z3gj8ktpgg1dm00000gn/T/org.python.python.savedState
 launching experiment
 generating data
-go!      
+go!
 psychopy_competing.py:89: VisibleDeprecationWarning: using a non-integer number instead of an integer will result in an error in the future
   stim.setTex(C_A * up[:, :, i_frame+phase_up]+C_B * down[:, :, i_frame+phase_down])
 44.2654 	WARNING 	Monitor specification not found. Creating a temporary one...
@@ -1170,23 +1138,23 @@ experiment  ../files/data/competing_v1_meduz_Dec_14_1204.npy , # trials= 50
     <span class="n">results</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">fn</span><span class="p">)</span>
     <span class="n">data_</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="n">results</span><span class="o">.</span><span class="n">shape</span><span class="p">)</span>
     <span class="c1"># lower stronger, detected lower = CORRECT is 1</span>
-    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">],</span> 
-                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==-</span><span class="mi">1</span><span class="p">),</span> 
+    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">],</span>
+                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==-</span><span class="mi">1</span><span class="p">),</span>
                 <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
     <span class="c1"># copying data: contrast (from .5 to 1), correct </span>
     <span class="n">data_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span> <span class="o">-</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span>
     <span class="n">data_</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==-</span><span class="mi">1</span><span class="p">)</span>
     <span class="c1"># upper stronger, detected lower = INCORRECT is 1</span>
-    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">],</span> 
-                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==-</span><span class="mi">1</span><span class="p">),</span> 
+    <span class="n">ax1</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">],</span>
+                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==-</span><span class="mi">1</span><span class="p">),</span>
                 <span class="n">c</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">)</span>
     <span class="c1"># lower stronger, detected upper = INCORRECT is 1</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">],</span> 
-                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> 
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">],</span>
+                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&lt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span>
                 <span class="n">c</span><span class="o">=</span><span class="s1">'b'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">)</span>
     <span class="c1"># upper stronger, detected upper = CORRECT is 1</span>
-    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">],</span> 
-                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span> 
+    <span class="n">ax2</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">],</span>
+                <span class="mf">1.</span><span class="o">*</span><span class="p">(</span><span class="n">results</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;.</span><span class="mi">5</span><span class="p">]</span><span class="o">==</span><span class="mi">1</span><span class="p">),</span>
                 <span class="n">c</span><span class="o">=</span><span class="s1">'r'</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="n">alpha</span><span class="p">,</span> <span class="n">marker</span><span class="o">=</span><span class="s1">'x'</span><span class="p">)</span>
     <span class="c1"># copying data: contrast (from .5 to 1), correct </span>
     <span class="n">data_</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;=.</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">results</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="p">:]</span><span class="o">&gt;=.</span><span class="mi">5</span><span class="p">]</span>
@@ -1275,11 +1243,11 @@ experiment  ../files/data/competing_v1_meduz_Dec_14_1204.npy , # trials= 50
 <div class=" highlight hl-ipython3"><pre><span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 <span class="kn">import</span> <span class="nn">pylab</span>
 <span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="k">import</span> <span class="n">curve_fit</span>
- 
+
 <span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">c0</span><span class="p">,</span> <span class="n">k</span><span class="p">):</span>
     <span class="n">y</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">k</span><span class="o">*</span><span class="p">(</span><span class="n">c</span><span class="o">-</span><span class="n">c0</span><span class="p">)))</span>
     <span class="k">return</span> <span class="n">y</span>
- 
+
 </pre></div>
 
     </div>
@@ -1340,7 +1308,7 @@ experiment  ../files/data/competing_v1_meduz_Dec_14_1204.npy , # trials= 50
     <span class="n">c</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">50</span><span class="p">)</span>
     <span class="n">y</span> <span class="o">=</span> <span class="n">sigmoid</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="o">*</span><span class="n">popt</span><span class="p">)</span>
     <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
-    
+
 <span class="n">pylab</span><span class="o">.</span><span class="n">ylim</span><span class="p">(</span><span class="o">-.</span><span class="mi">05</span><span class="p">,</span> <span class="mf">1.05</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">'best'</span><span class="p">)</span>
 </pre></div>
@@ -1501,7 +1469,7 @@ experiment  ../files/data/competing_v1_meduz_Dec_14_1204.npy , # trials= 50
 <div class="prompt input_prompt">In [ ]:</div>
 <div class="inner_cell">
     <div class="input_area">
-<div class=" highlight hl-ipython3"><pre><span></span> 
+<div class=" highlight hl-ipython3"><pre><span></span>
 </pre></div>
 
     </div>
@@ -1524,8 +1492,8 @@ experiment  ../files/data/competing_v1_meduz_Dec_14_1204.npy , # trials= 50
                 <a href="testing_utility.html" rel="next" title="Testing the utility functions of Motion Clouds">Next post</a>
             </li>
         </ul></nav></aside><section class="comments hidden-print"><h2>Comments</h2>
-        
-        
+
+
         <div id="disqus_thread"></div>
         <script>
         var disqus_shortname ="invibe",
@@ -1560,7 +1528,7 @@ MathJax.Hub.Config({
             Contents © 2019 <a href="mailto:laurent.perrinet@univ-amu.fr">Laurent Perrinet</a> -
 Powered by <a href="http://getnikola.com">Nikola</a> with <a href="https://themes.getnikola.com/v7/maupassant/">Maupassant</a> theme <br><a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/">
 <img alt="Creative Commons License BY-NC-SA" style="border-width:0; margin-bottom:12px;" src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"></a>
-            
+
         </footer>
 </div>
 </div>
