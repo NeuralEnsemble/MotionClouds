@@ -141,17 +141,17 @@ if not(os.path.isfile('figure1.pdf')):
         import urllib
         print "Downloading data, Please Wait "
         opener = urllib.urlopen(
-                'https://invibe.net/LaurentPerrinet/MotionClouds?action=AttachFile&do=get&target=montypython.npy')
-        open('results/montypython.npy', 'wb').write(opener.read())
+                'https://laurentperrinet.github.io/files/montypython.npy')
+        open('/tmp/montypython.npy', 'wb').write(opener.read())
 
 #     image = np.load('results/montypython.npy')[:, ::-1, N_first:(N_first+N_frame)]
-    image = np.load('/Users/lolo/pool/science/MotionParticles/particles/movie/montypython.npy')[:, ::-1, N_first:(N_first+N_frame)]
+    image = np.load('/tmp/montypython.npy')[:, ::-1, N_first:(N_first+N_frame)]
     image -= image.mean()
     image /= np.abs(image).max()
     image += 1
     image /= 2.
-    if not os.path.exists('results/montypython.npy.mp4'):
-        mc.anim_save(image, 'results/montypython.npy', display=False, vext='.mp4')
+    if not os.path.exists('/tmp/montypython.npy.mp4'):
+        mc.anim_save(image, '/tmp/montypython.npy', display=False, vext='.mp4')
 
     (N_X, N_Y, N_frame) = image.shape
     movie = translation(image)
@@ -454,6 +454,3 @@ if True:
 
 
 # ultimately, we use imagemagick montage commands to stitch figures together, see the Makefile
-
-
-

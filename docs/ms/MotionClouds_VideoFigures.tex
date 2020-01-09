@@ -1,8 +1,8 @@
-%!TEX TS-program = pdflatex 
+%!TEX TS-program = pdflatex
 %!TEX encoding = UTF8
 %!TEX spellcheck = en-US
 %--------------------------
-% to compile use "latexmk --pdf MotionCloudsSupplementary.tex" 
+% to compile use "latexmk --pdf MotionCloudsSupplementary.tex"
 %--------------------------
 \documentclass[a4paper,11pt]{article}%draft
 %-------definitions-----
@@ -12,7 +12,7 @@
 \newcommand{\AuthorD}{Laurent U.~Perrinet}%
 \newcommand{\AddressA}{INCM, CNRS / Aix-Marseille University, France}
 \newcommand{\AddressB}{Institut de Neurosciences de la Timone, CNRS / Aix-Marseille University, Marseille, France}%
-\newcommand{\Website}{https://invibe.net/LaurentPerrinet}%
+\newcommand{\Website}{https://laurentperrinet.github.io}%
 \newcommand{\EmailA}{Paula.Sanz@univ-amu.fr}%
 \newcommand{\EmailB}{Ivo.Vanzetta@univ-amu.fr}%
 \newcommand{\EmailC}{Guillaume.Masson@univ-amu.fr}%
@@ -30,8 +30,8 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 \usepackage[utf8]{inputenc}
 \usepackage[english]{babel}
 %\usepackage{natbib}
-\usepackage[pdftex]{graphicx} 
-%\usepackage{graphics} 
+\usepackage[pdftex]{graphicx}
+%\usepackage{graphics}
 %\usepackage{amssymb,amsmath,bm,amsfonts}
 %\usepackage[usenames,dvipsnames]{color}
 %\usepackage{float}
@@ -51,7 +51,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %\usepackage{watermark}
 %\usepackage{fullpage}
 %\usepackage{fourier}
-\usepackage{nicefrac} 
+\usepackage{nicefrac}
 %\usepackage{units}
 \usepackage{authblk}
 %%\usepackage[notablist,notabhead]{endfloat}
@@ -97,7 +97,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 \hypersetup{
  unicode=false, % non-Latin characters in Acrobat�??s bookmarks
 	pdftitle={Supplementary Material: Motion Clouds},%
-	pdfauthor={\AuthorA < \EmailA > \AddressB - \AuthorB < \EmailB > - \AuthorC < \EmailC > - \AuthorD < \EmailD > },% \Website},% 
+	pdfauthor={\AuthorA < \EmailA > \AddressB - \AuthorB < \EmailB > - \AuthorC < \EmailC > - \AuthorD < \EmailD > },% \Website},%
 	%pdfkeywords={\Keywords},%
 	%pdfsubject={\Acknowledgments}%
  pdfcreator={LaTeX}, 	% creator of the document
@@ -134,7 +134,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %
 %
 %
-%We have defined Motion Clouds (MCs) as Random Phase Textures (RPTs)  with 1) a constant, whole-field translational motion $\vec{V}$ and 2) an optimal spread of spectral energy in the Fourier domain. Moreover, natural-like RPTs are defined with a specific envelope $\mathcal{E}_{\bar{\beta}}$ as: 
+%We have defined Motion Clouds (MCs) as Random Phase Textures (RPTs)  with 1) a constant, whole-field translational motion $\vec{V}$ and 2) an optimal spread of spectral energy in the Fourier domain. Moreover, natural-like RPTs are defined with a specific envelope $\mathcal{E}_{\bar{\beta}}$ as:
 %
 %\begin{equation}
 %\mathbf{I}(x, y, t) = \mathcal{F}^{-1}\left\{\mathcal{E}_{\bar{\beta}}(f_x,f_y,f_t) \cdot \exp^{i\phi(f_x,f_y,f_t)}\right\}
@@ -152,15 +152,15 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %\mathcal{V}_{(V_x, V_y, B_{V})}(f_{x}, f_{y}, f_{t})=\exp\left(-\dfrac{1}{2}\left( \dfrac{ f_x\cdot V_x + f_y\cdot V_y + f_t }{B_{V} \cdot f_r} \right)^{2} \right)
 %\label{eq:envelope_speed_plane}
 %\end{equation}
-%where  $ f_r = \sqrt{f_x^2 + f_y^2 + f_t^2} $ is the radial frequency. Some examples are shown in figure~\ref{fig:radial_speed_plane}. 
+%where  $ f_r = \sqrt{f_x^2 + f_y^2 + f_t^2} $ is the radial frequency. Some examples are shown in figure~\ref{fig:radial_speed_plane}.
 %
-%%% REMOVED (the outline of the proof and the proof should be as supplementary material or maybe for another journal, right?): 
+%%% REMOVED (the outline of the proof and the proof should be as supplementary material or maybe for another journal, right?):
 %We outline here a proof for Equation~\ref{eq:envelope_speed_plane}. The speed envelope is defined by slow perturbations followed by a tilt of the speed plane normal to $\vec{V}$. The infinitesimal volume corresponding to the speed range $[V, V+dV)$ is the volume in between the two planes whose tilts are defined by respectively $V$ and $V+dV$. Looking at the orientation range, $[\theta, \theta+d\theta)$ defines a  volume which corresponds to a known probability $p(V)dVd\theta$ since perturbations are independent in all directions.  The density within this volume is uniform but the density mass will decrease with respect to $f_r$ as infinitesimal volumes gets linearly "thicker" with greater frequencies. Variability of speed $V$ is then parametrized by a probability density function as a Gaussian function of mean $V$ and bandwidth $B_{V}$. Such infinitesimal volumes form a partition of the Fourier space when speeds $V$ vary over the real axis range and orientation describes $[0, 2\pi)$. We thus define the speed envelope as the probability mass function in Equation~\ref{eq:envelope_speed_plane}. %
 
 %
 \begin{figure}%[h!]
 \begin{center}
-\begin{tabular}{cc} 
+\begin{tabular}{cc}
 \includegraphics[width=.5\textwidth]{../results/speed-V_X-1_0.png}&
 \includegraphics[width=.5\textwidth]{../results/speed-V_X-0_5.png}\\
 \includegraphics[width=.5\textwidth]{../results/speed-B_V-0_1.png}&%
@@ -172,7 +172,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 \end{figure}
 \begin{figure}%[h!]
 \begin{center}
-\begin{tabular}{cc} 
+\begin{tabular}{cc}
 \includemovie{.5\linewidth}{.5\linewidth}{../results/speed-V_X-1_0.mp4}&
 \includemovie{.5\linewidth}{.5\linewidth}{../results/speed-V_X-0_5.mp4}\\
 \includemovie{.5\textwidth}{.5\textwidth}{../results/speed-B_V-0_1.mp4}&%
@@ -186,10 +186,10 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %
 %\paragraph{Radial frequency envelope}
 %
-%The second characteristic of a Motion  Cloud is its radial envelope. This will be defined as the one-dimensional distribution of radial frequency in spherical coordinates of the Fourier domain. We thus  build a spatial frequency band Gaussian filter that depends on the logarithm of the spatial radial frequency. We define $sf_0$ as the mean radial frequency and $B_{sf}$ is the filter's bandwidth (see figure~\ref{fig:radial_sf_0}). 
+%The second characteristic of a Motion  Cloud is its radial envelope. This will be defined as the one-dimensional distribution of radial frequency in spherical coordinates of the Fourier domain. We thus  build a spatial frequency band Gaussian filter that depends on the logarithm of the spatial radial frequency. We define $sf_0$ as the mean radial frequency and $B_{sf}$ is the filter's bandwidth (see figure~\ref{fig:radial_sf_0}).
 \begin{figure} %[h!]
 \begin{center}
-\begin{tabular}{ccc} 
+\begin{tabular}{ccc}
 \includegraphics[width=.31\textwidth]{radial-sf_0-0_1.png}&%
 \includegraphics[width=.31\textwidth]{radial-sf_0-0_2.png}&% standard MC
 \includegraphics[width=.31\textwidth]{radial-sf_0-0_4.png}%
@@ -211,9 +211,9 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %\paragraph{Orientation Envelope}
 %The third property of a Motion Cloud is its orientation envelope. Oriented structures in space-time yield oriented structures in the Fourier domain as illustrated in Fig.~\ref{fig:grating_theta}. Note that this envelope is independent upon both speed and radial frequency. Moreover, if we change in Fig. ~\ref{fig:grating_B_theta} we illustrate the effect of the parameter $B_{\theta}$. If it has a small value, a highly coherent orientation pattern is generated and it asymptotically tends to a grating-like texture. On the contrary, with a very large bandwidth, the global envelope is isotropic and contains all orientations.
 
-\begin{figure} 
+\begin{figure}
 \begin{center}
-\begin{tabular}{ccc} 
+\begin{tabular}{ccc}
 \includegraphics[width=.31\textwidth]{grating.png}&%
 \includegraphics[width=.31\textwidth]{grating-theta-pi-over-4.png}&%
 \includegraphics[width=.31\textwidth]{grating-theta-pi-over-2.png}%
@@ -233,7 +233,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %
 \begin{figure} %[h!]
 \begin{center}
-\begin{tabular}{ccc} 
+\begin{tabular}{ccc}
 \includegraphics[width=.31\textwidth]{grating.png}&%
 \includegraphics[width=.31\textwidth]{grating-B_theta-pi-over-8-V_X-1_0.png}&%
 \includegraphics[width=.31\textwidth]{grating-B_theta-pi-over-1-V_X-1_0.png}%
@@ -262,7 +262,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 %\begin{figure} %[h!]
 %\begin{center}
 %\begin{tabular}{ccc}
-%	\includegraphics[width=.31\textwidth]{color-alpha-0_0_cube.png} & 
+%	\includegraphics[width=.31\textwidth]{color-alpha-0_0_cube.png} &
 %	\includegraphics[width=.31\textwidth]{color-alpha-1_0_cube.png} &
 %	\includegraphics[width=.31\textwidth]{color-alpha-2_0_cube.png}
 %%\\%
@@ -277,7 +277,7 @@ Motion Clouds: Model-based stimulus synthesis of natural-like random textures fo
 
 \begin{figure} %[h!]
 \begin{center}
-\begin{tabular}{ccc} 
+\begin{tabular}{ccc}
 \includegraphics[width=.31\textwidth]{grating-noise.png}&%
 \includegraphics[width=.31\textwidth]{plaid.png}&%
 \includegraphics[width=.31\textwidth]{counterphase_grating.png}%
