@@ -36,7 +36,7 @@ This work was supported by the European Union project Number FP7-269921, ``Brain
 <img src="https://brainscales.kip.uni-heidelberg.de/images/thumb/5/5b/Public--EU-Logo.gif/90px-Public--EU-Logo.gif" width="10%">
 
 ***
-## Code example - [demo](http://motionclouds.invibe.net/posts/testing_components.html)
+## Code example - [demo](https://neuralensemble.github.io/MotionClouds/posts/testing_components.html)
 
 Motion Clouds are built using a collection of scripts that provides a simple way of generating complex stimuli suitable for neuroscience and psychophysics experiments. It is meant to be an open-source package that can be combined with other packages such as PsychoPy or NeuroTools.
 

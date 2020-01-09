@@ -1,4 +1,4 @@
 Sitemap: https://neuralensemble.github.io/MotionClouds/sitemapindex.xml
 
 User-Agent: *
-Host: motionclouds.invibe.net
+Host: neuralensemble.github.io/MotionClouds
