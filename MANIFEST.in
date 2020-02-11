@@ -1,7 +1,5 @@
 exclude .gitignore
 exclude MotionClouds_demo.ipynb
-exclude setup.cfg
-exclude setup.py
 exclude Makefile
 exclude apt.txt
 exclude docs/*
