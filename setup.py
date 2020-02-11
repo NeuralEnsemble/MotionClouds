@@ -20,7 +20,15 @@ setup(
     author = "Laurent Perrinet INT - CNRS",
     author_email = "Laurent.Perrinet@univ-amu.fr",
     description = "Model-based stimulus synthesis of natural-like random textures for the study of motion perception.",
-    long_description=open("README.md").read(),
+    long_description="""
+MotionClouds
+============
+
+**MotionClouds** are random dynamic stimuli optimized to study motion perception.
+
+See https://github.com/NeuralEnsemble/MotionClouds for more information.
+
+    """,
     license = "GPLv2",
     keywords = ['computational neuroscience', 'simulation', 'analysis', 'visualization', 'parameters'],
     url = 'https://github.com/NeuralEnsemble/' + NAME, # use the URL to the github repo
