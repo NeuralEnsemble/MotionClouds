@@ -30,7 +30,7 @@ pypi_all: pypi_tags pypi_upload
 pypi_tags:
 	git commit -am' tagging for PyPI'
 	# in case you wish to delete tags, visit http://wptheming.com/2011/04/add-remove-github-tags/
-	git tag $(VERSION) -m "New release on PyPI. "
+	git tag $(VERSION) -m "New release on PyPI."
 	git push --tags origin master
 
 pypi_upload:
