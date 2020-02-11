@@ -2,4 +2,4 @@ exclude .gitignore
 exclude MotionClouds_demo.ipynb
 exclude setup.cfg
 exclude setup.py
-exclude docs/grating.gif
+exclude docs/*
