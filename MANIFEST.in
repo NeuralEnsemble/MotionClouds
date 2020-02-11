@@ -1,0 +1,2 @@
+exclude .gitignore
+exclude MotionClouds_demo.ipynb
