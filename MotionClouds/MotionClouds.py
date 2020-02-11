@@ -217,15 +217,18 @@ def envelope_speed(fx, fy, ft, V_X=V_X, V_Y=V_Y, B_V=B_V):
     If N_X=N_Y=N_frame and V=1, then it is one spatial period in one temporal
     period. It can be seen along the diagonal in the fx-ft face of the MC cube.
 
-    A special case is used when ``B_V=0``, where the ``fx-ft`` plane is used as
+    A special case is used when ``B_V==0``, where the ``fx-ft`` plane is used as
     the speed plane: in that case it is desirable to set ``(V_X, V_Y)`` to ``(0, 0)``
     to avoid aliasing problems.
+
+    Another special case is used when ``B_V==np.inf``, that is, every frame is
+    different (white noise in the temporal domain).
 
     Run the 'test_speed' notebook to explore the speed parameters, see
     https://neuralensemble.github.io/MotionClouds/posts/testing-speed.html
 
     """
-    if ft.shape[2]==1:
+    if ft.shape[2]==1 or B_V==np.inf:
         env = np.ones_like(fx)
     elif B_V==0:
         env = np.zeros_like(fx)
