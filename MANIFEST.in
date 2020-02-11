@@ -1,2 +1,4 @@
 exclude .gitignore
 exclude MotionClouds_demo.ipynb
+exclude setup.cfg
+exclude setup.py
