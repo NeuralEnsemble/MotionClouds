@@ -205,11 +205,16 @@ if not(os.path.isfile('../files/figure2.pdf')):
     # making just an impulse
     name_ = os.path.join(mc.figpath, name + '-impulse')
     if True: #mc.check_if_anim_exist(name_ + '_cube', vext=mc.ext):
-        z = mc.envelope_gabor(fx, fy, ft)
-        zoom = 3
-        movie = mc.random_cloud(z, impulse=True)[:(mc.N_X//zoom), :(mc.N_Y//zoom), :(mc.N_frame//zoom)]
+        zoom = 1
+        z = mc.envelope_gabor(fx, fy, ft, sf_0=mc.sf_0/zoom, B_sf=mc.B_sf/zoom)
+        events = np.zeros_like(z)
+        events[0, 0, 0] = 1
+        zoom = 12
+        movie = mc.random_cloud(z, events=events)
+        movie = movie[:(mc.N_X//zoom), :(mc.N_Y//zoom), :(mc.N_frame//zoom)]
+        movie = movie[::-1, ::-1, ::-1]
         # movie = np.roll(movie, mc.N_frame//2, axis=2)
-        mc.cube(mc.rectif(movie), name=name_ + '_cube', do_axis=False)#
+        mc.cube(mc.rectif(movie), name=name_ + '_cube', do_axis=True)#
 
 if not(os.path.isfile('../files/figure3.pdf')):
     """
@@ -368,14 +373,14 @@ if not(os.path.isfile('../files/figure5.pdf')):
 
     """
     name = 'grating-noise'
-    noise = mc.envelope_color(fx, fy, ft, alpha=2.)
+    noise = 2.*mc.envelope_color(fx, fy, ft, alpha=2., ft_0=1.)
     grating = mc.envelope_gabor(fx, fy, ft)
-    mc.figures(1.e0*noise + grating, os.path.join(mc.figpath, name), do_movie=True)
+    mc.figures(noise + grating, os.path.join(mc.figpath, name), do_movie=True)
 
     # Supplemental movie 7
     # A narrow-orientation-bandwidth Motion Cloud with explicit noise.
     # A red noise envelope was added to the global envelop of a Motion Cloud with a bandwidth in the orientation domain (see Figure 5-A).
-    mc.figures(1.e4*noise + grating, name=os.path.join(mc.figpath, 'SupplementalMovie7'), do_figs=False)
+    mc.figures(noise + grating, name=os.path.join(mc.figpath, 'SupplementalMovie7'), do_figs=False)
 
     # B
     diag1 = mc.envelope_gabor(fx, fy, ft, theta=np.pi/4.)
@@ -392,7 +397,7 @@ if not(os.path.isfile('../files/figure5.pdf')):
     # C
     name = 'counterphase_grating'
     right = mc.envelope_gabor(fx, fy, ft, V_X=1 , B_theta=10.)
-    left = mc.envelope_gabor(fx, fy, ft, V_X=-1. , B_theta=10.)
+    left = mc.envelope_gabor(fx, fy, ft, V_X=-1., B_theta=10.)
     # thanks to the addititivity of MCs
     mc.figures(left + right, name=os.path.join(mc.figpath, name), do_movie=True)
 
@@ -429,12 +434,14 @@ def add_string_label(infile, outfile, label):
         font = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf", 48)#for Linux/Debian
     except:
         font = ImageFont.truetype("/usr/local/texlive/2020/texmf-dist/fonts/truetype/public/dejavu/DejaVuSans.ttf", 48)#for MacOs with MacTexLive
+
     for infilename, outfilename in zip(infile, outfile):
-        img = Image.open(os.path.join(mc.figpath, infilename))
-        draw = ImageDraw.Draw(img)
-        draw.text((0, 0), label, (0, 0, 0), font=font)
-        draw = ImageDraw.Draw(img)
-        img.save(os.path.join(mc.figpath, outfilename))
+        if not(os.path.isfile(os.path.join(mc.figpath, outfilename))):
+            img = Image.open(os.path.join(mc.figpath, infilename))
+            draw = ImageDraw.Draw(img)
+            draw.text((0, 0), label, (0, 0, 0), font=font)
+            draw = ImageDraw.Draw(img)
+            img.save(os.path.join(mc.figpath, outfilename))
 
 if True:
 
