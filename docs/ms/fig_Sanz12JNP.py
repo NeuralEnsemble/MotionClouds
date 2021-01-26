@@ -19,10 +19,10 @@ This script generates all figures and supplemental movies related to the publica
 import os
 import numpy as np
 import sys
-sys.path.append('..')
+sys.path.append('../..')
 import MotionClouds as mc
 
-if not(os.path.isfile('figure1.pdf')):
+if not(os.path.isfile('../files/figure1.pdf')):
     """
     Demonstration of going from a natural image to a random cloud by shuffling the phase in FFT space
 
@@ -61,7 +61,7 @@ if not(os.path.isfile('figure1.pdf')):
 
     def FTfilter(image, FTfilter):
         from scipy.fftpack import fftn, fftshift, ifftn, ifftshift
-        from scipy import real
+        from numpy import real
         FTimage = fftshift(fftn(image)) * FTfilter
         return real(ifftn(ifftshift(FTimage)))
     # pre-processing parameters
@@ -134,37 +134,39 @@ if not(os.path.isfile('figure1.pdf')):
         return movie
 
     # I use a natural movie:
-    N_frame, N_first = 32., 530
+    N_frame, N_first = 48, 530
     #image = np.load('~/particles/movie/montypython.npy')[:, ::-1, N_first:(N_first+N_frame)]
-    if False:#not os.path.exists('results/montypython.npy'):
+    dataname = '/tmp/montypython.npy'
+    dataname = '../files/montypython.npy'
+    if not os.path.exists(dataname):
         # Download the data
-        import urllib
-        print "Downloading data, Please Wait "
-        opener = urllib.urlopen(
-                'https://laurentperrinet.github.io/files/montypython.npy')
-        open('/tmp/montypython.npy', 'wb').write(opener.read())
+        import urllib.request
+        print("Downloading data, Please Wait ")
+        opener = urllib.request.urlopen(
+                'https://github.com/NeuralEnsemble/MotionClouds/raw/master/docs/files/montypython.npy')
+        open(dataname, 'wb').write(opener.read())
 
 #     image = np.load('results/montypython.npy')[:, ::-1, N_first:(N_first+N_frame)]
-    image = np.load('/tmp/montypython.npy')[:, ::-1, N_first:(N_first+N_frame)]
+    image = np.load(dataname)[:, ::1, N_first:(N_first+N_frame)]
     image -= image.mean()
     image /= np.abs(image).max()
     image += 1
     image /= 2.
-    if not os.path.exists('/tmp/montypython.npy.mp4'):
-        mc.anim_save(image, '/tmp/montypython.npy', display=False, vext='.mp4')
+    # if not os.path.exists(dataname + '.mp4'):
+    #     mc.anim_save(image, dataname, display=False, vext='.mp4')
 
     (N_X, N_Y, N_frame) = image.shape
     movie = translation(image)
     (N_X, N_Y, N_frame) = movie.shape
     movie = whitening(movie)
 
-    print N_X, N_Y, N_frame
+    print(N_X, N_Y, N_frame)
     fx, fy, ft = mc.get_grids(N_X, N_Y, N_frame)
     color = mc.envelope_color(fx, fy, ft) #
     z_noise = color*mc.envelope_speed(fx, fy, ft)
     movie_noise = mc.rectif(mc.random_cloud(z_noise))
 
-    for B_angle in [1e-1, 1e0, 1e1]:
+    for B_angle in [1.e-1, 1.e0, 1.e1]:
         name_ = name + '-B_angle-' + str(B_angle).replace('.', '_')
         movie_ = 1. * randomize_phase(movie, B_angle=B_angle) + .0 * movie_noise
         movie_ -= movie_.mean()
@@ -178,7 +180,7 @@ if not(os.path.isfile('figure1.pdf')):
 #print mc.N_X, mc.N_Y, mc.N_frame, mc.MAYAVI
 fx, fy, ft = mc.get_grids(mc.N_X, mc.N_Y, mc.N_frame)
 
-if not(os.path.isfile('figure2.pdf')):
+if not(os.path.isfile('../files/figure2.pdf')):
     """
     Figure 2:  \caption{From an impulse to a Motion Cloud. (\textit{A}): The
     movie corresponding to a typical ``edge", i.e., a moving Gabor patch that
@@ -202,14 +204,14 @@ if not(os.path.isfile('figure2.pdf')):
     name = 'grating'
     # making just an impulse
     name_ = os.path.join(mc.figpath, name + '-impulse')
-    if mc.anim_exist(name_ + '_cube', vext=mc.ext):
+    if True: #mc.check_if_anim_exist(name_ + '_cube', vext=mc.ext):
         z = mc.envelope_gabor(fx, fy, ft)
-        zoom = 8
-        movie = mc.random_cloud(z, impulse=True)[:(mc.N_X/zoom), :(mc.N_Y/zoom), :(mc.N_frame/zoom)]
-        movie = np.roll(movie, mc.N_frame/zoom, axis=2)
+        zoom = 3
+        movie = mc.random_cloud(z, impulse=True)[:(mc.N_X//zoom), :(mc.N_Y//zoom), :(mc.N_frame//zoom)]
+        # movie = np.roll(movie, mc.N_frame//2, axis=2)
         mc.cube(mc.rectif(movie), name=name_ + '_cube', do_axis=False)#
 
-if not(os.path.isfile('figure3.pdf')):
+if not(os.path.isfile('../files/figure3.pdf')):
     """
     Figure 3:   \caption{Equivalent MC representations of some classical
     stimuli. (\textit{A}, \textit{top}): a narrow-orientation-bandwidth Motion
@@ -289,7 +291,7 @@ if not(os.path.isfile('SupplementalMovie3.mp4')):
     # The orientation and speed bandwidths are large, yielding a low-coherence stimulus in which no edges can be identified (see Figure 3-C).
     mc.figures_MC(fx, fy, ft, name=os.path.join(mc.figpath, 'SupplementalMovie3'), B_theta=10., B_V=.5, B_sf=0.01, do_figs=False)
 
-if not(os.path.isfile('figure4.pdf')):
+if not(os.path.isfile('../files/figure4.pdf')):
     """
      Figure 4: \caption{Broadband vs. narrowband stimuli. From (\textit{A})
      through (\textit{B}) to (\textit{C}) the frequency bandwidth $B_{f}$
@@ -349,7 +351,7 @@ if not(os.path.isfile('figure4.pdf')):
 #     mc.figures(z, name_, do_movie=False)
 #
 #
-if not(os.path.isfile('figure5.pdf')):
+if not(os.path.isfile('../files/figure5.pdf')):
     """
     Figure 5 : \caption{Competing Motion Clouds. (\textit{A}): A
     narrow-orientation-bandwidth Motion Cloud with explicit noise. A red noise
@@ -366,9 +368,9 @@ if not(os.path.isfile('figure5.pdf')):
 
     """
     name = 'grating-noise'
-    noise = mc.envelope_color(fx, fy, ft, alpha=1.)
+    noise = mc.envelope_color(fx, fy, ft, alpha=2.)
     grating = mc.envelope_gabor(fx, fy, ft)
-    mc.figures(1.e4*noise + grating, os.path.join(mc.figpath, name), do_movie=True)
+    mc.figures(1.e0*noise + grating, os.path.join(mc.figpath, name), do_movie=True)
 
     # Supplemental movie 7
     # A narrow-orientation-bandwidth Motion Cloud with explicit noise.
@@ -426,7 +428,7 @@ def add_string_label(infile, outfile, label):
     try:
         font = ImageFont.truetype("/usr/share/fonts/truetype/ttf-dejavu/DejaVuSans.ttf", 48)#for Linux/Debian
     except:
-        font = ImageFont.truetype("/usr/local/texlive/2013/texmf-dist/fonts/truetype/public/dejavu/DejaVuSans.ttf", 48)#for MacOsX with MacTexLive
+        font = ImageFont.truetype("/usr/local/texlive/2020/texmf-dist/fonts/truetype/public/dejavu/DejaVuSans.ttf", 48)#for MacOs with MacTexLive
     for infilename, outfilename in zip(infile, outfile):
         img = Image.open(os.path.join(mc.figpath, infilename))
         draw = ImageDraw.Draw(img)
