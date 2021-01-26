@@ -439,7 +439,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
     else:
         return render_im
 
-def cube(im_in, azimuth=30., elevation=45., name=None,
+def cube(im_in, azimuth=30., elevation=35., fov=45, name=None,
          ext=ext, do_axis=True, show_label=True,
          cube_label = {'x':'x', 'y':'y', 't':'t'},
          colormap='gray', roll=-180., vmin=0., vmax=1.,
@@ -504,8 +504,8 @@ def cube(im_in, azimuth=30., elevation=45., name=None,
         t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
         t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 2
 
-    cam = scene.TurntableCamera(elevation=35, azimuth=30)
-    cam.fov = 45
+    cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth)
+    cam.fov = fov
     cam.scale_factor = N_X * 1.7
     if do_axis: margin = 1.3
     else: margin = 1
