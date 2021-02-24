@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<?xml-stylesheet type="text/xsl" href="../assets/xml/rss.xsl" media="all"?><rss version="2.0" xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:atom="http://www.w3.org/2005/Atom"><channel><title>Motion Clouds (Posts about psyhophysics)</title><link>http://neuralensemble.github.io/MotionClouds/</link><description></description><atom:link href="http://neuralensemble.github.io/MotionClouds/categories/psyhophysics.xml" rel="self" type="application/rss+xml"></atom:link><language>en</language><copyright>Contents © 2021 &lt;a href="mailto:laurent.perrinet@univ-amu.fr"&gt;Laurent Perrinet&lt;/a&gt; 
+&lt;a rel="license" href="http://creativecommons.org/licenses/by-nc-sa/2.5/ar/"&gt;
+&lt;img alt="Creative Commons License BY-NC-SA"
+style="border-width:0; margin-bottom:12px;"
+src="http://i.creativecommons.org/l/by-nc-sa/2.5/ar/88x31.png"&gt;&lt;/a&gt;</copyright><lastBuildDate>Wed, 24 Feb 2021 12:35:03 GMT</lastBuildDate><generator>Nikola (getnikola.com)</generator><docs>http://blogs.law.harvard.edu/tech/rss</docs><item><title>Speed distributions</title><link>http://neuralensemble.github.io/MotionClouds/posts/speed-distributions.html</link><dc:creator>Laurent Perrinet</dc:creator><description>&lt;div&gt;&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [1]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="o"&gt;%&lt;/span&gt;&lt;span class="k"&gt;matplotlib&lt;/span&gt; inline
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;numpy&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;np&lt;/span&gt;
+&lt;span class="n"&gt;np&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;set_printoptions&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;precision&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;3&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;suppress&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="kc"&gt;True&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;pylab&lt;/span&gt;
+&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;matplotlib.pyplot&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;plt&lt;/span&gt;
+&lt;span class="c1"&gt;#!rm -fr ../files/speed*&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [2]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="kn"&gt;import&lt;/span&gt; &lt;span class="nn"&gt;MotionClouds&lt;/span&gt; &lt;span class="k"&gt;as&lt;/span&gt; &lt;span class="nn"&gt;mc&lt;/span&gt;
+&lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="s1"&gt;'noisy-speed'&lt;/span&gt;
+&lt;span class="n"&gt;fx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fy&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ft&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;get_grids&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;N_X&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;N_Y&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;N_frame&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;span class="nb"&gt;print&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envelope_speed&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="vm"&gt;__doc__&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+&lt;div class="output_subarea output_stream output_stdout output_text"&gt;
+&lt;pre&gt;
+    Returns the speed envelope:
+    selects the plane corresponding to the speed ``(V_X, V_Y)`` with some bandwidth ``B_V``.
+
+    * (V_X, V_Y) = (0,1) is downward and  (V_X, V_Y) = (1, 0) is rightward in the movie.
+    * A speed of V_X=1 corresponds to an average displacement of 1/N_X per frame.
+    To achieve one spatial period in one temporal period, you should scale by
+    V_scale = N_X/float(N_frame)
+    If N_X=N_Y=N_frame and V=1, then it is one spatial period in one temporal
+    period. It can be seen along the diagonal in the fx-ft face of the MC cube.
+
+    A special case is used when ``B_V=0``, where the ``fx-ft`` plane is used as
+    the speed plane: in that case it is desirable to set ``(V_X, V_Y)`` to ``(0, 0)``
+    to avoid aliasing problems.
+
+    Run the 'test_speed' notebook to explore the speed parameters, see
+    http://motionclouds.invibe.net/posts/testing-speed.html
+
+    
+&lt;/pre&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;div class="cell border-box-sizing code_cell rendered"&gt;
+&lt;div class="input"&gt;
+&lt;div class="prompt input_prompt"&gt;In [3]:&lt;/div&gt;
+&lt;div class="inner_cell"&gt;
+    &lt;div class="input_area"&gt;
+&lt;div class=" highlight hl-ipython3"&gt;&lt;pre&gt;&lt;span&gt;&lt;/span&gt;&lt;span class="c1"&gt;# explore parameters&lt;/span&gt;
+&lt;span class="k"&gt;for&lt;/span&gt; &lt;span class="n"&gt;B_V&lt;/span&gt; &lt;span class="ow"&gt;in&lt;/span&gt; &lt;span class="p"&gt;[&lt;/span&gt;&lt;span class="mf"&gt;0.0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.01&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;0.1&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;1.0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="mf"&gt;10.0&lt;/span&gt;&lt;span class="p"&gt;]:&lt;/span&gt;
+    &lt;span class="n"&gt;name_&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;name&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="s1"&gt;'-B_V-'&lt;/span&gt; &lt;span class="o"&gt;+&lt;/span&gt; &lt;span class="nb"&gt;str&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;B_V&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;replace&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="s1"&gt;'.'&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="s1"&gt;'_'&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;z&lt;/span&gt; &lt;span class="o"&gt;=&lt;/span&gt; &lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;envelope_gabor&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;fx&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;fy&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;ft&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;V_X&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="mi"&gt;0&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;B_V&lt;/span&gt;&lt;span class="o"&gt;=&lt;/span&gt;&lt;span class="n"&gt;B_V&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;figures&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;z&lt;/span&gt;&lt;span class="p"&gt;,&lt;/span&gt; &lt;span class="n"&gt;name_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+    &lt;span class="n"&gt;mc&lt;/span&gt;&lt;span class="o"&gt;.&lt;/span&gt;&lt;span class="n"&gt;in_show_video&lt;/span&gt;&lt;span class="p"&gt;(&lt;/span&gt;&lt;span class="n"&gt;name_&lt;/span&gt;&lt;span class="p"&gt;)&lt;/span&gt;
+&lt;/pre&gt;&lt;/div&gt;
+
+    &lt;/div&gt;
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;div class="output_wrapper"&gt;
+&lt;div class="output"&gt;
+
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+
+&lt;div class="output_html rendered_html output_subarea "&gt;
+
+                &lt;center&gt;&lt;table border="none" width="100%" height="100%"&gt;
+                &lt;tr&gt;
+                &lt;td width="33%%"&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_0.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;td rowspan="2" colspan="2"&gt;&lt;center&gt;&lt;video src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_0.mp4" loop="1" autoplay="1" controls type="video/mp4" width="100%/"&gt;&lt;/video&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                &lt;td&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_0_cube.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/table&gt;&lt;/center&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+
+&lt;div class="output_html rendered_html output_subarea "&gt;
+
+                &lt;center&gt;&lt;table border="none" width="100%" height="100%"&gt;
+                &lt;tr&gt;
+                &lt;td width="33%%"&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_01.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;td rowspan="2" colspan="2"&gt;&lt;center&gt;&lt;video src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_01.mp4" loop="1" autoplay="1" controls type="video/mp4" width="100%/"&gt;&lt;/video&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                &lt;td&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_01_cube.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/table&gt;&lt;/center&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+
+&lt;div class="output_html rendered_html output_subarea "&gt;
+
+                &lt;center&gt;&lt;table border="none" width="100%" height="100%"&gt;
+                &lt;tr&gt;
+                &lt;td width="33%%"&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_1.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;td rowspan="2" colspan="2"&gt;&lt;center&gt;&lt;video src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_1.mp4" loop="1" autoplay="1" controls type="video/mp4" width="100%/"&gt;&lt;/video&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                &lt;td&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-0_1_cube.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/table&gt;&lt;/center&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+
+&lt;div class="output_html rendered_html output_subarea "&gt;
+
+                &lt;center&gt;&lt;table border="none" width="100%" height="100%"&gt;
+                &lt;tr&gt;
+                &lt;td width="33%%"&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-1_0.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;td rowspan="2" colspan="2"&gt;&lt;center&gt;&lt;video src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-1_0.mp4" loop="1" autoplay="1" controls type="video/mp4" width="100%/"&gt;&lt;/video&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                &lt;td&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-1_0_cube.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/table&gt;&lt;/center&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;div class="output_area"&gt;
+
+    &lt;div class="prompt"&gt;&lt;/div&gt;
+
+
+
+&lt;div class="output_html rendered_html output_subarea "&gt;
+
+                &lt;center&gt;&lt;table border="none" width="100%" height="100%"&gt;
+                &lt;tr&gt;
+                &lt;td width="33%%"&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-10_0.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;td rowspan="2" colspan="2"&gt;&lt;center&gt;&lt;video src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-10_0.mp4" loop="1" autoplay="1" controls type="video/mp4" width="100%/"&gt;&lt;/video&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;tr&gt;
+                &lt;td&gt;&lt;center&gt;&lt;img src="http://neuralensemble.github.io/MotionClouds/files/noisy-speed-B_V-10_0_cube.png" width="100%/"&gt;&lt;/center&gt;&lt;/td&gt;
+                &lt;/tr&gt;
+                &lt;/table&gt;&lt;/center&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;
+
+&lt;/div&gt;
+&lt;/div&gt;
+
+&lt;/div&gt;&lt;/div&gt;</description><category>motionclouds</category><category>noise</category><category>psyhophysics</category><guid>http://neuralensemble.github.io/MotionClouds/posts/speed-distributions.html</guid><pubDate>Tue, 26 Jan 2016 14:23:10 GMT</pubDate></item></channel></rss>
