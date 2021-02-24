@@ -20,7 +20,7 @@ wiki:
 	$(PYTHON) wiki/fig_orientation.py
 
 doc:
-	@(cd doc && $(MAKE))
+	@(cd docs/ms && $(MAKE))
 edit:
 	open Makefile &
 	spe &

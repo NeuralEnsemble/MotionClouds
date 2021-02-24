@@ -1,4 +1,4 @@
-Sitemap: https://neuralensemble.github.io/MotionClouds/sitemapindex.xml
+Sitemap: http://neuralensemble.github.io/MotionClouds/sitemapindex.xml
 
 User-Agent: *
-Host: neuralensemble.github.io/MotionClouds
+Host: neuralensemble.github.io

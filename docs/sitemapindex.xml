@@ -6,7 +6,51 @@
     xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9
                         http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd">
  <sitemap>
-  <loc>https://neuralensemble.github.io/MotionClouds/sitemap.xml</loc>
-  <lastmod>2019-03-29T11:29:00Z</lastmod>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/matlab.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/motion-detection.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/motionclouds.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/noise.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/psychophysics.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/psychopy.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/psyhophysics.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/categories/python.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/galleries/Artwork/rss.xml</loc>
+  <lastmod>2021-02-24T12:34:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/galleries/rss.xml</loc>
+  <lastmod>2021-02-24T12:34:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/rss.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
+ </sitemap>
+ <sitemap>
+  <loc>http://neuralensemble.github.io/MotionClouds/sitemap.xml</loc>
+  <lastmod>2021-02-24T12:35:00Z</lastmod>
  </sitemap>
 </sitemapindex>
