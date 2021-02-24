@@ -1,6 +1,8 @@
 .ipynb_checkpoints
 figures
 
+motionclouds_website
+website
 # Byte-compiled / optimized / DLL files
 test/results
 __pycache__/
