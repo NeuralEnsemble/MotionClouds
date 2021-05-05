@@ -40,6 +40,10 @@ The description of this method was published in:
 
 * Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. _Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception._ [**Journal of Neurophysiology**](http://jn.physiology.org/content/early/2012/03/10/jn.00737.2011), 107(11):3217--3226, 2012  [URL](https://laurentperrinet.github.io/publication/sanz-12/) - [reprint](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds.pdf) - [Supplementary Information](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds_Supplementary.pdf) - [Supplementary Videos](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds_VideoFigures.pdf)
 
+* Jonathan Vacher, Andrew Isaac Meso, Laurent U Perrinet, Gabriel Peyré (2018). [Bayesian Modeling of Motion Perception using Dynamical Stochastic Textures.](https://laurentperrinet.github.io/publication/vacher-16/) Neural Computation. 
+
+* Jonathan Vacher, Andrew Isaac Meso, Laurent U Perrinet, Gabriel Peyré (2015). [Biologically Inspired Dynamic Textures for Probing Motion Perception.](https://laurentperrinet.github.io/publication/vacher-15-nips/) Advances in Neural Information Processing Systems (NeurIPS * 2015). 
+
 While this method was used in the following paper:
 
 * Claudio Simoncini, Laurent U. Perrinet, Anna Montagnini, Pascal Mamassian, Guillaume S. Masson. _More is not always better: dissociation between perception and action explained by adaptive gain control._ [**Nature Neuroscience**](http://www.nature.com/neuro/journal/v15/n11/full/nn.3229.html), 2012 [URL](https://laurentperrinet.github.io/publication/simoncini-12/)
