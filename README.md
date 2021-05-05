@@ -40,9 +40,9 @@ The description of this method was published in:
 
 * Paula S. Leon, Ivo Vanzetta, Guillaume S. Masson, Laurent U. Perrinet. _Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of motion perception._ [**Journal of Neurophysiology**](http://jn.physiology.org/content/early/2012/03/10/jn.00737.2011), 107(11):3217--3226, 2012  [URL](https://laurentperrinet.github.io/publication/sanz-12/) - [reprint](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds.pdf) - [Supplementary Information](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds_Supplementary.pdf) - [Supplementary Videos](https://neuralensemble.github.io/MotionClouds/ms/MotionClouds_VideoFigures.pdf)
 
-* Jonathan Vacher, Andrew Isaac Meso, Laurent U Perrinet, Gabriel Peyré (2018). [Bayesian Modeling of Motion Perception using Dynamical Stochastic Textures.](https://laurentperrinet.github.io/publication/vacher-16/) Neural Computation. 
-
 * Jonathan Vacher, Andrew Isaac Meso, Laurent U Perrinet, Gabriel Peyré (2015). [Biologically Inspired Dynamic Textures for Probing Motion Perception.](https://laurentperrinet.github.io/publication/vacher-15-nips/) Advances in Neural Information Processing Systems (NeurIPS * 2015). 
+
+* Jonathan Vacher, Andrew Isaac Meso, Laurent U Perrinet, Gabriel Peyré (2018). [Bayesian Modeling of Motion Perception using Dynamical Stochastic Textures.](https://laurentperrinet.github.io/publication/vacher-16/) Neural Computation. 
 
 While this method was used in the following paper:
 
