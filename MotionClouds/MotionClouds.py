@@ -65,8 +65,8 @@ notebook = False
 figpath = '../files/'
 figsize = (800, 800) # nice size, but requires more memory
 
-vext = '.mp4'
 ext = '.png'
+vext = '.mp4'
 T_movie = N_frame/100. # this value defines the duration in seconds of a temporal period (assuming a 100Hz refresh rate)
 SUPPORTED_FORMATS = ['.h5', '.mpg', '.mp4', '.gif', '.webm', '.zip', '.mat', '.png']
 
@@ -329,7 +329,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
     fourier_label = {'f_x':'f_x', 'f_y':'f_y', 'f_t':'f_t'},
-    name=None, ext=ext, do_axis=True, do_grids=False, draw_projections=True,
+    filename=None, do_axis=True, do_grids=False, draw_projections=True,
     colorbar=False, f_N=2., f_tN=2., figsize=figsize, figpath=figpath, **kwargs):
     """
 
@@ -358,7 +358,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
     from vispy.color import Color
     transparent = Color(color='black', alpha=0.)
     import colorsys
-    canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
+    canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=dpi)
     view = canvas.central_widget.add_view()
 
     vol_data = np.rollaxis(np.rollaxis(z, 1), 2)
@@ -433,23 +433,24 @@ def visualize(z_in, azimuth=25., elevation=30.,
 
     render_im = canvas.render(size=figsize)
     app.quit()
-    if not(name is None):
+    if not(filename is None):
         import vispy.io as io
-        io.write_png(name + ext, render_im)
+        io.write_png(filename, render_im)
     else:
         return render_im
 
-def cube(im_in, azimuth=30., elevation=35., fov=45, name=None,
-         ext=ext, do_axis=True, show_label=True,
+def cube(im_in, azimuth=30., elevation=45., filename=None,
+         do_axis=True, show_label=True,
          cube_label = {'x':'x', 'y':'y', 't':'t'},
          colormap='gray', roll=-180., vmin=0., vmax=1.,
-         figsize=figsize, **kwargs):
+         figsize=figsize, dpi=150, **kwargs):
 
     """
 
     Visualization of the stimulus as a cube
 
     """
+    print('figsize', figsize)
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
@@ -463,7 +464,7 @@ def cube(im_in, azimuth=30., elevation=35., fov=45, name=None,
 
     use(app='pyglet', gl='pyopengl2')
     from vispy.util.transforms import perspective, translate, rotate
-    canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=450)
+    canvas = scene.SceneCanvas(size=figsize, bgcolor='white', dpi=dpi)
     view = canvas.central_widget.add_view()
 
 #         frame = scene.visuals.Cube(size = (N_X/2, N_frame/2, N_Y/2), color=(0., 0., 0., 0.),
@@ -504,32 +505,35 @@ def cube(im_in, azimuth=30., elevation=35., fov=45, name=None,
         t['t'].pos = canvas.size[0] - canvas.size[0] // 5, canvas.size[1] - canvas.size[1] // 6
         t['y'].pos = canvas.size[0] // 12, canvas.size[1] // 2
 
-    cam = scene.TurntableCamera(elevation=elevation, azimuth=azimuth)
-    cam.fov = fov
+    cam = scene.TurntableCamera(elevation=35, azimuth=30)
+    cam.fov = 45
     cam.scale_factor = N_X * 1.7
     if do_axis: margin = 1.3
     else: margin = 1
     cam.set_range((-N_X/2, N_X/2), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2, N_frame/2))
     view.camera = cam
-    if not(name is None):
+    if not(filename is None):
         im = canvas.render(size=figsize)
         app.quit()
         import vispy.io as io
-        io.write_png(name + ext, im)
+        io.write_png(filename, im)
     else:
         app.quit()
         return im
 
-def check_if_anim_exist(filename, vext=vext, figpath=figpath, **kwargs):
+def format_filename(name, ext, figpath):
+    return os.path.join(figpath, name + ext)
+
+def check_if_anim_exist(name, ext=vext, figpath=figpath):
     """
-    Check if the movie already exists
+    Check if the file tagged by `name` already exists
 
     returns True if the movie does not exist, False if it does
 
     """
-    return not(os.path.isfile(os.path.join(figpath, filename + vext)))
+    return not(os.path.isfile(format_filename(name, ext, figpath)))
 
-def anim_save(z, filename, display=True, vext=vext,
+def anim_save(z, filename, display=True, vext='.mp4',
               T_movie=T_movie, verbose=False, **kwargs):
     """
     Saves a numpy 3D matrix (x-y-t) to a multimedia file.
@@ -581,7 +585,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-        test_ffmpeg()
+        if verbose: test_ffmpeg()
         options = ' -f image2  -r ' + str(fps) + ' -y '
         os.system('ffmpeg -i ' + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_)
         # 3) clean up
@@ -591,7 +595,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-        test_ffmpeg()
+        if verbose: test_ffmpeg()
         options = ' -f mp4 -pix_fmt yuv420p -c:v libx264  -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
@@ -602,7 +606,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-        test_ffmpeg()
+        if verbose: test_ffmpeg()
         options = ' -f webm  -pix_fmt yuv420p -vcodec libvpx -qmax 12 -g ' + str(fps) + '  -r ' + str(fps) + ' -y '
         cmd = 'ffmpeg -i '  + tmpdir + '/frame%06d.png ' + options + filename + vext + verb_
         os.system(cmd)
@@ -613,7 +617,7 @@ def anim_save(z, filename, display=True, vext=vext,
         # 1) create temporary frames
         tmpdir, files = make_frames(z)
         # 2) convert frames to movie
-        test_ffmpeg()
+        if verbose: test_ffmpeg()
         options = ' -y -f image2pipe -c:v png -i - -c:v libx264 -preset ultrafast -qp 0 -movflags +faststart -pix_fmt yuv420p  -g ' + str(fps) + '  -r ' + str(fps) + + ' -y '
         cmd = 'cat '  + tmpdir + '/*.png  | ffmpeg '  + options + filename + vext + verb_
         os.system(cmd)
@@ -723,7 +727,7 @@ def play(z, T=5.):
 
 def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
-                    theta=theta, B_theta=B_theta, alpha=alpha, vext=vext,
+                    theta=theta, B_theta=B_theta, alpha=alpha, vext='.mp4', ext='.png',
                     seed=None, impulse=False, do_amp=False, verbose=False, figpath=figpath, return_envelope = False, **kwargs):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
@@ -741,8 +745,9 @@ def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=T
     if return_envelope:
         return z
 
-def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute=False,
-                    seed=None, impulse=False, events=None, verbose=False, masking=False, do_amp=False, figpath=figpath, **kwargs):
+def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=True, recompute=False,
+            seed=None, impulse=False, events=None, verbose=False, masking=False, 
+            do_amp=False, figpath=figpath, **kwargs):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
     and the stimulus cubes and movies.
@@ -752,31 +757,30 @@ def figures(z=None, name='MC', vext=vext, do_movie=True, do_figs=True, recompute
     """
     if not(os.path.isdir(figpath)): os.mkdir(figpath)
 
-    if do_figs and not z is None:
-        if recompute or check_if_anim_exist(name, vext=ext):
+    if do_figs:
+        if recompute or check_if_anim_exist(name, ext, figpath):
             try:
-                visualize(z, name=os.path.join(figpath, name), **kwargs)           # Visualize the Fourier Spectrum
+                visualize(z, filename=os.path.join(figpath, name + ext), **kwargs)           # Visualize the Fourier Spectrum
             except Exception as e:
                 print('Failed to generate the visualisation:', e)
 
-    if do_movie or do_figs:
-            #if recompute:# or not(check_if_anim_exist(name, vext=vext) or check_if_anim_exist(name + '_cube', vext=ext)):
-            movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
-
-    if do_figs:
-        if recompute or check_if_anim_exist(name + '_cube', vext=ext):
+        if recompute or check_if_anim_exist(name + '_cube', ext, figpath):
             try:
-                cube(movie, name=os.path.join(figpath, name + '_cube'), **kwargs)   # Visualize the Stimulus cube
+                movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
+                cube(movie, filename=os.path.join(figpath, name + '_cube' + ext), **kwargs)   # Visualize the Stimulus cube
             except Exception as e:
                 print('Failed to generate the cube:', e)
+
     if do_movie:
-        if recompute or check_if_anim_exist(name, vext=vext):
+        print('!!!!', os.path.join(figpath, name + vext))
+        if recompute or check_if_anim_exist(name, vext, figpath):
             try:
-                anim_save(movie, os.path.join(figpath, name), display=False, vext=vext, **kwargs)
+                movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
+                anim_save(movie, filename=os.path.join(figpath, name), display=False, vext=vext, **kwargs)
             except Exception as e:
                 print('Failed to generate the movie:', e)
 
-def in_show_video(name, vext=vext, loop=True, autoplay=True, controls=True, embed=False, figpath=figpath, **kwargs):
+def in_show_video(name, vext='.mp4', ext='.png', loop=True, autoplay=True, controls=True, embed=False, figpath=figpath, **kwargs):
     """
 
     Columns represent isometric projections of a cube. The left column displays
