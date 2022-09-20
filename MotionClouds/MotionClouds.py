@@ -330,7 +330,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
     fourier_label = {'f_x':'f_x', 'f_y':'f_y', 'f_t':'f_t'},
     filename=None, do_axis=True, do_grids=False, draw_projections=True,
-    colorbar=False, f_N=2., f_tN=2., figsize=figsize, figpath=figpath, **kwargs):
+    colorbar=False, f_N=2., f_tN=2., figsize=figsize, dpi=150, figpath=figpath, **kwargs):
     """
 
     Visualization of the Fourier spectrum by showing 3D contour plots at different thresholds
@@ -431,7 +431,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
     cam.set_range((-N_X/2*margin, N_X/2/margin), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2*margin, N_frame/2/margin))
     view.camera = cam
 
-    render_im = canvas.render(size=figsize)
+    render_im = canvas.render()
     app.quit()
     if not(filename is None):
         import vispy.io as io
@@ -513,7 +513,7 @@ def cube(im_in, azimuth=30., elevation=45., filename=None,
     cam.set_range((-N_X/2, N_X/2), (-N_Y/2*margin, N_Y/2/margin), (-N_frame/2, N_frame/2))
     view.camera = cam
     if not(filename is None):
-        im = canvas.render(size=figsize)
+        im = canvas.render()
         app.quit()
         import vispy.io as io
         io.write_png(filename, im)
@@ -759,10 +759,10 @@ def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=T
 
     if do_figs:
         if recompute or check_if_anim_exist(name, ext, figpath):
-            try:
+            if True:#try:
                 visualize(z, filename=os.path.join(figpath, name + ext), **kwargs)           # Visualize the Fourier Spectrum
-            except Exception as e:
-                print('Failed to generate the visualisation:', e)
+            #except Exception as e:
+            #    print('Failed to generate the visualisation:', e)
 
         if recompute or check_if_anim_exist(name + '_cube', ext, figpath):
             try:
@@ -772,7 +772,6 @@ def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=T
                 print('Failed to generate the cube:', e)
 
     if do_movie:
-        print('!!!!', os.path.join(figpath, name + vext))
         if recompute or check_if_anim_exist(name, vext, figpath):
             try:
                 movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
