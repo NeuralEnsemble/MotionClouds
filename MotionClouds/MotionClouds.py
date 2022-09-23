@@ -57,6 +57,7 @@ alpha = 0.0
 ft_0 = np.inf
 loggabor = True
 
+mask_exponent = 3.
 contrast = 1.
 method = 'Michelson'
 
@@ -132,6 +133,18 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=False):
         f_radius2[f_radius2==0.] = np.inf
 
     return np.sqrt(f_radius2)
+
+
+def get_mask(fx, fy, ft, mask_exponent=mask_exponent, radius=.5):
+    """
+     Returns a circular spatial mask. 
+     
+     The mask_exponent gives the shrapness of its border.
+
+    """
+    R = frequency_radius(fx, fy, ft, ft_0=np.inf, clean_division=False)
+    mask = ((np.cos(np.pi*R*radius)+1)/2 *(R < radius))**(1./mask_exponent)
+    return mask
 
 def retina(fx, fy, ft, df=.07, sigma=.5):
     """
@@ -279,7 +292,7 @@ def envelope_gabor(fx, fy, ft, V_X=V_X, V_Y=V_Y,
 #     envelope *= retina(fx, fy, ft)
     return envelope
 
-def random_cloud(envelope, seed=None, impulse=False, events=None, do_amp=True):
+def random_cloud(envelope, seed=None, impulse=False, events=None, do_amp=True, do_mask=False):
     """
     Returns a Motion Cloud movie as a 3D matrix from a given envelope.
 
@@ -320,6 +333,10 @@ shape
     Fz = np.fft.ifftshift(Fz)
     Fz[0, 0, 0] = 0. # removing the DC component
     z = np.fft.ifftn(Fz).real
+    if do_mask:
+        fx, fy, ft = get_grids(N_X, N_Y, N_frame)
+        z *= get_mask(fx, fy, ft)
+
     return z
 
 ########################## Display Tools #######################################
@@ -728,7 +745,7 @@ def play(z, T=5.):
 def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=True,
                     B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor, recompute=False,
                     theta=theta, B_theta=B_theta, alpha=alpha, vext='.mp4', ext='.png',
-                    seed=None, impulse=False, do_amp=False, verbose=False, figpath=figpath, return_envelope = False, **kwargs):
+                    seed=None, impulse=False, do_amp=False, do_mask=False, verbose=False, figpath=figpath, return_envelope = False, **kwargs):
     """
     Generates the figures corresponding to the Fourier spectra and the stimulus cubes and
     movies directly from the parameters.
@@ -741,13 +758,14 @@ def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=T
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)
     figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie, recompute=recompute,
-                    seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, figpath=figpath, **kwargs)
+            seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, do_mask=do_mask, 
+            figpath=figpath, **kwargs)
     if return_envelope:
         return z
 
 def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=True, recompute=False,
             seed=None, impulse=False, events=None, verbose=False, masking=False, 
-            do_amp=False, figpath=figpath, **kwargs):
+            do_amp=False, do_mask=False, figpath=figpath, **kwargs):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
     and the stimulus cubes and movies.
@@ -766,7 +784,7 @@ def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=T
 
         if recompute or check_if_anim_exist(name + '_cube', ext, figpath):
             try:
-                movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
+                movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp, do_mask=do_mask), verbose=verbose)
                 cube(movie, filename=os.path.join(figpath, name + '_cube' + ext), **kwargs)   # Visualize the Stimulus cube
             except Exception as e:
                 print('Failed to generate the cube:', e)
@@ -774,7 +792,7 @@ def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=T
     if do_movie:
         if recompute or check_if_anim_exist(name, vext, figpath):
             try:
-                movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp), verbose=verbose)
+                movie = rectif(random_cloud(z, seed=seed, impulse=impulse, events=events, do_amp=do_amp, do_mask=do_mask), verbose=verbose)
                 anim_save(movie, filename=os.path.join(figpath, name), display=False, vext=vext, **kwargs)
             except Exception as e:
                 print('Failed to generate the movie:', e)
