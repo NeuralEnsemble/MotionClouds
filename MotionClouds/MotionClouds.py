@@ -6,7 +6,7 @@ Main script for generating Motion Clouds
 
 (c) Laurent Perrinet - INT/CNRS
 
-Motion Clouds (keyword) parameters:
+MotionClouds (keyword) parameters:
 size    -- power of two to define the frame size (N_X, N_Y)
 size_T  -- power of two to define the number of frames (N_frame)
 N_X     -- frame size horizontal dimension [px]
@@ -325,12 +325,13 @@ shape
 ########################## Display Tools #######################################
 
 def visualize(z_in, azimuth=25., elevation=30.,
-    thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
+    thresholds=[0.95, .9, .75, .5, .25, .125], opacities=[1, .9, .7, .5, .2, .1],
+#    thresholds=[0.94, .89, .75, .5, .25, .1], opacities=[.9, .8, .7, .5, .2, .1],
 #     thresholds=[0.94, .89, .75], opacities=[.99, .7, .2],
 #     thresholds=[0.7, .5, .2], opacities=[.95, .5, .2],
     fourier_label = {'f_x':'f_x', 'f_y':'f_y', 'f_t':'f_t'},
     filename=None, do_axis=True, do_grids=False, draw_projections=True,
-    colorbar=False, f_N=2., f_tN=2., figsize=figsize, dpi=150, figpath=figpath, **kwargs):
+    colorbar=False, f_N=2., f_tN=2., figsize=figsize, dpi=300, figpath=figpath, **kwargs):
     """
 
     Visualization of the Fourier spectrum by showing 3D contour plots at different thresholds
@@ -443,14 +444,13 @@ def cube(im_in, azimuth=30., elevation=45., filename=None,
          do_axis=True, show_label=True,
          cube_label = {'x':'x', 'y':'y', 't':'t'},
          colormap='gray', roll=-180., vmin=0., vmax=1.,
-         figsize=figsize, dpi=150, **kwargs):
+         figsize=figsize, dpi=300, **kwargs):
 
     """
 
     Visualization of the stimulus as a cube
 
     """
-    print('figsize', figsize)
     im = im_in.copy()
 
     N_X, N_Y, N_frame = im.shape
@@ -759,10 +759,10 @@ def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=T
 
     if do_figs:
         if recompute or check_if_anim_exist(name, ext, figpath):
-            if True:#try:
+            try:
                 visualize(z, filename=os.path.join(figpath, name + ext), **kwargs)           # Visualize the Fourier Spectrum
-            #except Exception as e:
-            #    print('Failed to generate the visualisation:', e)
+            except Exception as e:
+                print('Failed to generate the visualisation:', e)
 
         if recompute or check_if_anim_exist(name + '_cube', ext, figpath):
             try:
@@ -799,9 +799,9 @@ def in_show_video(name, vext='.mp4', ext='.png', loop=True, autoplay=True, contr
     from IPython.core.display import display, Image, HTML
     from base64 import b64encode
 
-    opts = ' '
-    if loop: opts += 'loop="1" '
-    if autoplay: opts += 'autoplay="1" '
+    opts = 'playsinline '
+    if loop: opts += 'loop '
+    if autoplay: opts += 'autoplay '
     if controls: opts += 'controls '
     if embed:
         try:
@@ -832,21 +832,24 @@ def in_show_video(name, vext='.mp4', ext='.png', loop=True, autoplay=True, contr
             </td></tr></table></center>""".format(opts, vext[1:], video_encoded)
             # display(HTML(s))
     else:
+
         if os.path.isfile(os.path.join(figpath, name + ext)) and os.path.isfile(os.path.join(figpath, name + '_cube' + ext)):
             if os.path.isfile(os.path.join(figpath, name + vext)):
-                s = """
+                s = f"""
                 <center><table border=none width=100% height=100%>
                 <tr>
-                <td width=33%%><center><img src="{0}" width=100%/></td>
-                <td rowspan=2  colspan=2><center><video src="{1}"  {2}  type="video/{3}" width=100%/></td>
+                <td width=33%%><center><img src="{os.path.join(figpath, name + ext)}" width=100%/></td>
+                <td rowspan=2  colspan=2><center>
+                <video  width=100% {opts}>
+                <source src="{os.path.join(figpath, name + vext)}" type="video/{vext[1:]}">
+                Your browser does not support the video tag.
+                </video>
+                </td>
                 </tr>
                 <tr>
-                <td><center><img src="{4}" width=100%/></td>
+                <td><center><img src="{os.path.join(figpath, name + '_cube' + ext)}" width=100%/></td>
                 </tr>
-                </table></center>""".format(os.path.join(figpath, name + ext),
-                                      os.path.join(figpath, name + vext),
-                                      opts, vext[1:],
-                                      os.path.join(figpath, name + '_cube' + ext))
+                </table></center>"""
             else:
                 s = """
                 <center><table border=none width=100% height=100%>
