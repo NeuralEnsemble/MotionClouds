@@ -64,7 +64,7 @@ method = 'Michelson'
 recompute = False
 notebook = False
 figpath = '../files/'
-figsize = (800, 800) # nice size, but requires more memory
+figsize = (600, 600) # nice size, but requires more memory
 
 ext = '.png'
 vext = '.mp4'
@@ -390,7 +390,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
         cm = Colormap([(1.0, 1.0, 1.0, 1.0), 'k'])
         opts = {'parent':view.scene, 'cmap':cm, 'clim':(0., 1.)}
 
-        energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)[:, ::-1]
+        energy_xy = np.rot90(np.max(z, axis=2)[:, ::-1], 3)#[:, ::-1]
         fourier_xy = scene.visuals.Image(np.rot90(energy_xy), **opts)
         tr_xy = AffineTransform()
         tr_xy.rotate(90, (0, 0, 1))
@@ -404,7 +404,7 @@ def visualize(z_in, azimuth=25., elevation=30.,
         tr_xt.translate((-N_X/2, N_Y/2, -N_frame/2))
         fourier_xt.transform = tr_xt
 
-        energy_yt = np.max(z, axis=0)#[:, ::-1]
+        energy_yt = np.max(z, axis=0)[:, ::-1]
         fourier_yt = scene.visuals.Image(energy_yt, **opts)
         tr_yt = AffineTransform()
         tr_yt.rotate(90, (0, 1, 0))
