@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 NAME = "MotionClouds"
 import MotionClouds
-VERSION = 20220926 # MotionClouds.__version__ # << to change in __init__.py
+VERSION = '20220926' # MotionClouds.__version__ # << to change in __init__.py
 
 setup(
     name = NAME,
