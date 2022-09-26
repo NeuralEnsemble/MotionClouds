@@ -137,13 +137,13 @@ def frequency_radius(fx, fy, ft, ft_0=ft_0, clean_division=False):
 
 def get_mask(fx, fy, ft, mask_exponent=mask_exponent, radius=.5):
     """
-     Returns a circular spatial mask. 
-     
+     Returns a circular spatial mask.
+
      The mask_exponent gives the shrapness of its border.
 
     """
     R = frequency_radius(fx, fy, ft, ft_0=np.inf, clean_division=False)
-    mask = ((np.cos(np.pi*R*radius)+1)/2 *(R < radius))**(1./mask_exponent)
+    mask = ((np.cos(np.pi*R/radius)+1)/2 *(R < radius))**(1./mask_exponent)
     return mask
 
 def retina(fx, fy, ft, df=.07, sigma=.5):
@@ -758,13 +758,13 @@ def figures_MC(fx, fy, ft, name='MC', V_X=V_X, V_Y=V_Y, do_figs=True, do_movie=T
                 B_V=B_V, sf_0=sf_0, B_sf=B_sf, loggabor=loggabor,
                 theta=theta, B_theta=B_theta, alpha=alpha)
     figures(z, name, vext=vext, do_figs=do_figs, do_movie=do_movie, recompute=recompute,
-            seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, do_mask=do_mask, 
+            seed=seed, impulse=impulse, verbose=verbose, do_amp=do_amp, do_mask=do_mask,
             figpath=figpath, **kwargs)
     if return_envelope:
         return z
 
 def figures(z=None, name='MC', vext='.mp4', ext='.png', do_movie=True, do_figs=True, recompute=False,
-            seed=None, impulse=False, events=None, verbose=False, masking=False, 
+            seed=None, impulse=False, events=None, verbose=False, masking=False,
             do_amp=False, do_mask=False, figpath=figpath, **kwargs):
     """
     Given an envelope, generates the figures corresponding to the Fourier spectra
