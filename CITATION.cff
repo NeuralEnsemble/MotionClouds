@@ -1,0 +1,46 @@
+cff-version: 1.2.0
+message: If you use this software, please cite the accompanying publication (preferred-citation below).
+type: software
+title: 'Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study of
+  motion perception'
+authors:
+- family-names: Leon
+  given-names: Paula S
+- family-names: Vanzetta
+  given-names: Ivo
+- family-names: Masson
+  given-names: Guillaume S
+- family-names: Perrinet
+  given-names: Laurent U
+  orcid: https://orcid.org/0000-0002-9536-010X
+repository-code: https://github.com/NeuralEnsemble/MotionClouds
+url: https://laurentperrinet.github.io/publication/sanz-12/
+keywords:
+- motion-clouds
+- motion-perception
+- predictive-coding
+- visual-illusions
+preferred-citation:
+  type: article
+  title: 'Motion Clouds: Model-based stimulus synthesis of natural-like random textures for the study
+    of motion perception'
+  authors:
+  - family-names: Leon
+    given-names: Paula S
+  - family-names: Vanzetta
+    given-names: Ivo
+  - family-names: Masson
+    given-names: Guillaume S
+  - family-names: Perrinet
+    given-names: Laurent U
+    orcid: https://orcid.org/0000-0002-9536-010X
+  journal: Journal of Neurophysiology
+  volume: 107
+  issue: 11
+  start: '3217'
+  end: '3226'
+  publisher:
+    name: American Physiological Society
+  doi: 10.1152/jn.00737.2011
+  year: 2012
+  url: https://laurentperrinet.github.io/publication/sanz-12/
